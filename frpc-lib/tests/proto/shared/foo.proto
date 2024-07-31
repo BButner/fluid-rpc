@@ -1,0 +1,19 @@
+syntax = "proto3";
+
+package com.bbutner.proto.foo;
+
+service FooService {
+  rpc GetFoo(FooRequest) returns (Foo);
+}
+
+message FooRequest {
+  string id = 1;
+}
+
+message FooResponse {
+  Foo foo = 1;
+}
+
+message Foo {
+  string id = 1;
+}
