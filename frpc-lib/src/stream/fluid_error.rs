@@ -1,6 +1,6 @@
 use std::error::Error;
 
-use tokio::time::Instant;
+use std::time::Instant;
 
 #[derive(Debug)]
 pub struct FluidError {
