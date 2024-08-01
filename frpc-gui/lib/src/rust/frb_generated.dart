@@ -3,6 +3,21 @@
 
 // ignore_for_file: unused_import, unused_element, unnecessary_import, duplicate_ignore, invalid_use_of_internal_member, annotate_overrides, non_constant_identifier_names, curly_braces_in_flow_control_structures, prefer_const_literals_to_create_immutables, unused_field
 
+import 'api/models/collection/collection.dart';
+import 'api/models/config/app_config.dart';
+import 'api/models/connection/connection_config.dart';
+import 'api/models/connection/tls_type.dart';
+import 'api/models/connection/tls_types/tls_type_one_way.dart';
+import 'api/models/connection/tls_types/tls_type_two_way.dart';
+import 'api/models/descriptors/enum_descriptor.dart';
+import 'api/models/descriptors/field_descriptor.dart';
+import 'api/models/descriptors/field_type_descriptor.dart';
+import 'api/models/descriptors/message_descriptor.dart';
+import 'api/models/descriptors/method_descriptor.dart';
+import 'api/models/descriptors/oneof_descriptor.dart';
+import 'api/models/descriptors/server_descriptor.dart';
+import 'api/models/descriptors/service_descriptor.dart';
+import 'api/models/environment/environment.dart';
 import 'api/simple.dart';
 import 'dart:async';
 import 'dart:convert';
@@ -58,7 +73,7 @@ class RustLib extends BaseEntrypoint<RustLibApi, RustLibApiImpl, RustLibWire> {
   String get codegenVersion => '2.1.0';
 
   @override
-  int get rustContentHash => -1211388267;
+  int get rustContentHash => -1638323701;
 
   static const kDefaultExternalLibraryLoaderConfig =
       ExternalLibraryLoaderConfig(
@@ -69,12 +84,25 @@ class RustLib extends BaseEntrypoint<RustLibApi, RustLibApiImpl, RustLibWire> {
 }
 
 abstract class RustLibApi extends BaseApi {
+  Future<AppConfig> crateApiModelsConfigAppConfigAppConfigLoad(
+      {required String path});
+
+  Future<AppConfig> crateApiModelsConfigAppConfigAppConfigNew();
+
   String crateApiSimpleGreet({required String name});
 
   Future<void> crateApiSimpleInitApp();
 
+  Future<ServerDescriptor> crateApiSimpleTestGetServerDescriptor(
+      {required String serverUrl});
+
   Stream<String> crateApiSimpleTestInvoke(
       {required String serverUrl, required String target});
+
+  Stream<String> crateApiSimpleTestInvokeWithPool(
+      {required ServerDescriptor desc,
+      required String serverUrl,
+      required String target});
 }
 
 class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
@@ -86,12 +114,62 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   });
 
   @override
+  Future<AppConfig> crateApiModelsConfigAppConfigAppConfigLoad(
+      {required String path}) {
+    return handler.executeNormal(NormalTask(
+      callFfi: (port_) {
+        final serializer = SseSerializer(generalizedFrbRustBinding);
+        sse_encode_String(path, serializer);
+        pdeCallFfi(generalizedFrbRustBinding, serializer,
+            funcId: 1, port: port_);
+      },
+      codec: SseCodec(
+        decodeSuccessData: sse_decode_app_config,
+        decodeErrorData: sse_decode_AnyhowException,
+      ),
+      constMeta: kCrateApiModelsConfigAppConfigAppConfigLoadConstMeta,
+      argValues: [path],
+      apiImpl: this,
+    ));
+  }
+
+  TaskConstMeta get kCrateApiModelsConfigAppConfigAppConfigLoadConstMeta =>
+      const TaskConstMeta(
+        debugName: "app_config_load",
+        argNames: ["path"],
+      );
+
+  @override
+  Future<AppConfig> crateApiModelsConfigAppConfigAppConfigNew() {
+    return handler.executeNormal(NormalTask(
+      callFfi: (port_) {
+        final serializer = SseSerializer(generalizedFrbRustBinding);
+        pdeCallFfi(generalizedFrbRustBinding, serializer,
+            funcId: 2, port: port_);
+      },
+      codec: SseCodec(
+        decodeSuccessData: sse_decode_app_config,
+        decodeErrorData: null,
+      ),
+      constMeta: kCrateApiModelsConfigAppConfigAppConfigNewConstMeta,
+      argValues: [],
+      apiImpl: this,
+    ));
+  }
+
+  TaskConstMeta get kCrateApiModelsConfigAppConfigAppConfigNewConstMeta =>
+      const TaskConstMeta(
+        debugName: "app_config_new",
+        argNames: [],
+      );
+
+  @override
   String crateApiSimpleGreet({required String name}) {
     return handler.executeSync(SyncTask(
       callFfi: () {
         final serializer = SseSerializer(generalizedFrbRustBinding);
         sse_encode_String(name, serializer);
-        return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 1)!;
+        return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 3)!;
       },
       codec: SseCodec(
         decodeSuccessData: sse_decode_String,
@@ -114,7 +192,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
       callFfi: (port_) {
         final serializer = SseSerializer(generalizedFrbRustBinding);
         pdeCallFfi(generalizedFrbRustBinding, serializer,
-            funcId: 2, port: port_);
+            funcId: 4, port: port_);
       },
       codec: SseCodec(
         decodeSuccessData: sse_decode_unit,
@@ -132,6 +210,32 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
       );
 
   @override
+  Future<ServerDescriptor> crateApiSimpleTestGetServerDescriptor(
+      {required String serverUrl}) {
+    return handler.executeNormal(NormalTask(
+      callFfi: (port_) {
+        final serializer = SseSerializer(generalizedFrbRustBinding);
+        sse_encode_String(serverUrl, serializer);
+        pdeCallFfi(generalizedFrbRustBinding, serializer,
+            funcId: 5, port: port_);
+      },
+      codec: SseCodec(
+        decodeSuccessData: sse_decode_server_descriptor,
+        decodeErrorData: sse_decode_AnyhowException,
+      ),
+      constMeta: kCrateApiSimpleTestGetServerDescriptorConstMeta,
+      argValues: [serverUrl],
+      apiImpl: this,
+    ));
+  }
+
+  TaskConstMeta get kCrateApiSimpleTestGetServerDescriptorConstMeta =>
+      const TaskConstMeta(
+        debugName: "test_get_server_descriptor",
+        argNames: ["serverUrl"],
+      );
+
+  @override
   Stream<String> crateApiSimpleTestInvoke(
       {required String serverUrl, required String target}) {
     final sink = RustStreamSink<String>();
@@ -142,7 +246,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
         sse_encode_String(target, serializer);
         sse_encode_StreamSink_String_Sse(sink, serializer);
         pdeCallFfi(generalizedFrbRustBinding, serializer,
-            funcId: 3, port: port_);
+            funcId: 6, port: port_);
       },
       codec: SseCodec(
         decodeSuccessData: sse_decode_unit,
@@ -158,6 +262,39 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   TaskConstMeta get kCrateApiSimpleTestInvokeConstMeta => const TaskConstMeta(
         debugName: "test_invoke",
         argNames: ["serverUrl", "target", "sink"],
+      );
+
+  @override
+  Stream<String> crateApiSimpleTestInvokeWithPool(
+      {required ServerDescriptor desc,
+      required String serverUrl,
+      required String target}) {
+    final sink = RustStreamSink<String>();
+    unawaited(handler.executeNormal(NormalTask(
+      callFfi: (port_) {
+        final serializer = SseSerializer(generalizedFrbRustBinding);
+        sse_encode_box_autoadd_server_descriptor(desc, serializer);
+        sse_encode_String(serverUrl, serializer);
+        sse_encode_String(target, serializer);
+        sse_encode_StreamSink_String_Sse(sink, serializer);
+        pdeCallFfi(generalizedFrbRustBinding, serializer,
+            funcId: 7, port: port_);
+      },
+      codec: SseCodec(
+        decodeSuccessData: sse_decode_unit,
+        decodeErrorData: sse_decode_AnyhowException,
+      ),
+      constMeta: kCrateApiSimpleTestInvokeWithPoolConstMeta,
+      argValues: [desc, serverUrl, target, sink],
+      apiImpl: this,
+    )));
+    return sink.stream;
+  }
+
+  TaskConstMeta get kCrateApiSimpleTestInvokeWithPoolConstMeta =>
+      const TaskConstMeta(
+        debugName: "test_invoke_with_pool",
+        argNames: ["desc", "serverUrl", "target", "sink"],
       );
 
   @protected
@@ -179,9 +316,359 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  AppConfig dco_decode_app_config(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    final arr = raw as List<dynamic>;
+    if (arr.length != 1)
+      throw Exception('unexpected arr length: expect 1 but see ${arr.length}');
+    return AppConfig(
+      collections: dco_decode_list_collection(arr[0]),
+    );
+  }
+
+  @protected
+  bool dco_decode_bool(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return raw as bool;
+  }
+
+  @protected
+  EnumDescriptor dco_decode_box_autoadd_enum_descriptor(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return dco_decode_enum_descriptor(raw);
+  }
+
+  @protected
+  MessageDescriptor dco_decode_box_autoadd_message_descriptor(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return dco_decode_message_descriptor(raw);
+  }
+
+  @protected
+  ServerDescriptor dco_decode_box_autoadd_server_descriptor(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return dco_decode_server_descriptor(raw);
+  }
+
+  @protected
+  TlsTypeOneWay dco_decode_box_autoadd_tls_type_one_way(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return dco_decode_tls_type_one_way(raw);
+  }
+
+  @protected
+  TlsTypeTwoWay dco_decode_box_autoadd_tls_type_two_way(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return dco_decode_tls_type_two_way(raw);
+  }
+
+  @protected
+  Collection dco_decode_collection(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    final arr = raw as List<dynamic>;
+    if (arr.length != 4)
+      throw Exception('unexpected arr length: expect 4 but see ${arr.length}');
+    return Collection(
+      id: dco_decode_String(arr[0]),
+      displayName: dco_decode_String(arr[1]),
+      environments: dco_decode_list_environment(arr[2]),
+      iconPath: dco_decode_opt_String(arr[3]),
+    );
+  }
+
+  @protected
+  ConnectionConfig dco_decode_connection_config(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    final arr = raw as List<dynamic>;
+    if (arr.length != 3)
+      throw Exception('unexpected arr length: expect 3 but see ${arr.length}');
+    return ConnectionConfig(
+      host: dco_decode_String(arr[0]),
+      port: dco_decode_u_16(arr[1]),
+      tlsType: dco_decode_tls_type(arr[2]),
+    );
+  }
+
+  @protected
+  EnumDescriptor dco_decode_enum_descriptor(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    final arr = raw as List<dynamic>;
+    if (arr.length != 1)
+      throw Exception('unexpected arr length: expect 1 but see ${arr.length}');
+    return EnumDescriptor(
+      values: dco_decode_list_enum_value_descriptor(arr[0]),
+    );
+  }
+
+  @protected
+  EnumValueDescriptor dco_decode_enum_value_descriptor(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    final arr = raw as List<dynamic>;
+    if (arr.length != 2)
+      throw Exception('unexpected arr length: expect 2 but see ${arr.length}');
+    return EnumValueDescriptor(
+      name: dco_decode_String(arr[0]),
+      index: dco_decode_i_32(arr[1]),
+    );
+  }
+
+  @protected
+  Environment dco_decode_environment(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    final arr = raw as List<dynamic>;
+    if (arr.length != 3)
+      throw Exception('unexpected arr length: expect 3 but see ${arr.length}');
+    return Environment(
+      id: dco_decode_String(arr[0]),
+      displayName: dco_decode_String(arr[1]),
+      connections: dco_decode_list_connection_config(arr[2]),
+    );
+  }
+
+  @protected
+  FieldDescriptor dco_decode_field_descriptor(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    final arr = raw as List<dynamic>;
+    if (arr.length != 4)
+      throw Exception('unexpected arr length: expect 4 but see ${arr.length}');
+    return FieldDescriptor(
+      name: dco_decode_String(arr[0]),
+      index: dco_decode_u_32(arr[1]),
+      fieldType: dco_decode_field_type_descriptor(arr[2]),
+      isRepeated: dco_decode_bool(arr[3]),
+    );
+  }
+
+  @protected
+  FieldTypeDescriptor dco_decode_field_type_descriptor(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    switch (raw[0]) {
+      case 0:
+        return FieldTypeDescriptor_Double();
+      case 1:
+        return FieldTypeDescriptor_Float();
+      case 2:
+        return FieldTypeDescriptor_Int32();
+      case 3:
+        return FieldTypeDescriptor_Int64();
+      case 4:
+        return FieldTypeDescriptor_Uint32();
+      case 5:
+        return FieldTypeDescriptor_Uint64();
+      case 6:
+        return FieldTypeDescriptor_Sint32();
+      case 7:
+        return FieldTypeDescriptor_Sint64();
+      case 8:
+        return FieldTypeDescriptor_Fixed32();
+      case 9:
+        return FieldTypeDescriptor_Fixed64();
+      case 10:
+        return FieldTypeDescriptor_Sfixed32();
+      case 11:
+        return FieldTypeDescriptor_Sfixed64();
+      case 12:
+        return FieldTypeDescriptor_Bool();
+      case 13:
+        return FieldTypeDescriptor_String();
+      case 14:
+        return FieldTypeDescriptor_Bytes();
+      case 15:
+        return FieldTypeDescriptor_Message(
+          dco_decode_box_autoadd_message_descriptor(raw[1]),
+        );
+      case 16:
+        return FieldTypeDescriptor_Enum(
+          dco_decode_box_autoadd_enum_descriptor(raw[1]),
+        );
+      default:
+        throw Exception("unreachable");
+    }
+  }
+
+  @protected
+  int dco_decode_i_32(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return raw as int;
+  }
+
+  @protected
+  List<Collection> dco_decode_list_collection(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return (raw as List<dynamic>).map(dco_decode_collection).toList();
+  }
+
+  @protected
+  List<ConnectionConfig> dco_decode_list_connection_config(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return (raw as List<dynamic>).map(dco_decode_connection_config).toList();
+  }
+
+  @protected
+  List<EnumValueDescriptor> dco_decode_list_enum_value_descriptor(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return (raw as List<dynamic>)
+        .map(dco_decode_enum_value_descriptor)
+        .toList();
+  }
+
+  @protected
+  List<Environment> dco_decode_list_environment(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return (raw as List<dynamic>).map(dco_decode_environment).toList();
+  }
+
+  @protected
+  List<FieldDescriptor> dco_decode_list_field_descriptor(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return (raw as List<dynamic>).map(dco_decode_field_descriptor).toList();
+  }
+
+  @protected
+  List<MethodDescriptor> dco_decode_list_method_descriptor(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return (raw as List<dynamic>).map(dco_decode_method_descriptor).toList();
+  }
+
+  @protected
+  List<OneOfDescriptor> dco_decode_list_one_of_descriptor(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return (raw as List<dynamic>).map(dco_decode_one_of_descriptor).toList();
+  }
+
+  @protected
   Uint8List dco_decode_list_prim_u_8_strict(dynamic raw) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
     return raw as Uint8List;
+  }
+
+  @protected
+  List<ServiceDescriptor> dco_decode_list_service_descriptor(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return (raw as List<dynamic>).map(dco_decode_service_descriptor).toList();
+  }
+
+  @protected
+  MessageDescriptor dco_decode_message_descriptor(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    final arr = raw as List<dynamic>;
+    if (arr.length != 3)
+      throw Exception('unexpected arr length: expect 3 but see ${arr.length}');
+    return MessageDescriptor(
+      name: dco_decode_String(arr[0]),
+      fields: dco_decode_list_field_descriptor(arr[1]),
+      oneOfs: dco_decode_list_one_of_descriptor(arr[2]),
+    );
+  }
+
+  @protected
+  MethodDescriptor dco_decode_method_descriptor(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    final arr = raw as List<dynamic>;
+    if (arr.length != 3)
+      throw Exception('unexpected arr length: expect 3 but see ${arr.length}');
+    return MethodDescriptor(
+      name: dco_decode_String(arr[0]),
+      input: dco_decode_message_descriptor(arr[1]),
+      output: dco_decode_message_descriptor(arr[2]),
+    );
+  }
+
+  @protected
+  OneOfDescriptor dco_decode_one_of_descriptor(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    final arr = raw as List<dynamic>;
+    if (arr.length != 1)
+      throw Exception('unexpected arr length: expect 1 but see ${arr.length}');
+    return OneOfDescriptor(
+      name: dco_decode_String(arr[0]),
+    );
+  }
+
+  @protected
+  String? dco_decode_opt_String(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return raw == null ? null : dco_decode_String(raw);
+  }
+
+  @protected
+  ServerDescriptor dco_decode_server_descriptor(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    final arr = raw as List<dynamic>;
+    if (arr.length != 2)
+      throw Exception('unexpected arr length: expect 2 but see ${arr.length}');
+    return ServerDescriptor(
+      services: dco_decode_list_service_descriptor(arr[0]),
+      descriptorPoolBytes: dco_decode_list_prim_u_8_strict(arr[1]),
+    );
+  }
+
+  @protected
+  ServiceDescriptor dco_decode_service_descriptor(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    final arr = raw as List<dynamic>;
+    if (arr.length != 3)
+      throw Exception('unexpected arr length: expect 3 but see ${arr.length}');
+    return ServiceDescriptor(
+      name: dco_decode_String(arr[0]),
+      filePath: dco_decode_String(arr[1]),
+      methods: dco_decode_list_method_descriptor(arr[2]),
+    );
+  }
+
+  @protected
+  TlsType dco_decode_tls_type(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    switch (raw[0]) {
+      case 0:
+        return TlsType_PlainText();
+      case 1:
+        return TlsType_OneWay(
+          dco_decode_box_autoadd_tls_type_one_way(raw[1]),
+        );
+      case 2:
+        return TlsType_TwoWay(
+          dco_decode_box_autoadd_tls_type_two_way(raw[1]),
+        );
+      default:
+        throw Exception("unreachable");
+    }
+  }
+
+  @protected
+  TlsTypeOneWay dco_decode_tls_type_one_way(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    final arr = raw as List<dynamic>;
+    if (arr.length != 1)
+      throw Exception('unexpected arr length: expect 1 but see ${arr.length}');
+    return TlsTypeOneWay(
+      certificatePath: dco_decode_String(arr[0]),
+    );
+  }
+
+  @protected
+  TlsTypeTwoWay dco_decode_tls_type_two_way(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    final arr = raw as List<dynamic>;
+    if (arr.length != 3)
+      throw Exception('unexpected arr length: expect 3 but see ${arr.length}');
+    return TlsTypeTwoWay(
+      certificatePath: dco_decode_String(arr[0]),
+      clientCertificatePath: dco_decode_String(arr[1]),
+      clientKeyPath: dco_decode_String(arr[2]),
+    );
+  }
+
+  @protected
+  int dco_decode_u_16(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return raw as int;
+  }
+
+  @protected
+  int dco_decode_u_32(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return raw as int;
   }
 
   @protected
@@ -218,10 +705,388 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  AppConfig sse_decode_app_config(SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    var var_collections = sse_decode_list_collection(deserializer);
+    return AppConfig(collections: var_collections);
+  }
+
+  @protected
+  bool sse_decode_bool(SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    return deserializer.buffer.getUint8() != 0;
+  }
+
+  @protected
+  EnumDescriptor sse_decode_box_autoadd_enum_descriptor(
+      SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    return (sse_decode_enum_descriptor(deserializer));
+  }
+
+  @protected
+  MessageDescriptor sse_decode_box_autoadd_message_descriptor(
+      SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    return (sse_decode_message_descriptor(deserializer));
+  }
+
+  @protected
+  ServerDescriptor sse_decode_box_autoadd_server_descriptor(
+      SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    return (sse_decode_server_descriptor(deserializer));
+  }
+
+  @protected
+  TlsTypeOneWay sse_decode_box_autoadd_tls_type_one_way(
+      SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    return (sse_decode_tls_type_one_way(deserializer));
+  }
+
+  @protected
+  TlsTypeTwoWay sse_decode_box_autoadd_tls_type_two_way(
+      SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    return (sse_decode_tls_type_two_way(deserializer));
+  }
+
+  @protected
+  Collection sse_decode_collection(SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    var var_id = sse_decode_String(deserializer);
+    var var_displayName = sse_decode_String(deserializer);
+    var var_environments = sse_decode_list_environment(deserializer);
+    var var_iconPath = sse_decode_opt_String(deserializer);
+    return Collection(
+        id: var_id,
+        displayName: var_displayName,
+        environments: var_environments,
+        iconPath: var_iconPath);
+  }
+
+  @protected
+  ConnectionConfig sse_decode_connection_config(SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    var var_host = sse_decode_String(deserializer);
+    var var_port = sse_decode_u_16(deserializer);
+    var var_tlsType = sse_decode_tls_type(deserializer);
+    return ConnectionConfig(
+        host: var_host, port: var_port, tlsType: var_tlsType);
+  }
+
+  @protected
+  EnumDescriptor sse_decode_enum_descriptor(SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    var var_values = sse_decode_list_enum_value_descriptor(deserializer);
+    return EnumDescriptor(values: var_values);
+  }
+
+  @protected
+  EnumValueDescriptor sse_decode_enum_value_descriptor(
+      SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    var var_name = sse_decode_String(deserializer);
+    var var_index = sse_decode_i_32(deserializer);
+    return EnumValueDescriptor(name: var_name, index: var_index);
+  }
+
+  @protected
+  Environment sse_decode_environment(SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    var var_id = sse_decode_String(deserializer);
+    var var_displayName = sse_decode_String(deserializer);
+    var var_connections = sse_decode_list_connection_config(deserializer);
+    return Environment(
+        id: var_id, displayName: var_displayName, connections: var_connections);
+  }
+
+  @protected
+  FieldDescriptor sse_decode_field_descriptor(SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    var var_name = sse_decode_String(deserializer);
+    var var_index = sse_decode_u_32(deserializer);
+    var var_fieldType = sse_decode_field_type_descriptor(deserializer);
+    var var_isRepeated = sse_decode_bool(deserializer);
+    return FieldDescriptor(
+        name: var_name,
+        index: var_index,
+        fieldType: var_fieldType,
+        isRepeated: var_isRepeated);
+  }
+
+  @protected
+  FieldTypeDescriptor sse_decode_field_type_descriptor(
+      SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+
+    var tag_ = sse_decode_i_32(deserializer);
+    switch (tag_) {
+      case 0:
+        return FieldTypeDescriptor_Double();
+      case 1:
+        return FieldTypeDescriptor_Float();
+      case 2:
+        return FieldTypeDescriptor_Int32();
+      case 3:
+        return FieldTypeDescriptor_Int64();
+      case 4:
+        return FieldTypeDescriptor_Uint32();
+      case 5:
+        return FieldTypeDescriptor_Uint64();
+      case 6:
+        return FieldTypeDescriptor_Sint32();
+      case 7:
+        return FieldTypeDescriptor_Sint64();
+      case 8:
+        return FieldTypeDescriptor_Fixed32();
+      case 9:
+        return FieldTypeDescriptor_Fixed64();
+      case 10:
+        return FieldTypeDescriptor_Sfixed32();
+      case 11:
+        return FieldTypeDescriptor_Sfixed64();
+      case 12:
+        return FieldTypeDescriptor_Bool();
+      case 13:
+        return FieldTypeDescriptor_String();
+      case 14:
+        return FieldTypeDescriptor_Bytes();
+      case 15:
+        var var_field0 =
+            sse_decode_box_autoadd_message_descriptor(deserializer);
+        return FieldTypeDescriptor_Message(var_field0);
+      case 16:
+        var var_field0 = sse_decode_box_autoadd_enum_descriptor(deserializer);
+        return FieldTypeDescriptor_Enum(var_field0);
+      default:
+        throw UnimplementedError('');
+    }
+  }
+
+  @protected
+  int sse_decode_i_32(SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    return deserializer.buffer.getInt32();
+  }
+
+  @protected
+  List<Collection> sse_decode_list_collection(SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+
+    var len_ = sse_decode_i_32(deserializer);
+    var ans_ = <Collection>[];
+    for (var idx_ = 0; idx_ < len_; ++idx_) {
+      ans_.add(sse_decode_collection(deserializer));
+    }
+    return ans_;
+  }
+
+  @protected
+  List<ConnectionConfig> sse_decode_list_connection_config(
+      SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+
+    var len_ = sse_decode_i_32(deserializer);
+    var ans_ = <ConnectionConfig>[];
+    for (var idx_ = 0; idx_ < len_; ++idx_) {
+      ans_.add(sse_decode_connection_config(deserializer));
+    }
+    return ans_;
+  }
+
+  @protected
+  List<EnumValueDescriptor> sse_decode_list_enum_value_descriptor(
+      SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+
+    var len_ = sse_decode_i_32(deserializer);
+    var ans_ = <EnumValueDescriptor>[];
+    for (var idx_ = 0; idx_ < len_; ++idx_) {
+      ans_.add(sse_decode_enum_value_descriptor(deserializer));
+    }
+    return ans_;
+  }
+
+  @protected
+  List<Environment> sse_decode_list_environment(SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+
+    var len_ = sse_decode_i_32(deserializer);
+    var ans_ = <Environment>[];
+    for (var idx_ = 0; idx_ < len_; ++idx_) {
+      ans_.add(sse_decode_environment(deserializer));
+    }
+    return ans_;
+  }
+
+  @protected
+  List<FieldDescriptor> sse_decode_list_field_descriptor(
+      SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+
+    var len_ = sse_decode_i_32(deserializer);
+    var ans_ = <FieldDescriptor>[];
+    for (var idx_ = 0; idx_ < len_; ++idx_) {
+      ans_.add(sse_decode_field_descriptor(deserializer));
+    }
+    return ans_;
+  }
+
+  @protected
+  List<MethodDescriptor> sse_decode_list_method_descriptor(
+      SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+
+    var len_ = sse_decode_i_32(deserializer);
+    var ans_ = <MethodDescriptor>[];
+    for (var idx_ = 0; idx_ < len_; ++idx_) {
+      ans_.add(sse_decode_method_descriptor(deserializer));
+    }
+    return ans_;
+  }
+
+  @protected
+  List<OneOfDescriptor> sse_decode_list_one_of_descriptor(
+      SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+
+    var len_ = sse_decode_i_32(deserializer);
+    var ans_ = <OneOfDescriptor>[];
+    for (var idx_ = 0; idx_ < len_; ++idx_) {
+      ans_.add(sse_decode_one_of_descriptor(deserializer));
+    }
+    return ans_;
+  }
+
+  @protected
   Uint8List sse_decode_list_prim_u_8_strict(SseDeserializer deserializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
     var len_ = sse_decode_i_32(deserializer);
     return deserializer.buffer.getUint8List(len_);
+  }
+
+  @protected
+  List<ServiceDescriptor> sse_decode_list_service_descriptor(
+      SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+
+    var len_ = sse_decode_i_32(deserializer);
+    var ans_ = <ServiceDescriptor>[];
+    for (var idx_ = 0; idx_ < len_; ++idx_) {
+      ans_.add(sse_decode_service_descriptor(deserializer));
+    }
+    return ans_;
+  }
+
+  @protected
+  MessageDescriptor sse_decode_message_descriptor(
+      SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    var var_name = sse_decode_String(deserializer);
+    var var_fields = sse_decode_list_field_descriptor(deserializer);
+    var var_oneOfs = sse_decode_list_one_of_descriptor(deserializer);
+    return MessageDescriptor(
+        name: var_name, fields: var_fields, oneOfs: var_oneOfs);
+  }
+
+  @protected
+  MethodDescriptor sse_decode_method_descriptor(SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    var var_name = sse_decode_String(deserializer);
+    var var_input = sse_decode_message_descriptor(deserializer);
+    var var_output = sse_decode_message_descriptor(deserializer);
+    return MethodDescriptor(
+        name: var_name, input: var_input, output: var_output);
+  }
+
+  @protected
+  OneOfDescriptor sse_decode_one_of_descriptor(SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    var var_name = sse_decode_String(deserializer);
+    return OneOfDescriptor(name: var_name);
+  }
+
+  @protected
+  String? sse_decode_opt_String(SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+
+    if (sse_decode_bool(deserializer)) {
+      return (sse_decode_String(deserializer));
+    } else {
+      return null;
+    }
+  }
+
+  @protected
+  ServerDescriptor sse_decode_server_descriptor(SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    var var_services = sse_decode_list_service_descriptor(deserializer);
+    var var_descriptorPoolBytes = sse_decode_list_prim_u_8_strict(deserializer);
+    return ServerDescriptor(
+        services: var_services, descriptorPoolBytes: var_descriptorPoolBytes);
+  }
+
+  @protected
+  ServiceDescriptor sse_decode_service_descriptor(
+      SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    var var_name = sse_decode_String(deserializer);
+    var var_filePath = sse_decode_String(deserializer);
+    var var_methods = sse_decode_list_method_descriptor(deserializer);
+    return ServiceDescriptor(
+        name: var_name, filePath: var_filePath, methods: var_methods);
+  }
+
+  @protected
+  TlsType sse_decode_tls_type(SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+
+    var tag_ = sse_decode_i_32(deserializer);
+    switch (tag_) {
+      case 0:
+        return TlsType_PlainText();
+      case 1:
+        var var_field0 = sse_decode_box_autoadd_tls_type_one_way(deserializer);
+        return TlsType_OneWay(var_field0);
+      case 2:
+        var var_field0 = sse_decode_box_autoadd_tls_type_two_way(deserializer);
+        return TlsType_TwoWay(var_field0);
+      default:
+        throw UnimplementedError('');
+    }
+  }
+
+  @protected
+  TlsTypeOneWay sse_decode_tls_type_one_way(SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    var var_certificatePath = sse_decode_String(deserializer);
+    return TlsTypeOneWay(certificatePath: var_certificatePath);
+  }
+
+  @protected
+  TlsTypeTwoWay sse_decode_tls_type_two_way(SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    var var_certificatePath = sse_decode_String(deserializer);
+    var var_clientCertificatePath = sse_decode_String(deserializer);
+    var var_clientKeyPath = sse_decode_String(deserializer);
+    return TlsTypeTwoWay(
+        certificatePath: var_certificatePath,
+        clientCertificatePath: var_clientCertificatePath,
+        clientKeyPath: var_clientKeyPath);
+  }
+
+  @protected
+  int sse_decode_u_16(SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    return deserializer.buffer.getUint16();
+  }
+
+  @protected
+  int sse_decode_u_32(SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    return deserializer.buffer.getUint32();
   }
 
   @protected
@@ -233,18 +1098,6 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   @protected
   void sse_decode_unit(SseDeserializer deserializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
-  }
-
-  @protected
-  int sse_decode_i_32(SseDeserializer deserializer) {
-    // Codec=Sse (Serialization based), see doc to use other codecs
-    return deserializer.buffer.getInt32();
-  }
-
-  @protected
-  bool sse_decode_bool(SseDeserializer deserializer) {
-    // Codec=Sse (Serialization based), see doc to use other codecs
-    return deserializer.buffer.getUint8() != 0;
   }
 
   @protected
@@ -274,11 +1127,338 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  void sse_encode_app_config(AppConfig self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_list_collection(self.collections, serializer);
+  }
+
+  @protected
+  void sse_encode_bool(bool self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    serializer.buffer.putUint8(self ? 1 : 0);
+  }
+
+  @protected
+  void sse_encode_box_autoadd_enum_descriptor(
+      EnumDescriptor self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_enum_descriptor(self, serializer);
+  }
+
+  @protected
+  void sse_encode_box_autoadd_message_descriptor(
+      MessageDescriptor self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_message_descriptor(self, serializer);
+  }
+
+  @protected
+  void sse_encode_box_autoadd_server_descriptor(
+      ServerDescriptor self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_server_descriptor(self, serializer);
+  }
+
+  @protected
+  void sse_encode_box_autoadd_tls_type_one_way(
+      TlsTypeOneWay self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_tls_type_one_way(self, serializer);
+  }
+
+  @protected
+  void sse_encode_box_autoadd_tls_type_two_way(
+      TlsTypeTwoWay self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_tls_type_two_way(self, serializer);
+  }
+
+  @protected
+  void sse_encode_collection(Collection self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_String(self.id, serializer);
+    sse_encode_String(self.displayName, serializer);
+    sse_encode_list_environment(self.environments, serializer);
+    sse_encode_opt_String(self.iconPath, serializer);
+  }
+
+  @protected
+  void sse_encode_connection_config(
+      ConnectionConfig self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_String(self.host, serializer);
+    sse_encode_u_16(self.port, serializer);
+    sse_encode_tls_type(self.tlsType, serializer);
+  }
+
+  @protected
+  void sse_encode_enum_descriptor(
+      EnumDescriptor self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_list_enum_value_descriptor(self.values, serializer);
+  }
+
+  @protected
+  void sse_encode_enum_value_descriptor(
+      EnumValueDescriptor self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_String(self.name, serializer);
+    sse_encode_i_32(self.index, serializer);
+  }
+
+  @protected
+  void sse_encode_environment(Environment self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_String(self.id, serializer);
+    sse_encode_String(self.displayName, serializer);
+    sse_encode_list_connection_config(self.connections, serializer);
+  }
+
+  @protected
+  void sse_encode_field_descriptor(
+      FieldDescriptor self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_String(self.name, serializer);
+    sse_encode_u_32(self.index, serializer);
+    sse_encode_field_type_descriptor(self.fieldType, serializer);
+    sse_encode_bool(self.isRepeated, serializer);
+  }
+
+  @protected
+  void sse_encode_field_type_descriptor(
+      FieldTypeDescriptor self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    switch (self) {
+      case FieldTypeDescriptor_Double():
+        sse_encode_i_32(0, serializer);
+      case FieldTypeDescriptor_Float():
+        sse_encode_i_32(1, serializer);
+      case FieldTypeDescriptor_Int32():
+        sse_encode_i_32(2, serializer);
+      case FieldTypeDescriptor_Int64():
+        sse_encode_i_32(3, serializer);
+      case FieldTypeDescriptor_Uint32():
+        sse_encode_i_32(4, serializer);
+      case FieldTypeDescriptor_Uint64():
+        sse_encode_i_32(5, serializer);
+      case FieldTypeDescriptor_Sint32():
+        sse_encode_i_32(6, serializer);
+      case FieldTypeDescriptor_Sint64():
+        sse_encode_i_32(7, serializer);
+      case FieldTypeDescriptor_Fixed32():
+        sse_encode_i_32(8, serializer);
+      case FieldTypeDescriptor_Fixed64():
+        sse_encode_i_32(9, serializer);
+      case FieldTypeDescriptor_Sfixed32():
+        sse_encode_i_32(10, serializer);
+      case FieldTypeDescriptor_Sfixed64():
+        sse_encode_i_32(11, serializer);
+      case FieldTypeDescriptor_Bool():
+        sse_encode_i_32(12, serializer);
+      case FieldTypeDescriptor_String():
+        sse_encode_i_32(13, serializer);
+      case FieldTypeDescriptor_Bytes():
+        sse_encode_i_32(14, serializer);
+      case FieldTypeDescriptor_Message(field0: final field0):
+        sse_encode_i_32(15, serializer);
+        sse_encode_box_autoadd_message_descriptor(field0, serializer);
+      case FieldTypeDescriptor_Enum(field0: final field0):
+        sse_encode_i_32(16, serializer);
+        sse_encode_box_autoadd_enum_descriptor(field0, serializer);
+      default:
+        throw UnimplementedError('');
+    }
+  }
+
+  @protected
+  void sse_encode_i_32(int self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    serializer.buffer.putInt32(self);
+  }
+
+  @protected
+  void sse_encode_list_collection(
+      List<Collection> self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_i_32(self.length, serializer);
+    for (final item in self) {
+      sse_encode_collection(item, serializer);
+    }
+  }
+
+  @protected
+  void sse_encode_list_connection_config(
+      List<ConnectionConfig> self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_i_32(self.length, serializer);
+    for (final item in self) {
+      sse_encode_connection_config(item, serializer);
+    }
+  }
+
+  @protected
+  void sse_encode_list_enum_value_descriptor(
+      List<EnumValueDescriptor> self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_i_32(self.length, serializer);
+    for (final item in self) {
+      sse_encode_enum_value_descriptor(item, serializer);
+    }
+  }
+
+  @protected
+  void sse_encode_list_environment(
+      List<Environment> self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_i_32(self.length, serializer);
+    for (final item in self) {
+      sse_encode_environment(item, serializer);
+    }
+  }
+
+  @protected
+  void sse_encode_list_field_descriptor(
+      List<FieldDescriptor> self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_i_32(self.length, serializer);
+    for (final item in self) {
+      sse_encode_field_descriptor(item, serializer);
+    }
+  }
+
+  @protected
+  void sse_encode_list_method_descriptor(
+      List<MethodDescriptor> self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_i_32(self.length, serializer);
+    for (final item in self) {
+      sse_encode_method_descriptor(item, serializer);
+    }
+  }
+
+  @protected
+  void sse_encode_list_one_of_descriptor(
+      List<OneOfDescriptor> self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_i_32(self.length, serializer);
+    for (final item in self) {
+      sse_encode_one_of_descriptor(item, serializer);
+    }
+  }
+
+  @protected
   void sse_encode_list_prim_u_8_strict(
       Uint8List self, SseSerializer serializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
     sse_encode_i_32(self.length, serializer);
     serializer.buffer.putUint8List(self);
+  }
+
+  @protected
+  void sse_encode_list_service_descriptor(
+      List<ServiceDescriptor> self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_i_32(self.length, serializer);
+    for (final item in self) {
+      sse_encode_service_descriptor(item, serializer);
+    }
+  }
+
+  @protected
+  void sse_encode_message_descriptor(
+      MessageDescriptor self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_String(self.name, serializer);
+    sse_encode_list_field_descriptor(self.fields, serializer);
+    sse_encode_list_one_of_descriptor(self.oneOfs, serializer);
+  }
+
+  @protected
+  void sse_encode_method_descriptor(
+      MethodDescriptor self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_String(self.name, serializer);
+    sse_encode_message_descriptor(self.input, serializer);
+    sse_encode_message_descriptor(self.output, serializer);
+  }
+
+  @protected
+  void sse_encode_one_of_descriptor(
+      OneOfDescriptor self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_String(self.name, serializer);
+  }
+
+  @protected
+  void sse_encode_opt_String(String? self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+
+    sse_encode_bool(self != null, serializer);
+    if (self != null) {
+      sse_encode_String(self, serializer);
+    }
+  }
+
+  @protected
+  void sse_encode_server_descriptor(
+      ServerDescriptor self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_list_service_descriptor(self.services, serializer);
+    sse_encode_list_prim_u_8_strict(self.descriptorPoolBytes, serializer);
+  }
+
+  @protected
+  void sse_encode_service_descriptor(
+      ServiceDescriptor self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_String(self.name, serializer);
+    sse_encode_String(self.filePath, serializer);
+    sse_encode_list_method_descriptor(self.methods, serializer);
+  }
+
+  @protected
+  void sse_encode_tls_type(TlsType self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    switch (self) {
+      case TlsType_PlainText():
+        sse_encode_i_32(0, serializer);
+      case TlsType_OneWay(field0: final field0):
+        sse_encode_i_32(1, serializer);
+        sse_encode_box_autoadd_tls_type_one_way(field0, serializer);
+      case TlsType_TwoWay(field0: final field0):
+        sse_encode_i_32(2, serializer);
+        sse_encode_box_autoadd_tls_type_two_way(field0, serializer);
+      default:
+        throw UnimplementedError('');
+    }
+  }
+
+  @protected
+  void sse_encode_tls_type_one_way(
+      TlsTypeOneWay self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_String(self.certificatePath, serializer);
+  }
+
+  @protected
+  void sse_encode_tls_type_two_way(
+      TlsTypeTwoWay self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_String(self.certificatePath, serializer);
+    sse_encode_String(self.clientCertificatePath, serializer);
+    sse_encode_String(self.clientKeyPath, serializer);
+  }
+
+  @protected
+  void sse_encode_u_16(int self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    serializer.buffer.putUint16(self);
+  }
+
+  @protected
+  void sse_encode_u_32(int self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    serializer.buffer.putUint32(self);
   }
 
   @protected
@@ -290,17 +1470,5 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   @protected
   void sse_encode_unit(void self, SseSerializer serializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
-  }
-
-  @protected
-  void sse_encode_i_32(int self, SseSerializer serializer) {
-    // Codec=Sse (Serialization based), see doc to use other codecs
-    serializer.buffer.putInt32(self);
-  }
-
-  @protected
-  void sse_encode_bool(bool self, SseSerializer serializer) {
-    // Codec=Sse (Serialization based), see doc to use other codecs
-    serializer.buffer.putUint8(self ? 1 : 0);
   }
 }

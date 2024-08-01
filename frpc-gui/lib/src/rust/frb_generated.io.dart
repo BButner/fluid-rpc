@@ -3,6 +3,21 @@
 
 // ignore_for_file: unused_import, unused_element, unnecessary_import, duplicate_ignore, invalid_use_of_internal_member, annotate_overrides, non_constant_identifier_names, curly_braces_in_flow_control_structures, prefer_const_literals_to_create_immutables, unused_field
 
+import 'api/models/collection/collection.dart';
+import 'api/models/config/app_config.dart';
+import 'api/models/connection/connection_config.dart';
+import 'api/models/connection/tls_type.dart';
+import 'api/models/connection/tls_types/tls_type_one_way.dart';
+import 'api/models/connection/tls_types/tls_type_two_way.dart';
+import 'api/models/descriptors/enum_descriptor.dart';
+import 'api/models/descriptors/field_descriptor.dart';
+import 'api/models/descriptors/field_type_descriptor.dart';
+import 'api/models/descriptors/message_descriptor.dart';
+import 'api/models/descriptors/method_descriptor.dart';
+import 'api/models/descriptors/oneof_descriptor.dart';
+import 'api/models/descriptors/server_descriptor.dart';
+import 'api/models/descriptors/service_descriptor.dart';
+import 'api/models/environment/environment.dart';
 import 'api/simple.dart';
 import 'dart:async';
 import 'dart:convert';
@@ -28,7 +43,109 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   String dco_decode_String(dynamic raw);
 
   @protected
+  AppConfig dco_decode_app_config(dynamic raw);
+
+  @protected
+  bool dco_decode_bool(dynamic raw);
+
+  @protected
+  EnumDescriptor dco_decode_box_autoadd_enum_descriptor(dynamic raw);
+
+  @protected
+  MessageDescriptor dco_decode_box_autoadd_message_descriptor(dynamic raw);
+
+  @protected
+  ServerDescriptor dco_decode_box_autoadd_server_descriptor(dynamic raw);
+
+  @protected
+  TlsTypeOneWay dco_decode_box_autoadd_tls_type_one_way(dynamic raw);
+
+  @protected
+  TlsTypeTwoWay dco_decode_box_autoadd_tls_type_two_way(dynamic raw);
+
+  @protected
+  Collection dco_decode_collection(dynamic raw);
+
+  @protected
+  ConnectionConfig dco_decode_connection_config(dynamic raw);
+
+  @protected
+  EnumDescriptor dco_decode_enum_descriptor(dynamic raw);
+
+  @protected
+  EnumValueDescriptor dco_decode_enum_value_descriptor(dynamic raw);
+
+  @protected
+  Environment dco_decode_environment(dynamic raw);
+
+  @protected
+  FieldDescriptor dco_decode_field_descriptor(dynamic raw);
+
+  @protected
+  FieldTypeDescriptor dco_decode_field_type_descriptor(dynamic raw);
+
+  @protected
+  int dco_decode_i_32(dynamic raw);
+
+  @protected
+  List<Collection> dco_decode_list_collection(dynamic raw);
+
+  @protected
+  List<ConnectionConfig> dco_decode_list_connection_config(dynamic raw);
+
+  @protected
+  List<EnumValueDescriptor> dco_decode_list_enum_value_descriptor(dynamic raw);
+
+  @protected
+  List<Environment> dco_decode_list_environment(dynamic raw);
+
+  @protected
+  List<FieldDescriptor> dco_decode_list_field_descriptor(dynamic raw);
+
+  @protected
+  List<MethodDescriptor> dco_decode_list_method_descriptor(dynamic raw);
+
+  @protected
+  List<OneOfDescriptor> dco_decode_list_one_of_descriptor(dynamic raw);
+
+  @protected
   Uint8List dco_decode_list_prim_u_8_strict(dynamic raw);
+
+  @protected
+  List<ServiceDescriptor> dco_decode_list_service_descriptor(dynamic raw);
+
+  @protected
+  MessageDescriptor dco_decode_message_descriptor(dynamic raw);
+
+  @protected
+  MethodDescriptor dco_decode_method_descriptor(dynamic raw);
+
+  @protected
+  OneOfDescriptor dco_decode_one_of_descriptor(dynamic raw);
+
+  @protected
+  String? dco_decode_opt_String(dynamic raw);
+
+  @protected
+  ServerDescriptor dco_decode_server_descriptor(dynamic raw);
+
+  @protected
+  ServiceDescriptor dco_decode_service_descriptor(dynamic raw);
+
+  @protected
+  TlsType dco_decode_tls_type(dynamic raw);
+
+  @protected
+  TlsTypeOneWay dco_decode_tls_type_one_way(dynamic raw);
+
+  @protected
+  TlsTypeTwoWay dco_decode_tls_type_two_way(dynamic raw);
+
+  @protected
+  int dco_decode_u_16(dynamic raw);
+
+  @protected
+  int dco_decode_u_32(dynamic raw);
 
   @protected
   int dco_decode_u_8(dynamic raw);
@@ -47,19 +164,128 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   String sse_decode_String(SseDeserializer deserializer);
 
   @protected
+  AppConfig sse_decode_app_config(SseDeserializer deserializer);
+
+  @protected
+  bool sse_decode_bool(SseDeserializer deserializer);
+
+  @protected
+  EnumDescriptor sse_decode_box_autoadd_enum_descriptor(
+      SseDeserializer deserializer);
+
+  @protected
+  MessageDescriptor sse_decode_box_autoadd_message_descriptor(
+      SseDeserializer deserializer);
+
+  @protected
+  ServerDescriptor sse_decode_box_autoadd_server_descriptor(
+      SseDeserializer deserializer);
+
+  @protected
+  TlsTypeOneWay sse_decode_box_autoadd_tls_type_one_way(
+      SseDeserializer deserializer);
+
+  @protected
+  TlsTypeTwoWay sse_decode_box_autoadd_tls_type_two_way(
+      SseDeserializer deserializer);
+
+  @protected
+  Collection sse_decode_collection(SseDeserializer deserializer);
+
+  @protected
+  ConnectionConfig sse_decode_connection_config(SseDeserializer deserializer);
+
+  @protected
+  EnumDescriptor sse_decode_enum_descriptor(SseDeserializer deserializer);
+
+  @protected
+  EnumValueDescriptor sse_decode_enum_value_descriptor(
+      SseDeserializer deserializer);
+
+  @protected
+  Environment sse_decode_environment(SseDeserializer deserializer);
+
+  @protected
+  FieldDescriptor sse_decode_field_descriptor(SseDeserializer deserializer);
+
+  @protected
+  FieldTypeDescriptor sse_decode_field_type_descriptor(
+      SseDeserializer deserializer);
+
+  @protected
+  int sse_decode_i_32(SseDeserializer deserializer);
+
+  @protected
+  List<Collection> sse_decode_list_collection(SseDeserializer deserializer);
+
+  @protected
+  List<ConnectionConfig> sse_decode_list_connection_config(
+      SseDeserializer deserializer);
+
+  @protected
+  List<EnumValueDescriptor> sse_decode_list_enum_value_descriptor(
+      SseDeserializer deserializer);
+
+  @protected
+  List<Environment> sse_decode_list_environment(SseDeserializer deserializer);
+
+  @protected
+  List<FieldDescriptor> sse_decode_list_field_descriptor(
+      SseDeserializer deserializer);
+
+  @protected
+  List<MethodDescriptor> sse_decode_list_method_descriptor(
+      SseDeserializer deserializer);
+
+  @protected
+  List<OneOfDescriptor> sse_decode_list_one_of_descriptor(
+      SseDeserializer deserializer);
+
+  @protected
   Uint8List sse_decode_list_prim_u_8_strict(SseDeserializer deserializer);
+
+  @protected
+  List<ServiceDescriptor> sse_decode_list_service_descriptor(
+      SseDeserializer deserializer);
+
+  @protected
+  MessageDescriptor sse_decode_message_descriptor(SseDeserializer deserializer);
+
+  @protected
+  MethodDescriptor sse_decode_method_descriptor(SseDeserializer deserializer);
+
+  @protected
+  OneOfDescriptor sse_decode_one_of_descriptor(SseDeserializer deserializer);
+
+  @protected
+  String? sse_decode_opt_String(SseDeserializer deserializer);
+
+  @protected
+  ServerDescriptor sse_decode_server_descriptor(SseDeserializer deserializer);
+
+  @protected
+  ServiceDescriptor sse_decode_service_descriptor(SseDeserializer deserializer);
+
+  @protected
+  TlsType sse_decode_tls_type(SseDeserializer deserializer);
+
+  @protected
+  TlsTypeOneWay sse_decode_tls_type_one_way(SseDeserializer deserializer);
+
+  @protected
+  TlsTypeTwoWay sse_decode_tls_type_two_way(SseDeserializer deserializer);
+
+  @protected
+  int sse_decode_u_16(SseDeserializer deserializer);
+
+  @protected
+  int sse_decode_u_32(SseDeserializer deserializer);
 
   @protected
   int sse_decode_u_8(SseDeserializer deserializer);
 
   @protected
   void sse_decode_unit(SseDeserializer deserializer);
-
-  @protected
-  int sse_decode_i_32(SseDeserializer deserializer);
-
-  @protected
-  bool sse_decode_bool(SseDeserializer deserializer);
 
   @protected
   void sse_encode_AnyhowException(
@@ -73,20 +299,141 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   void sse_encode_String(String self, SseSerializer serializer);
 
   @protected
+  void sse_encode_app_config(AppConfig self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_bool(bool self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_box_autoadd_enum_descriptor(
+      EnumDescriptor self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_box_autoadd_message_descriptor(
+      MessageDescriptor self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_box_autoadd_server_descriptor(
+      ServerDescriptor self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_box_autoadd_tls_type_one_way(
+      TlsTypeOneWay self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_box_autoadd_tls_type_two_way(
+      TlsTypeTwoWay self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_collection(Collection self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_connection_config(
+      ConnectionConfig self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_enum_descriptor(
+      EnumDescriptor self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_enum_value_descriptor(
+      EnumValueDescriptor self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_environment(Environment self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_field_descriptor(
+      FieldDescriptor self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_field_type_descriptor(
+      FieldTypeDescriptor self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_i_32(int self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_list_collection(
+      List<Collection> self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_list_connection_config(
+      List<ConnectionConfig> self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_list_enum_value_descriptor(
+      List<EnumValueDescriptor> self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_list_environment(
+      List<Environment> self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_list_field_descriptor(
+      List<FieldDescriptor> self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_list_method_descriptor(
+      List<MethodDescriptor> self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_list_one_of_descriptor(
+      List<OneOfDescriptor> self, SseSerializer serializer);
+
+  @protected
   void sse_encode_list_prim_u_8_strict(
       Uint8List self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_list_service_descriptor(
+      List<ServiceDescriptor> self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_message_descriptor(
+      MessageDescriptor self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_method_descriptor(
+      MethodDescriptor self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_one_of_descriptor(
+      OneOfDescriptor self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_opt_String(String? self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_server_descriptor(
+      ServerDescriptor self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_service_descriptor(
+      ServiceDescriptor self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_tls_type(TlsType self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_tls_type_one_way(
+      TlsTypeOneWay self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_tls_type_two_way(
+      TlsTypeTwoWay self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_u_16(int self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_u_32(int self, SseSerializer serializer);
 
   @protected
   void sse_encode_u_8(int self, SseSerializer serializer);
 
   @protected
   void sse_encode_unit(void self, SseSerializer serializer);
-
-  @protected
-  void sse_encode_i_32(int self, SseSerializer serializer);
-
-  @protected
-  void sse_encode_bool(bool self, SseSerializer serializer);
 }
 
 // Section: wire_class

@@ -4,6 +4,14 @@
 // ignore_for_file: invalid_use_of_internal_member, unused_import, unnecessary_import
 
 import '../frb_generated.dart';
+import 'models/descriptors/enum_descriptor.dart';
+import 'models/descriptors/field_descriptor.dart';
+import 'models/descriptors/field_type_descriptor.dart';
+import 'models/descriptors/message_descriptor.dart';
+import 'models/descriptors/method_descriptor.dart';
+import 'models/descriptors/oneof_descriptor.dart';
+import 'models/descriptors/server_descriptor.dart';
+import 'models/descriptors/service_descriptor.dart';
 import 'package:flutter_rust_bridge/flutter_rust_bridge_for_generated.dart';
 
 String greet({required String name}) =>
@@ -13,3 +21,14 @@ Stream<String> testInvoke(
         {required String serverUrl, required String target}) =>
     RustLib.instance.api
         .crateApiSimpleTestInvoke(serverUrl: serverUrl, target: target);
+
+Stream<String> testInvokeWithPool(
+        {required ServerDescriptor desc,
+        required String serverUrl,
+        required String target}) =>
+    RustLib.instance.api.crateApiSimpleTestInvokeWithPool(
+        desc: desc, serverUrl: serverUrl, target: target);
+
+Future<ServerDescriptor> testGetServerDescriptor({required String serverUrl}) =>
+    RustLib.instance.api
+        .crateApiSimpleTestGetServerDescriptor(serverUrl: serverUrl);

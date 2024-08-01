@@ -1,6 +1,10 @@
+import 'dart:convert';
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:frpc_gui/src/rust/api/simple.dart';
 import 'package:frpc_gui/src/rust/frb_generated.dart';
+import 'package:path_provider/path_provider.dart';
 
 Future<void> main() async {
   await RustLib.init();
@@ -50,7 +54,55 @@ class _MyAppState extends State<MyApp> {
                   });
                 }
               },
-              child: const Text('Test'),
+              child: const Text('Test Invoke'),
+            ),
+            ElevatedButton(
+              onPressed: () async {
+                setState(() {
+                  replies = [];
+                });
+
+                final response = await testGetServerDescriptor(
+                  serverUrl: _hostnameController.text,
+                );
+
+                for (final service in response.services) {
+                  print(inspect(service));
+                }
+              },
+              child: const Text('Test List'),
+            ),
+            ElevatedButton(
+              onPressed: () async {
+                setState(() {
+                  replies = [];
+                });
+
+                final response = await testGetServerDescriptor(
+                  serverUrl: _hostnameController.text,
+                );
+
+                final streamResponse = await testInvokeWithPool(
+                  desc: response,
+                  serverUrl: _hostnameController.text,
+                  target: _targetController.text,
+                );
+
+                await for (final res in streamResponse) {
+                  setState(() {
+                    replies.add(res);
+                  });
+                }
+              },
+              child: const Text('Test Raw'),
+            ),
+            ElevatedButton(
+              onPressed: () async {
+                final dir = await getApplicationDocumentsDirectory();
+
+                print(dir.path);
+              },
+              child: Text('Misc Test'),
             ),
             Expanded(
               child: ListView(
