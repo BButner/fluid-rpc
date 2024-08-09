@@ -17,10 +17,9 @@ impl From<prost_reflect::MessageDescriptor> for MessageDescriptor {
                 .fields()
                 .map(|field| FieldDescriptor::from(field))
                 .collect(),
-            one_ofs: message.oneofs().map(|o| OneOfDescriptor::from(o)).collect(),
-            // parent: match message.parent_message() {
-            //     Some(msg) => Some(Me),
-            // },
+            one_ofs: message.oneofs().map(|o| OneOfDescriptor::from(o)).collect(), // parent: match message.parent_message() {
+                                                                                   //     Some(msg) => Some(Me),
+                                                                                   // },
         }
     }
 }

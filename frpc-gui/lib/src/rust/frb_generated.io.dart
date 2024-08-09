@@ -3,7 +3,6 @@
 
 // ignore_for_file: unused_import, unused_element, unnecessary_import, duplicate_ignore, invalid_use_of_internal_member, annotate_overrides, non_constant_identifier_names, curly_braces_in_flow_control_structures, prefer_const_literals_to_create_immutables, unused_field
 
-import 'api/models/collection/collection.dart';
 import 'api/models/config/app_config.dart';
 import 'api/models/connection/connection_config.dart';
 import 'api/models/connection/tls_type.dart';
@@ -18,6 +17,7 @@ import 'api/models/descriptors/oneof_descriptor.dart';
 import 'api/models/descriptors/server_descriptor.dart';
 import 'api/models/descriptors/service_descriptor.dart';
 import 'api/models/environment/environment.dart';
+import 'api/models/project/project.dart';
 import 'api/simple.dart';
 import 'dart:async';
 import 'dart:convert';
@@ -37,6 +37,9 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   AnyhowException dco_decode_AnyhowException(dynamic raw);
 
   @protected
+  Map<String, String> dco_decode_Map_String_String(dynamic raw);
+
+  @protected
   RustStreamSink<String> dco_decode_StreamSink_String_Sse(dynamic raw);
 
   @protected
@@ -49,10 +52,22 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   bool dco_decode_bool(dynamic raw);
 
   @protected
+  AppConfig dco_decode_box_autoadd_app_config(dynamic raw);
+
+  @protected
   EnumDescriptor dco_decode_box_autoadd_enum_descriptor(dynamic raw);
 
   @protected
+  FileProjectLoader dco_decode_box_autoadd_file_project_loader(dynamic raw);
+
+  @protected
+  LoadedProject dco_decode_box_autoadd_loaded_project(dynamic raw);
+
+  @protected
   MessageDescriptor dco_decode_box_autoadd_message_descriptor(dynamic raw);
+
+  @protected
+  Project dco_decode_box_autoadd_project(dynamic raw);
 
   @protected
   ServerDescriptor dco_decode_box_autoadd_server_descriptor(dynamic raw);
@@ -62,9 +77,6 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
 
   @protected
   TlsTypeTwoWay dco_decode_box_autoadd_tls_type_two_way(dynamic raw);
-
-  @protected
-  Collection dco_decode_collection(dynamic raw);
 
   @protected
   ConnectionConfig dco_decode_connection_config(dynamic raw);
@@ -85,10 +97,13 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   FieldTypeDescriptor dco_decode_field_type_descriptor(dynamic raw);
 
   @protected
+  FileProjectLoader dco_decode_file_project_loader(dynamic raw);
+
+  @protected
   int dco_decode_i_32(dynamic raw);
 
   @protected
-  List<Collection> dco_decode_list_collection(dynamic raw);
+  List<String> dco_decode_list_String(dynamic raw);
 
   @protected
   List<ConnectionConfig> dco_decode_list_connection_config(dynamic raw);
@@ -112,7 +127,13 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   Uint8List dco_decode_list_prim_u_8_strict(dynamic raw);
 
   @protected
+  List<(String, String)> dco_decode_list_record_string_string(dynamic raw);
+
+  @protected
   List<ServiceDescriptor> dco_decode_list_service_descriptor(dynamic raw);
+
+  @protected
+  LoadedProject dco_decode_loaded_project(dynamic raw);
 
   @protected
   MessageDescriptor dco_decode_message_descriptor(dynamic raw);
@@ -125,6 +146,18 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
 
   @protected
   String? dco_decode_opt_String(dynamic raw);
+
+  @protected
+  LoadedProject? dco_decode_opt_box_autoadd_loaded_project(dynamic raw);
+
+  @protected
+  Project dco_decode_project(dynamic raw);
+
+  @protected
+  ProjectLoader dco_decode_project_loader(dynamic raw);
+
+  @protected
+  (String, String) dco_decode_record_string_string(dynamic raw);
 
   @protected
   ServerDescriptor dco_decode_server_descriptor(dynamic raw);
@@ -157,6 +190,10 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   AnyhowException sse_decode_AnyhowException(SseDeserializer deserializer);
 
   @protected
+  Map<String, String> sse_decode_Map_String_String(
+      SseDeserializer deserializer);
+
+  @protected
   RustStreamSink<String> sse_decode_StreamSink_String_Sse(
       SseDeserializer deserializer);
 
@@ -170,12 +207,26 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   bool sse_decode_bool(SseDeserializer deserializer);
 
   @protected
+  AppConfig sse_decode_box_autoadd_app_config(SseDeserializer deserializer);
+
+  @protected
   EnumDescriptor sse_decode_box_autoadd_enum_descriptor(
+      SseDeserializer deserializer);
+
+  @protected
+  FileProjectLoader sse_decode_box_autoadd_file_project_loader(
+      SseDeserializer deserializer);
+
+  @protected
+  LoadedProject sse_decode_box_autoadd_loaded_project(
       SseDeserializer deserializer);
 
   @protected
   MessageDescriptor sse_decode_box_autoadd_message_descriptor(
       SseDeserializer deserializer);
+
+  @protected
+  Project sse_decode_box_autoadd_project(SseDeserializer deserializer);
 
   @protected
   ServerDescriptor sse_decode_box_autoadd_server_descriptor(
@@ -188,9 +239,6 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   @protected
   TlsTypeTwoWay sse_decode_box_autoadd_tls_type_two_way(
       SseDeserializer deserializer);
-
-  @protected
-  Collection sse_decode_collection(SseDeserializer deserializer);
 
   @protected
   ConnectionConfig sse_decode_connection_config(SseDeserializer deserializer);
@@ -213,10 +261,14 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
       SseDeserializer deserializer);
 
   @protected
+  FileProjectLoader sse_decode_file_project_loader(
+      SseDeserializer deserializer);
+
+  @protected
   int sse_decode_i_32(SseDeserializer deserializer);
 
   @protected
-  List<Collection> sse_decode_list_collection(SseDeserializer deserializer);
+  List<String> sse_decode_list_String(SseDeserializer deserializer);
 
   @protected
   List<ConnectionConfig> sse_decode_list_connection_config(
@@ -245,8 +297,15 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   Uint8List sse_decode_list_prim_u_8_strict(SseDeserializer deserializer);
 
   @protected
+  List<(String, String)> sse_decode_list_record_string_string(
+      SseDeserializer deserializer);
+
+  @protected
   List<ServiceDescriptor> sse_decode_list_service_descriptor(
       SseDeserializer deserializer);
+
+  @protected
+  LoadedProject sse_decode_loaded_project(SseDeserializer deserializer);
 
   @protected
   MessageDescriptor sse_decode_message_descriptor(SseDeserializer deserializer);
@@ -259,6 +318,20 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
 
   @protected
   String? sse_decode_opt_String(SseDeserializer deserializer);
+
+  @protected
+  LoadedProject? sse_decode_opt_box_autoadd_loaded_project(
+      SseDeserializer deserializer);
+
+  @protected
+  Project sse_decode_project(SseDeserializer deserializer);
+
+  @protected
+  ProjectLoader sse_decode_project_loader(SseDeserializer deserializer);
+
+  @protected
+  (String, String) sse_decode_record_string_string(
+      SseDeserializer deserializer);
 
   @protected
   ServerDescriptor sse_decode_server_descriptor(SseDeserializer deserializer);
@@ -292,6 +365,10 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
       AnyhowException self, SseSerializer serializer);
 
   @protected
+  void sse_encode_Map_String_String(
+      Map<String, String> self, SseSerializer serializer);
+
+  @protected
   void sse_encode_StreamSink_String_Sse(
       RustStreamSink<String> self, SseSerializer serializer);
 
@@ -305,12 +382,27 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   void sse_encode_bool(bool self, SseSerializer serializer);
 
   @protected
+  void sse_encode_box_autoadd_app_config(
+      AppConfig self, SseSerializer serializer);
+
+  @protected
   void sse_encode_box_autoadd_enum_descriptor(
       EnumDescriptor self, SseSerializer serializer);
 
   @protected
+  void sse_encode_box_autoadd_file_project_loader(
+      FileProjectLoader self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_box_autoadd_loaded_project(
+      LoadedProject self, SseSerializer serializer);
+
+  @protected
   void sse_encode_box_autoadd_message_descriptor(
       MessageDescriptor self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_box_autoadd_project(Project self, SseSerializer serializer);
 
   @protected
   void sse_encode_box_autoadd_server_descriptor(
@@ -323,9 +415,6 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   @protected
   void sse_encode_box_autoadd_tls_type_two_way(
       TlsTypeTwoWay self, SseSerializer serializer);
-
-  @protected
-  void sse_encode_collection(Collection self, SseSerializer serializer);
 
   @protected
   void sse_encode_connection_config(
@@ -351,11 +440,14 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
       FieldTypeDescriptor self, SseSerializer serializer);
 
   @protected
+  void sse_encode_file_project_loader(
+      FileProjectLoader self, SseSerializer serializer);
+
+  @protected
   void sse_encode_i_32(int self, SseSerializer serializer);
 
   @protected
-  void sse_encode_list_collection(
-      List<Collection> self, SseSerializer serializer);
+  void sse_encode_list_String(List<String> self, SseSerializer serializer);
 
   @protected
   void sse_encode_list_connection_config(
@@ -386,8 +478,15 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
       Uint8List self, SseSerializer serializer);
 
   @protected
+  void sse_encode_list_record_string_string(
+      List<(String, String)> self, SseSerializer serializer);
+
+  @protected
   void sse_encode_list_service_descriptor(
       List<ServiceDescriptor> self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_loaded_project(LoadedProject self, SseSerializer serializer);
 
   @protected
   void sse_encode_message_descriptor(
@@ -403,6 +502,20 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
 
   @protected
   void sse_encode_opt_String(String? self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_opt_box_autoadd_loaded_project(
+      LoadedProject? self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_project(Project self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_project_loader(ProjectLoader self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_record_string_string(
+      (String, String) self, SseSerializer serializer);
 
   @protected
   void sse_encode_server_descriptor(

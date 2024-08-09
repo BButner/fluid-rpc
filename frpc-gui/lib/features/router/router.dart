@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:frpc_gui/features/router/collections_page.dart';
+import 'package:frpc_gui/features/router/projects_page.dart';
 import 'package:go_router/go_router.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
@@ -20,7 +20,7 @@ GoRouter goRouter(GoRouterRef ref) {
       GoRoute(
         path: '/',
         pageBuilder: (context, state) => const NoTransitionPage(
-          child: CollectionsPage(child: null),
+          child: ProjectsPage(child: null),
         ),
       ),
     ],

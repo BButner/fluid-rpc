@@ -3,7 +3,6 @@
 
 // ignore_for_file: unused_import, unused_element, unnecessary_import, duplicate_ignore, invalid_use_of_internal_member, annotate_overrides, non_constant_identifier_names, curly_braces_in_flow_control_structures, prefer_const_literals_to_create_immutables, unused_field
 
-import 'api/models/collection/collection.dart';
 import 'api/models/config/app_config.dart';
 import 'api/models/connection/connection_config.dart';
 import 'api/models/connection/tls_type.dart';
@@ -18,6 +17,7 @@ import 'api/models/descriptors/oneof_descriptor.dart';
 import 'api/models/descriptors/server_descriptor.dart';
 import 'api/models/descriptors/service_descriptor.dart';
 import 'api/models/environment/environment.dart';
+import 'api/models/project/project.dart';
 import 'api/simple.dart';
 import 'dart:async';
 import 'dart:convert';
@@ -73,7 +73,7 @@ class RustLib extends BaseEntrypoint<RustLibApi, RustLibApiImpl, RustLibWire> {
   String get codegenVersion => '2.1.0';
 
   @override
-  int get rustContentHash => -1638323701;
+  int get rustContentHash => 183989411;
 
   static const kDefaultExternalLibraryLoaderConfig =
       ExternalLibraryLoaderConfig(
@@ -85,9 +85,21 @@ class RustLib extends BaseEntrypoint<RustLibApi, RustLibApiImpl, RustLibWire> {
 
 abstract class RustLibApi extends BaseApi {
   Future<AppConfig> crateApiModelsConfigAppConfigAppConfigLoad(
-      {required String path});
+      {required String appSettingsDirectory});
 
   Future<AppConfig> crateApiModelsConfigAppConfigAppConfigNew();
+
+  Future<void> crateApiModelsConfigAppConfigAppConfigSave(
+      {required AppConfig that, required String appSettingsDirectory});
+
+  String crateApiModelsProjectProjectProjectGetDefaultAvatar(
+      {required String displayName});
+
+  Future<LoadedProject?> crateApiModelsProjectProjectProjectLoadProject(
+      {required String configFilePath});
+
+  Future<void> crateApiModelsProjectProjectProjectSave(
+      {required Project that, required String projectDirectoryPath});
 
   String crateApiSimpleGreet({required String name});
 
@@ -115,11 +127,11 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
 
   @override
   Future<AppConfig> crateApiModelsConfigAppConfigAppConfigLoad(
-      {required String path}) {
+      {required String appSettingsDirectory}) {
     return handler.executeNormal(NormalTask(
       callFfi: (port_) {
         final serializer = SseSerializer(generalizedFrbRustBinding);
-        sse_encode_String(path, serializer);
+        sse_encode_String(appSettingsDirectory, serializer);
         pdeCallFfi(generalizedFrbRustBinding, serializer,
             funcId: 1, port: port_);
       },
@@ -128,7 +140,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
         decodeErrorData: sse_decode_AnyhowException,
       ),
       constMeta: kCrateApiModelsConfigAppConfigAppConfigLoadConstMeta,
-      argValues: [path],
+      argValues: [appSettingsDirectory],
       apiImpl: this,
     ));
   }
@@ -136,7 +148,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   TaskConstMeta get kCrateApiModelsConfigAppConfigAppConfigLoadConstMeta =>
       const TaskConstMeta(
         debugName: "app_config_load",
-        argNames: ["path"],
+        argNames: ["appSettingsDirectory"],
       );
 
   @override
@@ -164,12 +176,118 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
       );
 
   @override
+  Future<void> crateApiModelsConfigAppConfigAppConfigSave(
+      {required AppConfig that, required String appSettingsDirectory}) {
+    return handler.executeNormal(NormalTask(
+      callFfi: (port_) {
+        final serializer = SseSerializer(generalizedFrbRustBinding);
+        sse_encode_box_autoadd_app_config(that, serializer);
+        sse_encode_String(appSettingsDirectory, serializer);
+        pdeCallFfi(generalizedFrbRustBinding, serializer,
+            funcId: 3, port: port_);
+      },
+      codec: SseCodec(
+        decodeSuccessData: sse_decode_unit,
+        decodeErrorData: sse_decode_AnyhowException,
+      ),
+      constMeta: kCrateApiModelsConfigAppConfigAppConfigSaveConstMeta,
+      argValues: [that, appSettingsDirectory],
+      apiImpl: this,
+    ));
+  }
+
+  TaskConstMeta get kCrateApiModelsConfigAppConfigAppConfigSaveConstMeta =>
+      const TaskConstMeta(
+        debugName: "app_config_save",
+        argNames: ["that", "appSettingsDirectory"],
+      );
+
+  @override
+  String crateApiModelsProjectProjectProjectGetDefaultAvatar(
+      {required String displayName}) {
+    return handler.executeSync(SyncTask(
+      callFfi: () {
+        final serializer = SseSerializer(generalizedFrbRustBinding);
+        sse_encode_String(displayName, serializer);
+        return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 4)!;
+      },
+      codec: SseCodec(
+        decodeSuccessData: sse_decode_String,
+        decodeErrorData: null,
+      ),
+      constMeta: kCrateApiModelsProjectProjectProjectGetDefaultAvatarConstMeta,
+      argValues: [displayName],
+      apiImpl: this,
+    ));
+  }
+
+  TaskConstMeta
+      get kCrateApiModelsProjectProjectProjectGetDefaultAvatarConstMeta =>
+          const TaskConstMeta(
+            debugName: "project_get_default_avatar",
+            argNames: ["displayName"],
+          );
+
+  @override
+  Future<LoadedProject?> crateApiModelsProjectProjectProjectLoadProject(
+      {required String configFilePath}) {
+    return handler.executeNormal(NormalTask(
+      callFfi: (port_) {
+        final serializer = SseSerializer(generalizedFrbRustBinding);
+        sse_encode_String(configFilePath, serializer);
+        pdeCallFfi(generalizedFrbRustBinding, serializer,
+            funcId: 5, port: port_);
+      },
+      codec: SseCodec(
+        decodeSuccessData: sse_decode_opt_box_autoadd_loaded_project,
+        decodeErrorData: sse_decode_AnyhowException,
+      ),
+      constMeta: kCrateApiModelsProjectProjectProjectLoadProjectConstMeta,
+      argValues: [configFilePath],
+      apiImpl: this,
+    ));
+  }
+
+  TaskConstMeta get kCrateApiModelsProjectProjectProjectLoadProjectConstMeta =>
+      const TaskConstMeta(
+        debugName: "project_load_project",
+        argNames: ["configFilePath"],
+      );
+
+  @override
+  Future<void> crateApiModelsProjectProjectProjectSave(
+      {required Project that, required String projectDirectoryPath}) {
+    return handler.executeNormal(NormalTask(
+      callFfi: (port_) {
+        final serializer = SseSerializer(generalizedFrbRustBinding);
+        sse_encode_box_autoadd_project(that, serializer);
+        sse_encode_String(projectDirectoryPath, serializer);
+        pdeCallFfi(generalizedFrbRustBinding, serializer,
+            funcId: 6, port: port_);
+      },
+      codec: SseCodec(
+        decodeSuccessData: sse_decode_unit,
+        decodeErrorData: sse_decode_AnyhowException,
+      ),
+      constMeta: kCrateApiModelsProjectProjectProjectSaveConstMeta,
+      argValues: [that, projectDirectoryPath],
+      apiImpl: this,
+    ));
+  }
+
+  TaskConstMeta get kCrateApiModelsProjectProjectProjectSaveConstMeta =>
+      const TaskConstMeta(
+        debugName: "project_save",
+        argNames: ["that", "projectDirectoryPath"],
+      );
+
+  @override
   String crateApiSimpleGreet({required String name}) {
     return handler.executeSync(SyncTask(
       callFfi: () {
         final serializer = SseSerializer(generalizedFrbRustBinding);
         sse_encode_String(name, serializer);
-        return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 3)!;
+        return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 7)!;
       },
       codec: SseCodec(
         decodeSuccessData: sse_decode_String,
@@ -192,7 +310,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
       callFfi: (port_) {
         final serializer = SseSerializer(generalizedFrbRustBinding);
         pdeCallFfi(generalizedFrbRustBinding, serializer,
-            funcId: 4, port: port_);
+            funcId: 8, port: port_);
       },
       codec: SseCodec(
         decodeSuccessData: sse_decode_unit,
@@ -217,7 +335,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
         final serializer = SseSerializer(generalizedFrbRustBinding);
         sse_encode_String(serverUrl, serializer);
         pdeCallFfi(generalizedFrbRustBinding, serializer,
-            funcId: 5, port: port_);
+            funcId: 9, port: port_);
       },
       codec: SseCodec(
         decodeSuccessData: sse_decode_server_descriptor,
@@ -246,7 +364,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
         sse_encode_String(target, serializer);
         sse_encode_StreamSink_String_Sse(sink, serializer);
         pdeCallFfi(generalizedFrbRustBinding, serializer,
-            funcId: 6, port: port_);
+            funcId: 10, port: port_);
       },
       codec: SseCodec(
         decodeSuccessData: sse_decode_unit,
@@ -278,7 +396,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
         sse_encode_String(target, serializer);
         sse_encode_StreamSink_String_Sse(sink, serializer);
         pdeCallFfi(generalizedFrbRustBinding, serializer,
-            funcId: 7, port: port_);
+            funcId: 11, port: port_);
       },
       codec: SseCodec(
         decodeSuccessData: sse_decode_unit,
@@ -304,6 +422,13 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  Map<String, String> dco_decode_Map_String_String(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return Map.fromEntries(dco_decode_list_record_string_string(raw)
+        .map((e) => MapEntry(e.$1, e.$2)));
+  }
+
+  @protected
   RustStreamSink<String> dco_decode_StreamSink_String_Sse(dynamic raw) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
     throw UnimplementedError();
@@ -322,7 +447,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
     if (arr.length != 1)
       throw Exception('unexpected arr length: expect 1 but see ${arr.length}');
     return AppConfig(
-      collections: dco_decode_list_collection(arr[0]),
+      cachedProjectPaths: dco_decode_Map_String_String(arr[0]),
     );
   }
 
@@ -333,15 +458,39 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  AppConfig dco_decode_box_autoadd_app_config(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return dco_decode_app_config(raw);
+  }
+
+  @protected
   EnumDescriptor dco_decode_box_autoadd_enum_descriptor(dynamic raw) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
     return dco_decode_enum_descriptor(raw);
   }
 
   @protected
+  FileProjectLoader dco_decode_box_autoadd_file_project_loader(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return dco_decode_file_project_loader(raw);
+  }
+
+  @protected
+  LoadedProject dco_decode_box_autoadd_loaded_project(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return dco_decode_loaded_project(raw);
+  }
+
+  @protected
   MessageDescriptor dco_decode_box_autoadd_message_descriptor(dynamic raw) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
     return dco_decode_message_descriptor(raw);
+  }
+
+  @protected
+  Project dco_decode_box_autoadd_project(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return dco_decode_project(raw);
   }
 
   @protected
@@ -360,20 +509,6 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   TlsTypeTwoWay dco_decode_box_autoadd_tls_type_two_way(dynamic raw) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
     return dco_decode_tls_type_two_way(raw);
-  }
-
-  @protected
-  Collection dco_decode_collection(dynamic raw) {
-    // Codec=Dco (DartCObject based), see doc to use other codecs
-    final arr = raw as List<dynamic>;
-    if (arr.length != 4)
-      throw Exception('unexpected arr length: expect 4 but see ${arr.length}');
-    return Collection(
-      id: dco_decode_String(arr[0]),
-      displayName: dco_decode_String(arr[1]),
-      environments: dco_decode_list_environment(arr[2]),
-      iconPath: dco_decode_opt_String(arr[3]),
-    );
   }
 
   @protected
@@ -487,15 +622,27 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  FileProjectLoader dco_decode_file_project_loader(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    final arr = raw as List<dynamic>;
+    if (arr.length != 2)
+      throw Exception('unexpected arr length: expect 2 but see ${arr.length}');
+    return FileProjectLoader(
+      protoPaths: dco_decode_list_String(arr[0]),
+      includePath: dco_decode_String(arr[1]),
+    );
+  }
+
+  @protected
   int dco_decode_i_32(dynamic raw) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
     return raw as int;
   }
 
   @protected
-  List<Collection> dco_decode_list_collection(dynamic raw) {
+  List<String> dco_decode_list_String(dynamic raw) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
-    return (raw as List<dynamic>).map(dco_decode_collection).toList();
+    return (raw as List<dynamic>).map(dco_decode_String).toList();
   }
 
   @protected
@@ -543,9 +690,27 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  List<(String, String)> dco_decode_list_record_string_string(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return (raw as List<dynamic>).map(dco_decode_record_string_string).toList();
+  }
+
+  @protected
   List<ServiceDescriptor> dco_decode_list_service_descriptor(dynamic raw) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
     return (raw as List<dynamic>).map(dco_decode_service_descriptor).toList();
+  }
+
+  @protected
+  LoadedProject dco_decode_loaded_project(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    final arr = raw as List<dynamic>;
+    if (arr.length != 2)
+      throw Exception('unexpected arr length: expect 2 but see ${arr.length}');
+    return LoadedProject(
+      project: dco_decode_project(arr[0]),
+      projectDirectoryPath: dco_decode_String(arr[1]),
+    );
   }
 
   @protected
@@ -589,6 +754,55 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   String? dco_decode_opt_String(dynamic raw) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
     return raw == null ? null : dco_decode_String(raw);
+  }
+
+  @protected
+  LoadedProject? dco_decode_opt_box_autoadd_loaded_project(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return raw == null ? null : dco_decode_box_autoadd_loaded_project(raw);
+  }
+
+  @protected
+  Project dco_decode_project(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    final arr = raw as List<dynamic>;
+    if (arr.length != 5)
+      throw Exception('unexpected arr length: expect 5 but see ${arr.length}');
+    return Project(
+      id: dco_decode_String(arr[0]),
+      displayName: dco_decode_String(arr[1]),
+      environments: dco_decode_list_environment(arr[2]),
+      loaderType: dco_decode_project_loader(arr[3]),
+      iconPath: dco_decode_opt_String(arr[4]),
+    );
+  }
+
+  @protected
+  ProjectLoader dco_decode_project_loader(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    switch (raw[0]) {
+      case 0:
+        return ProjectLoader_ServerReflection();
+      case 1:
+        return ProjectLoader_File(
+          dco_decode_box_autoadd_file_project_loader(raw[1]),
+        );
+      default:
+        throw Exception("unreachable");
+    }
+  }
+
+  @protected
+  (String, String) dco_decode_record_string_string(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    final arr = raw as List<dynamic>;
+    if (arr.length != 2) {
+      throw Exception('Expected 2 elements, got ${arr.length}');
+    }
+    return (
+      dco_decode_String(arr[0]),
+      dco_decode_String(arr[1]),
+    );
   }
 
   @protected
@@ -691,6 +905,14 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  Map<String, String> sse_decode_Map_String_String(
+      SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    var inner = sse_decode_list_record_string_string(deserializer);
+    return Map.fromEntries(inner.map((e) => MapEntry(e.$1, e.$2)));
+  }
+
+  @protected
   RustStreamSink<String> sse_decode_StreamSink_String_Sse(
       SseDeserializer deserializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
@@ -707,14 +929,20 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   @protected
   AppConfig sse_decode_app_config(SseDeserializer deserializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
-    var var_collections = sse_decode_list_collection(deserializer);
-    return AppConfig(collections: var_collections);
+    var var_cachedProjectPaths = sse_decode_Map_String_String(deserializer);
+    return AppConfig(cachedProjectPaths: var_cachedProjectPaths);
   }
 
   @protected
   bool sse_decode_bool(SseDeserializer deserializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
     return deserializer.buffer.getUint8() != 0;
+  }
+
+  @protected
+  AppConfig sse_decode_box_autoadd_app_config(SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    return (sse_decode_app_config(deserializer));
   }
 
   @protected
@@ -725,10 +953,30 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  FileProjectLoader sse_decode_box_autoadd_file_project_loader(
+      SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    return (sse_decode_file_project_loader(deserializer));
+  }
+
+  @protected
+  LoadedProject sse_decode_box_autoadd_loaded_project(
+      SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    return (sse_decode_loaded_project(deserializer));
+  }
+
+  @protected
   MessageDescriptor sse_decode_box_autoadd_message_descriptor(
       SseDeserializer deserializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
     return (sse_decode_message_descriptor(deserializer));
+  }
+
+  @protected
+  Project sse_decode_box_autoadd_project(SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    return (sse_decode_project(deserializer));
   }
 
   @protected
@@ -750,20 +998,6 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
       SseDeserializer deserializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
     return (sse_decode_tls_type_two_way(deserializer));
-  }
-
-  @protected
-  Collection sse_decode_collection(SseDeserializer deserializer) {
-    // Codec=Sse (Serialization based), see doc to use other codecs
-    var var_id = sse_decode_String(deserializer);
-    var var_displayName = sse_decode_String(deserializer);
-    var var_environments = sse_decode_list_environment(deserializer);
-    var var_iconPath = sse_decode_opt_String(deserializer);
-    return Collection(
-        id: var_id,
-        displayName: var_displayName,
-        environments: var_environments,
-        iconPath: var_iconPath);
   }
 
   @protected
@@ -866,19 +1100,29 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  FileProjectLoader sse_decode_file_project_loader(
+      SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    var var_protoPaths = sse_decode_list_String(deserializer);
+    var var_includePath = sse_decode_String(deserializer);
+    return FileProjectLoader(
+        protoPaths: var_protoPaths, includePath: var_includePath);
+  }
+
+  @protected
   int sse_decode_i_32(SseDeserializer deserializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
     return deserializer.buffer.getInt32();
   }
 
   @protected
-  List<Collection> sse_decode_list_collection(SseDeserializer deserializer) {
+  List<String> sse_decode_list_String(SseDeserializer deserializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
 
     var len_ = sse_decode_i_32(deserializer);
-    var ans_ = <Collection>[];
+    var ans_ = <String>[];
     for (var idx_ = 0; idx_ < len_; ++idx_) {
-      ans_.add(sse_decode_collection(deserializer));
+      ans_.add(sse_decode_String(deserializer));
     }
     return ans_;
   }
@@ -968,6 +1212,19 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  List<(String, String)> sse_decode_list_record_string_string(
+      SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+
+    var len_ = sse_decode_i_32(deserializer);
+    var ans_ = <(String, String)>[];
+    for (var idx_ = 0; idx_ < len_; ++idx_) {
+      ans_.add(sse_decode_record_string_string(deserializer));
+    }
+    return ans_;
+  }
+
+  @protected
   List<ServiceDescriptor> sse_decode_list_service_descriptor(
       SseDeserializer deserializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
@@ -978,6 +1235,15 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
       ans_.add(sse_decode_service_descriptor(deserializer));
     }
     return ans_;
+  }
+
+  @protected
+  LoadedProject sse_decode_loaded_project(SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    var var_project = sse_decode_project(deserializer);
+    var var_projectDirectoryPath = sse_decode_String(deserializer);
+    return LoadedProject(
+        project: var_project, projectDirectoryPath: var_projectDirectoryPath);
   }
 
   @protected
@@ -1017,6 +1283,60 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
     } else {
       return null;
     }
+  }
+
+  @protected
+  LoadedProject? sse_decode_opt_box_autoadd_loaded_project(
+      SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+
+    if (sse_decode_bool(deserializer)) {
+      return (sse_decode_box_autoadd_loaded_project(deserializer));
+    } else {
+      return null;
+    }
+  }
+
+  @protected
+  Project sse_decode_project(SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    var var_id = sse_decode_String(deserializer);
+    var var_displayName = sse_decode_String(deserializer);
+    var var_environments = sse_decode_list_environment(deserializer);
+    var var_loaderType = sse_decode_project_loader(deserializer);
+    var var_iconPath = sse_decode_opt_String(deserializer);
+    return Project(
+        id: var_id,
+        displayName: var_displayName,
+        environments: var_environments,
+        loaderType: var_loaderType,
+        iconPath: var_iconPath);
+  }
+
+  @protected
+  ProjectLoader sse_decode_project_loader(SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+
+    var tag_ = sse_decode_i_32(deserializer);
+    switch (tag_) {
+      case 0:
+        return ProjectLoader_ServerReflection();
+      case 1:
+        var var_field0 =
+            sse_decode_box_autoadd_file_project_loader(deserializer);
+        return ProjectLoader_File(var_field0);
+      default:
+        throw UnimplementedError('');
+    }
+  }
+
+  @protected
+  (String, String) sse_decode_record_string_string(
+      SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    var var_field0 = sse_decode_String(deserializer);
+    var var_field1 = sse_decode_String(deserializer);
+    return (var_field0, var_field1);
   }
 
   @protected
@@ -1108,6 +1428,14 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  void sse_encode_Map_String_String(
+      Map<String, String> self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_list_record_string_string(
+        self.entries.map((e) => (e.key, e.value)).toList(), serializer);
+  }
+
+  @protected
   void sse_encode_StreamSink_String_Sse(
       RustStreamSink<String> self, SseSerializer serializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
@@ -1129,13 +1457,20 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   @protected
   void sse_encode_app_config(AppConfig self, SseSerializer serializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
-    sse_encode_list_collection(self.collections, serializer);
+    sse_encode_Map_String_String(self.cachedProjectPaths, serializer);
   }
 
   @protected
   void sse_encode_bool(bool self, SseSerializer serializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
     serializer.buffer.putUint8(self ? 1 : 0);
+  }
+
+  @protected
+  void sse_encode_box_autoadd_app_config(
+      AppConfig self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_app_config(self, serializer);
   }
 
   @protected
@@ -1146,10 +1481,30 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  void sse_encode_box_autoadd_file_project_loader(
+      FileProjectLoader self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_file_project_loader(self, serializer);
+  }
+
+  @protected
+  void sse_encode_box_autoadd_loaded_project(
+      LoadedProject self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_loaded_project(self, serializer);
+  }
+
+  @protected
   void sse_encode_box_autoadd_message_descriptor(
       MessageDescriptor self, SseSerializer serializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
     sse_encode_message_descriptor(self, serializer);
+  }
+
+  @protected
+  void sse_encode_box_autoadd_project(Project self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_project(self, serializer);
   }
 
   @protected
@@ -1171,15 +1526,6 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
       TlsTypeTwoWay self, SseSerializer serializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
     sse_encode_tls_type_two_way(self, serializer);
-  }
-
-  @protected
-  void sse_encode_collection(Collection self, SseSerializer serializer) {
-    // Codec=Sse (Serialization based), see doc to use other codecs
-    sse_encode_String(self.id, serializer);
-    sse_encode_String(self.displayName, serializer);
-    sse_encode_list_environment(self.environments, serializer);
-    sse_encode_opt_String(self.iconPath, serializer);
   }
 
   @protected
@@ -1271,18 +1617,25 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  void sse_encode_file_project_loader(
+      FileProjectLoader self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_list_String(self.protoPaths, serializer);
+    sse_encode_String(self.includePath, serializer);
+  }
+
+  @protected
   void sse_encode_i_32(int self, SseSerializer serializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
     serializer.buffer.putInt32(self);
   }
 
   @protected
-  void sse_encode_list_collection(
-      List<Collection> self, SseSerializer serializer) {
+  void sse_encode_list_String(List<String> self, SseSerializer serializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
     sse_encode_i_32(self.length, serializer);
     for (final item in self) {
-      sse_encode_collection(item, serializer);
+      sse_encode_String(item, serializer);
     }
   }
 
@@ -1355,6 +1708,16 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  void sse_encode_list_record_string_string(
+      List<(String, String)> self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_i_32(self.length, serializer);
+    for (final item in self) {
+      sse_encode_record_string_string(item, serializer);
+    }
+  }
+
+  @protected
   void sse_encode_list_service_descriptor(
       List<ServiceDescriptor> self, SseSerializer serializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
@@ -1362,6 +1725,13 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
     for (final item in self) {
       sse_encode_service_descriptor(item, serializer);
     }
+  }
+
+  @protected
+  void sse_encode_loaded_project(LoadedProject self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_project(self.project, serializer);
+    sse_encode_String(self.projectDirectoryPath, serializer);
   }
 
   @protected
@@ -1397,6 +1767,49 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
     if (self != null) {
       sse_encode_String(self, serializer);
     }
+  }
+
+  @protected
+  void sse_encode_opt_box_autoadd_loaded_project(
+      LoadedProject? self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+
+    sse_encode_bool(self != null, serializer);
+    if (self != null) {
+      sse_encode_box_autoadd_loaded_project(self, serializer);
+    }
+  }
+
+  @protected
+  void sse_encode_project(Project self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_String(self.id, serializer);
+    sse_encode_String(self.displayName, serializer);
+    sse_encode_list_environment(self.environments, serializer);
+    sse_encode_project_loader(self.loaderType, serializer);
+    sse_encode_opt_String(self.iconPath, serializer);
+  }
+
+  @protected
+  void sse_encode_project_loader(ProjectLoader self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    switch (self) {
+      case ProjectLoader_ServerReflection():
+        sse_encode_i_32(0, serializer);
+      case ProjectLoader_File(field0: final field0):
+        sse_encode_i_32(1, serializer);
+        sse_encode_box_autoadd_file_project_loader(field0, serializer);
+      default:
+        throw UnimplementedError('');
+    }
+  }
+
+  @protected
+  void sse_encode_record_string_string(
+      (String, String) self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_String(self.$1, serializer);
+    sse_encode_String(self.$2, serializer);
   }
 
   @protected
