@@ -1,6 +1,7 @@
 use prost_reflect::DynamicMessage;
-use tokio::time::Instant;
+use std::time::Instant;
 
+#[derive(Debug)]
 pub struct FluidMessageReceived {
     pub instant: Instant,
     pub message: DynamicMessage,

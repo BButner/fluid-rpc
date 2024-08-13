@@ -2,7 +2,7 @@ use std::str::FromStr;
 
 use anyhow::{bail, Result};
 use futures::channel::mpsc::UnboundedSender;
-use prost_reflect::{DynamicMessage, ReflectMessage};
+use prost_reflect::{DescriptorPool, DynamicMessage, ReflectMessage};
 use regex::Regex;
 use serde_json::Deserializer;
 use tokio_stream::StreamExt;
@@ -27,6 +27,39 @@ pub async fn invoke(
     data: Option<String>,
     file_paths: Option<Vec<String>>,
     include_paths: Option<Vec<String>>,
+) -> Result<()> {
+    if (file_paths.is_some() && include_paths.is_none())
+        || (file_paths.is_none() && include_paths.is_some())
+    {
+        bail!(send_invoker_error(
+            &mut tx,
+            InvokerError::InvalidArguments(String::from(
+                "Must supply Proto File Paths and Include File Paths to load protos from files.",
+            ))
+        ));
+    }
+
+    let pool = match if file_paths.is_some() && include_paths.is_some() {
+        load_from_files(file_paths.unwrap(), include_paths.unwrap())
+    } else {
+        load_from_server_reflection(server_url.clone()).await
+    } {
+        Ok(p) => p,
+        Err(e) => bail!(send_invoker_error(
+            &mut tx,
+            InvokerError::DescriptorPoolLoadFailed(e.to_string())
+        )),
+    };
+
+    invoke_with_pool(tx, pool, server_url, target_method, data).await
+}
+
+pub async fn invoke_with_pool(
+    mut tx: UnboundedSender<FluidStreamEvent>,
+    pool: DescriptorPool,
+    server_url: String,
+    target_method: String,
+    data: Option<String>,
 ) -> Result<()> {
     let re = Regex::new(r"^(\/)?(?<servicePath>\w+(\.\w+)+)\/(?<methodName>\w+)$").unwrap();
     let caps = re.captures(&target_method);
@@ -56,29 +89,6 @@ pub async fn invoke(
             InvokerError::InvalidTargetMethod(target_method)
         )),
     }
-
-    if (file_paths.is_some() && include_paths.is_none())
-        || (file_paths.is_none() && include_paths.is_some())
-    {
-        bail!(send_invoker_error(
-            &mut tx,
-            InvokerError::InvalidArguments(String::from(
-                "Must supply Proto File Paths and Include File Paths to load protos from files.",
-            ))
-        ));
-    }
-
-    let pool = match if file_paths.is_some() && include_paths.is_some() {
-        load_from_files(file_paths.unwrap(), include_paths.unwrap())
-    } else {
-        load_from_server_reflection(server_url.clone()).await
-    } {
-        Ok(p) => p,
-        Err(e) => bail!(send_invoker_error(
-            &mut tx,
-            InvokerError::DescriptorPoolLoadFailed(e.to_string())
-        )),
-    };
 
     let service = match pool.get_service_by_name(&service_path) {
         Some(s) => s,

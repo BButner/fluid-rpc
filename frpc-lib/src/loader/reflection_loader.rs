@@ -41,10 +41,16 @@ async fn get_client(server_url: String) -> Result<ServerReflectionClient<Channel
 
             match conn {
                 Ok(channel) => Ok(ServerReflectionClient::new(channel)),
-                Err(e) => bail!(e),
+                Err(e) => {
+                    dbg!(&e);
+                    bail!(e)
+                }
             }
         }
-        Err(e) => bail!(e),
+        Err(e) => {
+            dbg!(&e);
+            bail!(e)
+        }
     }
 }
 

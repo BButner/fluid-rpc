@@ -1,6 +1,7 @@
 use anyhow::Result;
 use futures::channel::mpsc::{self, UnboundedReceiver};
-use invoker::invoker::invoke;
+use invoker::invoker::{invoke, invoke_with_pool};
+use prost_reflect::DescriptorPool;
 use stream::fluid_stream_event::FluidStreamEvent;
 
 pub(crate) mod invoker;
@@ -12,52 +13,19 @@ pub mod reflection {
     tonic::include_proto!("grpc.reflection.v1alpha");
 }
 
-pub async fn list_from_server_reflection(server_url: String) -> Result<()> {
+pub async fn list_from_server_reflection(server_url: String) -> Result<DescriptorPool> {
     let pool = loader::reflection_loader::load_from_server_reflection(server_url).await?;
 
-    for service in pool.services() {
-        println!(
-            "Service: {}\n  - Path: '{}'",
-            service.name(),
-            service.package_name()
-        );
-
-        println!("    Methods:");
-
-        for method in service.methods() {
-            println!(
-                "      - {} ({}) -> ({})",
-                method.name(),
-                method.input().name(),
-                method.output().name()
-            );
-        }
-    }
-
-    Ok(())
+    Ok(pool)
 }
 
-pub async fn list_from_files(file_paths: Vec<String>, include_paths: Vec<String>) {
-    let pool = loader::file_loader::load_from_files(file_paths, include_paths).unwrap();
+pub async fn list_from_files(
+    file_paths: Vec<String>,
+    include_paths: Vec<String>,
+) -> Result<DescriptorPool> {
+    let pool = loader::file_loader::load_from_files(file_paths, include_paths)?;
 
-    for service in pool.services() {
-        println!(
-            "Service: {}\n  - Path: '{}'",
-            service.name(),
-            service.package_name()
-        );
-
-        println!("    Methods:");
-
-        for method in service.methods() {
-            println!(
-                "      - {} ({}) -> ({})",
-                method.name(),
-                method.input().name(),
-                method.output().name()
-            );
-        }
-    }
+    Ok(pool)
 }
 
 pub async fn invoke_method(
@@ -77,6 +45,21 @@ pub async fn invoke_method(
         file_paths,
         include_paths,
     ));
+
+    Ok(rx)
+}
+
+pub async fn invoke_method_raw(
+    pool_bytes: Vec<u8>,
+    server_url: String,
+    target_method: String,
+    data: Option<String>,
+) -> Result<UnboundedReceiver<FluidStreamEvent>> {
+    let pool = DescriptorPool::decode(pool_bytes.as_slice())?;
+
+    let (tx, rx) = mpsc::unbounded::<FluidStreamEvent>();
+
+    tokio::spawn(invoke_with_pool(tx, pool, server_url, target_method, data));
 
     Ok(rx)
 }
