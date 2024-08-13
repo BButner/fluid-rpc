@@ -1,10 +1,7 @@
-import 'dart:io';
-
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:frpc_gui/features/app_config/app_config_provider.dart';
-import 'package:frpc_gui/src/rust/api/models/config/app_config.dart';
 import 'package:frpc_gui/src/rust/api/models/project/project.dart';
 import 'package:path/path.dart';
 import 'package:uuid/uuid.dart';
@@ -22,7 +19,7 @@ class CreateProjectPopup extends ConsumerStatefulWidget {
 class _CreateCollectionPopupState extends ConsumerState<CreateProjectPopup> {
   final _displayNameController = TextEditingController();
   final _projectDirController = TextEditingController();
-  ProjectLoader _loaderType = ProjectLoader.serverReflection();
+  final ProjectLoader _loaderType = const ProjectLoader.serverReflection();
 
   String _displayName = '';
   String _projectDirPath = '';
@@ -56,6 +53,8 @@ class _CreateCollectionPopupState extends ConsumerState<CreateProjectPopup> {
 
   @override
   Widget build(BuildContext context) {
+    final navigator = Navigator.of(context);
+
     return Dialog(
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(12.0),
@@ -113,11 +112,11 @@ class _CreateCollectionPopupState extends ConsumerState<CreateProjectPopup> {
                 loaderType: const ProjectLoader.serverReflection(),
               );
 
-              final path = join(_projectDirPath, '${_displayName}.frpc');
-              print(path);
+              final path = join(_projectDirPath, '$_displayName.frpc');
               await project.save(projectDirectoryPath: _projectDirPath);
-              print('saved');
               await appConfig.addToCache(project.id, path);
+
+              navigator.pop();
             },
             child: const Text('Save'),
           ),
