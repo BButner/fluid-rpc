@@ -19,11 +19,23 @@ class FrpcApp extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final router = ref.watch(fluidRpcRouterProvider);
+    final routerAsync = ref.watch(fluidRpcRouterProvider);
 
-    return MaterialApp.router(
-      routerConfig: router.config(),
-      title: 'Fluid RPC',
+    return routerAsync.when(
+      data: (router) => MaterialApp.router(
+        routerConfig: router,
+        title: 'Fluid RPC',
+      ),
+      error: (error, stackTrace) => Directionality(
+        textDirection: TextDirection.ltr,
+        child: Text(
+          error.toString(),
+        ),
+      ),
+      loading: () => const Directionality(
+        textDirection: TextDirection.ltr,
+        child: CircularProgressIndicator(),
+      ),
     );
   }
 }

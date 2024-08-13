@@ -4,13 +4,18 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 class ProjectPage extends ConsumerWidget {
   final String projectId;
 
-  ProjectPage({
+  const ProjectPage({
     required this.projectId,
     super.key,
   });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return Text('testing');
+    return Column(
+      children: [
+        Text(projectId),
+        TextField(),
+      ],
+    );
   }
 }
