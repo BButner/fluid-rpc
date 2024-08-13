@@ -1,22 +1,57 @@
-import 'package:auto_route/auto_route.dart';
-import 'package:frpc_gui/features/router/router.gr.dart';
+import 'package:frpc_gui/features/projects/pages/no_project_page.dart';
+import 'package:frpc_gui/features/projects/pages/projects_shell.dart';
+import 'package:frpc_gui/features/projects/projects_provider.dart';
+import 'package:go_router/go_router.dart';
+import 'package:path/path.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
+
+import '../projects/pages/project_page.dart';
 
 part 'router.g.dart';
 
-@AutoRouterConfig()
-class FluidRpcRouter extends RootStackRouter {
-  @override
-  List<AutoRoute> get routes => [
-        AutoRoute(page: ProjectsRoute.page, initial: true, children: [
-          AutoRoute(
-            page: NoProjectRoute.page,
-            initial: true,
-          ),
-        ]),
-      ];
-}
-
 /// The [FluidRpcRouter] for the application.
 @riverpod
-FluidRpcRouter fluidRpcRouter(FluidRpcRouterRef ref) => FluidRpcRouter();
+Future<GoRouter> fluidRpcRouter(FluidRpcRouterRef ref) async {
+  final loadedProjects = await ref.watch(projectsProvider.future);
+
+  final routes = loadedProjects
+      .map(
+        (lp) => StatefulShellBranch(
+          initialLocation: '/project/${lp.project.id}',
+          routes: [
+            GoRoute(
+              path: '/project/${lp.project.id}',
+              builder: (context, state) => ProjectPage(
+                projectId: lp.project.id,
+              ),
+            ),
+          ],
+        ),
+      )
+      .toList();
+
+  return GoRouter(
+    debugLogDiagnostics: true,
+    initialLocation: loadedProjects.isNotEmpty
+        ? '/project/${loadedProjects.first.project.id}'
+        : '/',
+    routes: [
+      StatefulShellRoute.indexedStack(
+        builder: (context, state, navigationShell) => ProjectNavigationShell(
+          navigationShell: navigationShell,
+        ),
+        branches: [
+          ...routes,
+          StatefulShellBranch(
+            routes: [
+              GoRoute(
+                path: '/',
+                builder: (context, state) => const NoProjectPage(),
+              ),
+            ],
+          ),
+        ],
+      ),
+    ],
+  );
+}
