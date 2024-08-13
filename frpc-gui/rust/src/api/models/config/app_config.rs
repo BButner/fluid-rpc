@@ -8,6 +8,7 @@ use anyhow::Result;
 use flutter_rust_bridge::frb;
 use serde::{Deserialize, Serialize};
 use serde_json::from_str;
+use tokio::fs::create_dir_all;
 
 const APP_CONFIG_FILE_NAME: &str = "config.json";
 
@@ -38,7 +39,13 @@ impl AppConfig {
     }
 
     pub async fn load(app_settings_directory: String) -> Result<Self> {
-        let path = PathBuf::from(app_settings_directory).join(APP_CONFIG_FILE_NAME);
+        let mut path = PathBuf::from(app_settings_directory);
+
+        if !path.exists() {
+            create_dir_all(&path).await?;
+        }
+
+        path.push(APP_CONFIG_FILE_NAME);
 
         if !path.exists() {
             let default_config = AppConfig::new();

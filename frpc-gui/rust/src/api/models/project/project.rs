@@ -55,10 +55,17 @@ impl Project {
             return Ok(None);
         }
 
+        dbg!(&config_file_path);
+
         let mut file = File::open(&config_file_path).await?;
+
+        dbg!(&file);
+
         let mut buffer = String::new();
 
         file.read_to_string(&mut buffer).await?;
+
+        dbg!("after read");
 
         let project: Project = serde_json::from_str(&buffer)?;
 

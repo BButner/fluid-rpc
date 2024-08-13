@@ -13,6 +13,7 @@ class Projects extends _$Projects {
     final List<LoadedProject> loadedProjects = [];
 
     for (final kv in appConfig.cachedProjectPaths.entries) {
+      print(kv.value);
       final project = await Project.loadProject(configFilePath: kv.value);
 
       if (project != null) {

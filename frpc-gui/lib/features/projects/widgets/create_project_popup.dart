@@ -7,6 +7,7 @@ import 'package:frpc_gui/features/app_config/app_config_provider.dart';
 import 'package:frpc_gui/src/rust/api/models/config/app_config.dart';
 import 'package:frpc_gui/src/rust/api/models/project/project.dart';
 import 'package:path/path.dart';
+import 'package:uuid/uuid.dart';
 
 class CreateProjectPopup extends ConsumerStatefulWidget {
   const CreateProjectPopup({
@@ -106,7 +107,7 @@ class _CreateCollectionPopupState extends ConsumerState<CreateProjectPopup> {
               final appConfig = ref.read(applicationConfigProvider.notifier);
 
               var project = Project(
-                id: 'TEMP ID',
+                id: const Uuid().v4(),
                 displayName: _displayName,
                 environments: [],
                 loaderType: const ProjectLoader.serverReflection(),

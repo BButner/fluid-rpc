@@ -1,16 +1,15 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:frpc_gui/features/projects/projects_provider.dart';
 import 'package:frpc_gui/features/projects/widgets/create_project_popup.dart';
 import 'package:frpc_gui/src/rust/api/models/project/project.dart';
 
+@RoutePage()
 class ProjectsPage extends ConsumerWidget {
   const ProjectsPage({
-    required this.child,
     super.key,
   });
-
-  final Widget? child;
 
   static const double sidebarWidth = 64.0;
 
@@ -48,8 +47,9 @@ class ProjectsPage extends ConsumerWidget {
                             IconButton(
                               onPressed: () {
                                 showDialog(
-                                    context: context,
-                                    builder: (context) => CreateProjectPopup());
+                                  context: context,
+                                  builder: (context) => CreateProjectPopup(),
+                                );
                               },
                               icon: const Icon(
                                 Icons.add_rounded,
@@ -61,16 +61,7 @@ class ProjectsPage extends ConsumerWidget {
                     ),
                   ),
                   Expanded(
-                    child: child ??
-                        const Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            Text(
-                              'No Collections',
-                            )
-                          ],
-                        ),
+                    child: AutoRouter(),
                   ),
                 ],
               ),
