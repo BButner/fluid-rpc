@@ -18,6 +18,7 @@ import 'api/models/descriptors/server_descriptor.dart';
 import 'api/models/descriptors/service_descriptor.dart';
 import 'api/models/environment/environment.dart';
 import 'api/models/project/project.dart';
+import 'api/models/stream_event.dart';
 import 'api/simple.dart';
 import 'dart:async';
 import 'dart:convert';
@@ -111,7 +112,7 @@ abstract class RustLibApi extends BaseApi {
   Stream<String> crateApiSimpleTestInvoke(
       {required String serverUrl, required String target});
 
-  Stream<String> crateApiSimpleTestInvokeWithPool(
+  Stream<FluidFrontendStreamEvent> crateApiSimpleTestInvokeWithPool(
       {required ServerDescriptor desc,
       required String serverUrl,
       required String target});
@@ -383,18 +384,18 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
       );
 
   @override
-  Stream<String> crateApiSimpleTestInvokeWithPool(
+  Stream<FluidFrontendStreamEvent> crateApiSimpleTestInvokeWithPool(
       {required ServerDescriptor desc,
       required String serverUrl,
       required String target}) {
-    final sink = RustStreamSink<String>();
+    final sink = RustStreamSink<FluidFrontendStreamEvent>();
     unawaited(handler.executeNormal(NormalTask(
       callFfi: (port_) {
         final serializer = SseSerializer(generalizedFrbRustBinding);
         sse_encode_box_autoadd_server_descriptor(desc, serializer);
         sse_encode_String(serverUrl, serializer);
         sse_encode_String(target, serializer);
-        sse_encode_StreamSink_String_Sse(sink, serializer);
+        sse_encode_StreamSink_fluid_frontend_stream_event_Sse(sink, serializer);
         pdeCallFfi(generalizedFrbRustBinding, serializer,
             funcId: 11, port: port_);
       },
@@ -422,6 +423,12 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  DateTime dco_decode_Chrono_Local(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return dcoDecodeTimestamp(ts: dco_decode_i_64(raw).toInt(), isUtc: false);
+  }
+
+  @protected
   Map<String, String> dco_decode_Map_String_String(dynamic raw) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
     return Map.fromEntries(dco_decode_list_record_string_string(raw)
@@ -430,6 +437,13 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
 
   @protected
   RustStreamSink<String> dco_decode_StreamSink_String_Sse(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    throw UnimplementedError();
+  }
+
+  @protected
+  RustStreamSink<FluidFrontendStreamEvent>
+      dco_decode_StreamSink_fluid_frontend_stream_event_Sse(dynamic raw) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
     throw UnimplementedError();
   }
@@ -473,6 +487,19 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   FileProjectLoader dco_decode_box_autoadd_file_project_loader(dynamic raw) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
     return dco_decode_file_project_loader(raw);
+  }
+
+  @protected
+  FluidError dco_decode_box_autoadd_fluid_error(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return dco_decode_fluid_error(raw);
+  }
+
+  @protected
+  FluidMessageReceived dco_decode_box_autoadd_fluid_message_received(
+      dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return dco_decode_fluid_message_received(raw);
   }
 
   @protected
@@ -556,7 +583,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
     return Environment(
       id: dco_decode_String(arr[0]),
       displayName: dco_decode_String(arr[1]),
-      connections: dco_decode_list_connection_config(arr[2]),
+      connection: dco_decode_connection_config(arr[2]),
     );
   }
 
@@ -634,21 +661,74 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  FluidError dco_decode_fluid_error(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    final arr = raw as List<dynamic>;
+    if (arr.length != 2)
+      throw Exception('unexpected arr length: expect 2 but see ${arr.length}');
+    return FluidError(
+      dateTime: dco_decode_Chrono_Local(arr[0]),
+      error: dco_decode_String(arr[1]),
+    );
+  }
+
+  @protected
+  FluidFrontendStreamEvent dco_decode_fluid_frontend_stream_event(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    switch (raw[0]) {
+      case 0:
+        return FluidFrontendStreamEvent_InitiatingConnection(
+          dco_decode_Chrono_Local(raw[1]),
+        );
+      case 1:
+        return FluidFrontendStreamEvent_Connected(
+          dco_decode_Chrono_Local(raw[1]),
+        );
+      case 2:
+        return FluidFrontendStreamEvent_Error(
+          dco_decode_box_autoadd_fluid_error(raw[1]),
+        );
+      case 3:
+        return FluidFrontendStreamEvent_StreamingMessageReceived(
+          dco_decode_box_autoadd_fluid_message_received(raw[1]),
+        );
+      case 4:
+        return FluidFrontendStreamEvent_UnaryMessageReceived(
+          dco_decode_box_autoadd_fluid_message_received(raw[1]),
+        );
+      default:
+        throw Exception("unreachable");
+    }
+  }
+
+  @protected
+  FluidMessageReceived dco_decode_fluid_message_received(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    final arr = raw as List<dynamic>;
+    if (arr.length != 2)
+      throw Exception('unexpected arr length: expect 2 but see ${arr.length}');
+    return FluidMessageReceived(
+      dateTime: dco_decode_Chrono_Local(arr[0]),
+      contents: dco_decode_String(arr[1]),
+    );
+  }
+
+  @protected
   int dco_decode_i_32(dynamic raw) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
     return raw as int;
   }
 
   @protected
-  List<String> dco_decode_list_String(dynamic raw) {
+  PlatformInt64 dco_decode_i_64(dynamic raw) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
-    return (raw as List<dynamic>).map(dco_decode_String).toList();
+    return dcoDecodeI64(raw);
   }
 
   @protected
-  List<ConnectionConfig> dco_decode_list_connection_config(dynamic raw) {
+  List<String> dco_decode_list_String(dynamic raw) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
-    return (raw as List<dynamic>).map(dco_decode_connection_config).toList();
+    return (raw as List<dynamic>).map(dco_decode_String).toList();
   }
 
   @protected
@@ -821,12 +901,13 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   ServiceDescriptor dco_decode_service_descriptor(dynamic raw) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
     final arr = raw as List<dynamic>;
-    if (arr.length != 3)
-      throw Exception('unexpected arr length: expect 3 but see ${arr.length}');
+    if (arr.length != 4)
+      throw Exception('unexpected arr length: expect 4 but see ${arr.length}');
     return ServiceDescriptor(
       name: dco_decode_String(arr[0]),
-      filePath: dco_decode_String(arr[1]),
-      methods: dco_decode_list_method_descriptor(arr[2]),
+      fullName: dco_decode_String(arr[1]),
+      filePath: dco_decode_String(arr[2]),
+      methods: dco_decode_list_method_descriptor(arr[3]),
     );
   }
 
@@ -905,6 +986,13 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  DateTime sse_decode_Chrono_Local(SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    var inner = sse_decode_i_64(deserializer);
+    return DateTime.fromMicrosecondsSinceEpoch(inner.toInt(), isUtc: false);
+  }
+
+  @protected
   Map<String, String> sse_decode_Map_String_String(
       SseDeserializer deserializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
@@ -915,6 +1003,14 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   @protected
   RustStreamSink<String> sse_decode_StreamSink_String_Sse(
       SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    throw UnimplementedError('Unreachable ()');
+  }
+
+  @protected
+  RustStreamSink<FluidFrontendStreamEvent>
+      sse_decode_StreamSink_fluid_frontend_stream_event_Sse(
+          SseDeserializer deserializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
     throw UnimplementedError('Unreachable ()');
   }
@@ -957,6 +1053,19 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
       SseDeserializer deserializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
     return (sse_decode_file_project_loader(deserializer));
+  }
+
+  @protected
+  FluidError sse_decode_box_autoadd_fluid_error(SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    return (sse_decode_fluid_error(deserializer));
+  }
+
+  @protected
+  FluidMessageReceived sse_decode_box_autoadd_fluid_message_received(
+      SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    return (sse_decode_fluid_message_received(deserializer));
   }
 
   @protected
@@ -1031,9 +1140,9 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
     // Codec=Sse (Serialization based), see doc to use other codecs
     var var_id = sse_decode_String(deserializer);
     var var_displayName = sse_decode_String(deserializer);
-    var var_connections = sse_decode_list_connection_config(deserializer);
+    var var_connection = sse_decode_connection_config(deserializer);
     return Environment(
-        id: var_id, displayName: var_displayName, connections: var_connections);
+        id: var_id, displayName: var_displayName, connection: var_connection);
   }
 
   @protected
@@ -1110,9 +1219,61 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  FluidError sse_decode_fluid_error(SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    var var_dateTime = sse_decode_Chrono_Local(deserializer);
+    var var_error = sse_decode_String(deserializer);
+    return FluidError(dateTime: var_dateTime, error: var_error);
+  }
+
+  @protected
+  FluidFrontendStreamEvent sse_decode_fluid_frontend_stream_event(
+      SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+
+    var tag_ = sse_decode_i_32(deserializer);
+    switch (tag_) {
+      case 0:
+        var var_field0 = sse_decode_Chrono_Local(deserializer);
+        return FluidFrontendStreamEvent_InitiatingConnection(var_field0);
+      case 1:
+        var var_field0 = sse_decode_Chrono_Local(deserializer);
+        return FluidFrontendStreamEvent_Connected(var_field0);
+      case 2:
+        var var_field0 = sse_decode_box_autoadd_fluid_error(deserializer);
+        return FluidFrontendStreamEvent_Error(var_field0);
+      case 3:
+        var var_field0 =
+            sse_decode_box_autoadd_fluid_message_received(deserializer);
+        return FluidFrontendStreamEvent_StreamingMessageReceived(var_field0);
+      case 4:
+        var var_field0 =
+            sse_decode_box_autoadd_fluid_message_received(deserializer);
+        return FluidFrontendStreamEvent_UnaryMessageReceived(var_field0);
+      default:
+        throw UnimplementedError('');
+    }
+  }
+
+  @protected
+  FluidMessageReceived sse_decode_fluid_message_received(
+      SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    var var_dateTime = sse_decode_Chrono_Local(deserializer);
+    var var_contents = sse_decode_String(deserializer);
+    return FluidMessageReceived(dateTime: var_dateTime, contents: var_contents);
+  }
+
+  @protected
   int sse_decode_i_32(SseDeserializer deserializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
     return deserializer.buffer.getInt32();
+  }
+
+  @protected
+  PlatformInt64 sse_decode_i_64(SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    return deserializer.buffer.getPlatformInt64();
   }
 
   @protected
@@ -1123,19 +1284,6 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
     var ans_ = <String>[];
     for (var idx_ = 0; idx_ < len_; ++idx_) {
       ans_.add(sse_decode_String(deserializer));
-    }
-    return ans_;
-  }
-
-  @protected
-  List<ConnectionConfig> sse_decode_list_connection_config(
-      SseDeserializer deserializer) {
-    // Codec=Sse (Serialization based), see doc to use other codecs
-
-    var len_ = sse_decode_i_32(deserializer);
-    var ans_ = <ConnectionConfig>[];
-    for (var idx_ = 0; idx_ < len_; ++idx_) {
-      ans_.add(sse_decode_connection_config(deserializer));
     }
     return ans_;
   }
@@ -1353,10 +1501,14 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
       SseDeserializer deserializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
     var var_name = sse_decode_String(deserializer);
+    var var_fullName = sse_decode_String(deserializer);
     var var_filePath = sse_decode_String(deserializer);
     var var_methods = sse_decode_list_method_descriptor(deserializer);
     return ServiceDescriptor(
-        name: var_name, filePath: var_filePath, methods: var_methods);
+        name: var_name,
+        fullName: var_fullName,
+        filePath: var_filePath,
+        methods: var_methods);
   }
 
   @protected
@@ -1428,6 +1580,13 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  void sse_encode_Chrono_Local(DateTime self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_i_64(
+        PlatformInt64Util.from(self.microsecondsSinceEpoch), serializer);
+  }
+
+  @protected
   void sse_encode_Map_String_String(
       Map<String, String> self, SseSerializer serializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
@@ -1443,6 +1602,19 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
         self.setupAndSerialize(
             codec: SseCodec(
           decodeSuccessData: sse_decode_String,
+          decodeErrorData: sse_decode_AnyhowException,
+        )),
+        serializer);
+  }
+
+  @protected
+  void sse_encode_StreamSink_fluid_frontend_stream_event_Sse(
+      RustStreamSink<FluidFrontendStreamEvent> self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_String(
+        self.setupAndSerialize(
+            codec: SseCodec(
+          decodeSuccessData: sse_decode_fluid_frontend_stream_event,
           decodeErrorData: sse_decode_AnyhowException,
         )),
         serializer);
@@ -1485,6 +1657,20 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
       FileProjectLoader self, SseSerializer serializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
     sse_encode_file_project_loader(self, serializer);
+  }
+
+  @protected
+  void sse_encode_box_autoadd_fluid_error(
+      FluidError self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_fluid_error(self, serializer);
+  }
+
+  @protected
+  void sse_encode_box_autoadd_fluid_message_received(
+      FluidMessageReceived self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_fluid_message_received(self, serializer);
   }
 
   @protected
@@ -1557,7 +1743,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
     // Codec=Sse (Serialization based), see doc to use other codecs
     sse_encode_String(self.id, serializer);
     sse_encode_String(self.displayName, serializer);
-    sse_encode_list_connection_config(self.connections, serializer);
+    sse_encode_connection_config(self.connection, serializer);
   }
 
   @protected
@@ -1625,9 +1811,57 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  void sse_encode_fluid_error(FluidError self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_Chrono_Local(self.dateTime, serializer);
+    sse_encode_String(self.error, serializer);
+  }
+
+  @protected
+  void sse_encode_fluid_frontend_stream_event(
+      FluidFrontendStreamEvent self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    switch (self) {
+      case FluidFrontendStreamEvent_InitiatingConnection(field0: final field0):
+        sse_encode_i_32(0, serializer);
+        sse_encode_Chrono_Local(field0, serializer);
+      case FluidFrontendStreamEvent_Connected(field0: final field0):
+        sse_encode_i_32(1, serializer);
+        sse_encode_Chrono_Local(field0, serializer);
+      case FluidFrontendStreamEvent_Error(field0: final field0):
+        sse_encode_i_32(2, serializer);
+        sse_encode_box_autoadd_fluid_error(field0, serializer);
+      case FluidFrontendStreamEvent_StreamingMessageReceived(
+          field0: final field0
+        ):
+        sse_encode_i_32(3, serializer);
+        sse_encode_box_autoadd_fluid_message_received(field0, serializer);
+      case FluidFrontendStreamEvent_UnaryMessageReceived(field0: final field0):
+        sse_encode_i_32(4, serializer);
+        sse_encode_box_autoadd_fluid_message_received(field0, serializer);
+      default:
+        throw UnimplementedError('');
+    }
+  }
+
+  @protected
+  void sse_encode_fluid_message_received(
+      FluidMessageReceived self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_Chrono_Local(self.dateTime, serializer);
+    sse_encode_String(self.contents, serializer);
+  }
+
+  @protected
   void sse_encode_i_32(int self, SseSerializer serializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
     serializer.buffer.putInt32(self);
+  }
+
+  @protected
+  void sse_encode_i_64(PlatformInt64 self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    serializer.buffer.putPlatformInt64(self);
   }
 
   @protected
@@ -1636,16 +1870,6 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
     sse_encode_i_32(self.length, serializer);
     for (final item in self) {
       sse_encode_String(item, serializer);
-    }
-  }
-
-  @protected
-  void sse_encode_list_connection_config(
-      List<ConnectionConfig> self, SseSerializer serializer) {
-    // Codec=Sse (Serialization based), see doc to use other codecs
-    sse_encode_i_32(self.length, serializer);
-    for (final item in self) {
-      sse_encode_connection_config(item, serializer);
     }
   }
 
@@ -1825,6 +2049,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
       ServiceDescriptor self, SseSerializer serializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
     sse_encode_String(self.name, serializer);
+    sse_encode_String(self.fullName, serializer);
     sse_encode_String(self.filePath, serializer);
     sse_encode_list_method_descriptor(self.methods, serializer);
   }

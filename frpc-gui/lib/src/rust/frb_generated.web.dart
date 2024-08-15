@@ -21,6 +21,7 @@ import 'api/models/descriptors/server_descriptor.dart';
 import 'api/models/descriptors/service_descriptor.dart';
 import 'api/models/environment/environment.dart';
 import 'api/models/project/project.dart';
+import 'api/models/stream_event.dart';
 import 'api/simple.dart';
 import 'dart:async';
 import 'dart:convert';
@@ -39,10 +40,17 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   AnyhowException dco_decode_AnyhowException(dynamic raw);
 
   @protected
+  DateTime dco_decode_Chrono_Local(dynamic raw);
+
+  @protected
   Map<String, String> dco_decode_Map_String_String(dynamic raw);
 
   @protected
   RustStreamSink<String> dco_decode_StreamSink_String_Sse(dynamic raw);
+
+  @protected
+  RustStreamSink<FluidFrontendStreamEvent>
+      dco_decode_StreamSink_fluid_frontend_stream_event_Sse(dynamic raw);
 
   @protected
   String dco_decode_String(dynamic raw);
@@ -61,6 +69,13 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
 
   @protected
   FileProjectLoader dco_decode_box_autoadd_file_project_loader(dynamic raw);
+
+  @protected
+  FluidError dco_decode_box_autoadd_fluid_error(dynamic raw);
+
+  @protected
+  FluidMessageReceived dco_decode_box_autoadd_fluid_message_received(
+      dynamic raw);
 
   @protected
   LoadedProject dco_decode_box_autoadd_loaded_project(dynamic raw);
@@ -102,13 +117,22 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   FileProjectLoader dco_decode_file_project_loader(dynamic raw);
 
   @protected
+  FluidError dco_decode_fluid_error(dynamic raw);
+
+  @protected
+  FluidFrontendStreamEvent dco_decode_fluid_frontend_stream_event(dynamic raw);
+
+  @protected
+  FluidMessageReceived dco_decode_fluid_message_received(dynamic raw);
+
+  @protected
   int dco_decode_i_32(dynamic raw);
 
   @protected
-  List<String> dco_decode_list_String(dynamic raw);
+  PlatformInt64 dco_decode_i_64(dynamic raw);
 
   @protected
-  List<ConnectionConfig> dco_decode_list_connection_config(dynamic raw);
+  List<String> dco_decode_list_String(dynamic raw);
 
   @protected
   List<EnumValueDescriptor> dco_decode_list_enum_value_descriptor(dynamic raw);
@@ -192,12 +216,20 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   AnyhowException sse_decode_AnyhowException(SseDeserializer deserializer);
 
   @protected
+  DateTime sse_decode_Chrono_Local(SseDeserializer deserializer);
+
+  @protected
   Map<String, String> sse_decode_Map_String_String(
       SseDeserializer deserializer);
 
   @protected
   RustStreamSink<String> sse_decode_StreamSink_String_Sse(
       SseDeserializer deserializer);
+
+  @protected
+  RustStreamSink<FluidFrontendStreamEvent>
+      sse_decode_StreamSink_fluid_frontend_stream_event_Sse(
+          SseDeserializer deserializer);
 
   @protected
   String sse_decode_String(SseDeserializer deserializer);
@@ -217,6 +249,13 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
 
   @protected
   FileProjectLoader sse_decode_box_autoadd_file_project_loader(
+      SseDeserializer deserializer);
+
+  @protected
+  FluidError sse_decode_box_autoadd_fluid_error(SseDeserializer deserializer);
+
+  @protected
+  FluidMessageReceived sse_decode_box_autoadd_fluid_message_received(
       SseDeserializer deserializer);
 
   @protected
@@ -267,14 +306,24 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
       SseDeserializer deserializer);
 
   @protected
+  FluidError sse_decode_fluid_error(SseDeserializer deserializer);
+
+  @protected
+  FluidFrontendStreamEvent sse_decode_fluid_frontend_stream_event(
+      SseDeserializer deserializer);
+
+  @protected
+  FluidMessageReceived sse_decode_fluid_message_received(
+      SseDeserializer deserializer);
+
+  @protected
   int sse_decode_i_32(SseDeserializer deserializer);
 
   @protected
-  List<String> sse_decode_list_String(SseDeserializer deserializer);
+  PlatformInt64 sse_decode_i_64(SseDeserializer deserializer);
 
   @protected
-  List<ConnectionConfig> sse_decode_list_connection_config(
-      SseDeserializer deserializer);
+  List<String> sse_decode_list_String(SseDeserializer deserializer);
 
   @protected
   List<EnumValueDescriptor> sse_decode_list_enum_value_descriptor(
@@ -367,12 +416,19 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
       AnyhowException self, SseSerializer serializer);
 
   @protected
+  void sse_encode_Chrono_Local(DateTime self, SseSerializer serializer);
+
+  @protected
   void sse_encode_Map_String_String(
       Map<String, String> self, SseSerializer serializer);
 
   @protected
   void sse_encode_StreamSink_String_Sse(
       RustStreamSink<String> self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_StreamSink_fluid_frontend_stream_event_Sse(
+      RustStreamSink<FluidFrontendStreamEvent> self, SseSerializer serializer);
 
   @protected
   void sse_encode_String(String self, SseSerializer serializer);
@@ -394,6 +450,14 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   @protected
   void sse_encode_box_autoadd_file_project_loader(
       FileProjectLoader self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_box_autoadd_fluid_error(
+      FluidError self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_box_autoadd_fluid_message_received(
+      FluidMessageReceived self, SseSerializer serializer);
 
   @protected
   void sse_encode_box_autoadd_loaded_project(
@@ -446,14 +510,24 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
       FileProjectLoader self, SseSerializer serializer);
 
   @protected
+  void sse_encode_fluid_error(FluidError self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_fluid_frontend_stream_event(
+      FluidFrontendStreamEvent self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_fluid_message_received(
+      FluidMessageReceived self, SseSerializer serializer);
+
+  @protected
   void sse_encode_i_32(int self, SseSerializer serializer);
 
   @protected
-  void sse_encode_list_String(List<String> self, SseSerializer serializer);
+  void sse_encode_i_64(PlatformInt64 self, SseSerializer serializer);
 
   @protected
-  void sse_encode_list_connection_config(
-      List<ConnectionConfig> self, SseSerializer serializer);
+  void sse_encode_list_String(List<String> self, SseSerializer serializer);
 
   @protected
   void sse_encode_list_enum_value_descriptor(

@@ -6,5 +6,5 @@ use crate::api::models::connection::connection_config::ConnectionConfig;
 pub struct Environment {
     pub id: String,
     pub display_name: String,
-    pub connections: Vec<ConnectionConfig>,
+    pub connection: ConnectionConfig,
 }

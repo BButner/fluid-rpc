@@ -448,10 +448,10 @@ fn wire__crate__api__simple__test_invoke_with_pool_impl(
                 );
             let api_server_url = <String>::sse_decode(&mut deserializer);
             let api_target = <String>::sse_decode(&mut deserializer);
-            let api_sink =
-                <StreamSink<String, flutter_rust_bridge::for_generated::SseCodec>>::sse_decode(
-                    &mut deserializer,
-                );
+            let api_sink = <StreamSink<
+                crate::api::models::stream_event::FluidFrontendStreamEvent,
+                flutter_rust_bridge::for_generated::SseCodec,
+            >>::sse_decode(&mut deserializer);
             deserializer.end();
             move |context| async move {
                 transform_result_sse::<_, flutter_rust_bridge::for_generated::anyhow::Error>(
@@ -482,6 +482,21 @@ impl SseDecode for flutter_rust_bridge::for_generated::anyhow::Error {
     }
 }
 
+impl SseDecode for chrono::DateTime<chrono::Local> {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
+        let mut inner = <i64>::sse_decode(deserializer);
+        return chrono::DateTime::<chrono::Local>::from(
+            chrono::DateTime::<chrono::Utc>::from_naive_utc_and_offset(
+                chrono::DateTime::from_timestamp_micros(inner)
+                    .expect("invalid or out-of-range datetime")
+                    .naive_utc(),
+                chrono::Utc,
+            ),
+        );
+    }
+}
+
 impl SseDecode for std::collections::HashMap<String, String> {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
@@ -491,6 +506,19 @@ impl SseDecode for std::collections::HashMap<String, String> {
 }
 
 impl SseDecode for StreamSink<String, flutter_rust_bridge::for_generated::SseCodec> {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
+        let mut inner = <String>::sse_decode(deserializer);
+        return StreamSink::deserialize(inner);
+    }
+}
+
+impl SseDecode
+    for StreamSink<
+        crate::api::models::stream_event::FluidFrontendStreamEvent,
+        flutter_rust_bridge::for_generated::SseCodec,
+    >
+{
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
         let mut inner = <String>::sse_decode(deserializer);
@@ -568,13 +596,14 @@ impl SseDecode for crate::api::models::environment::environment::Environment {
     fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
         let mut var_id = <String>::sse_decode(deserializer);
         let mut var_displayName = <String>::sse_decode(deserializer);
-        let mut var_connections = <Vec<
-            crate::api::models::connection::connection_config::ConnectionConfig,
-        >>::sse_decode(deserializer);
+        let mut var_connection =
+            <crate::api::models::connection::connection_config::ConnectionConfig>::sse_decode(
+                deserializer,
+            );
         return crate::api::models::environment::environment::Environment {
             id: var_id,
             display_name: var_displayName,
-            connections: var_connections,
+            connection: var_connection,
         };
     }
 }
@@ -675,10 +704,84 @@ impl SseDecode for crate::api::models::project::project::FileProjectLoader {
     }
 }
 
+impl SseDecode for crate::api::models::stream_event::FluidError {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
+        let mut var_dateTime = <chrono::DateTime<chrono::Local>>::sse_decode(deserializer);
+        let mut var_error = <String>::sse_decode(deserializer);
+        return crate::api::models::stream_event::FluidError {
+            date_time: var_dateTime,
+            error: var_error,
+        };
+    }
+}
+
+impl SseDecode for crate::api::models::stream_event::FluidFrontendStreamEvent {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
+        let mut tag_ = <i32>::sse_decode(deserializer);
+        match tag_ {
+            0 => {
+                let mut var_field0 = <chrono::DateTime<chrono::Local>>::sse_decode(deserializer);
+                return crate::api::models::stream_event::FluidFrontendStreamEvent::InitiatingConnection(var_field0);
+            }
+            1 => {
+                let mut var_field0 = <chrono::DateTime<chrono::Local>>::sse_decode(deserializer);
+                return crate::api::models::stream_event::FluidFrontendStreamEvent::Connected(
+                    var_field0,
+                );
+            }
+            2 => {
+                let mut var_field0 =
+                    <crate::api::models::stream_event::FluidError>::sse_decode(deserializer);
+                return crate::api::models::stream_event::FluidFrontendStreamEvent::Error(
+                    var_field0,
+                );
+            }
+            3 => {
+                let mut var_field0 =
+                    <crate::api::models::stream_event::FluidMessageReceived>::sse_decode(
+                        deserializer,
+                    );
+                return crate::api::models::stream_event::FluidFrontendStreamEvent::StreamingMessageReceived(var_field0);
+            }
+            4 => {
+                let mut var_field0 =
+                    <crate::api::models::stream_event::FluidMessageReceived>::sse_decode(
+                        deserializer,
+                    );
+                return crate::api::models::stream_event::FluidFrontendStreamEvent::UnaryMessageReceived(var_field0);
+            }
+            _ => {
+                unimplemented!("");
+            }
+        }
+    }
+}
+
+impl SseDecode for crate::api::models::stream_event::FluidMessageReceived {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
+        let mut var_dateTime = <chrono::DateTime<chrono::Local>>::sse_decode(deserializer);
+        let mut var_contents = <String>::sse_decode(deserializer);
+        return crate::api::models::stream_event::FluidMessageReceived {
+            date_time: var_dateTime,
+            contents: var_contents,
+        };
+    }
+}
+
 impl SseDecode for i32 {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
         deserializer.cursor.read_i32::<NativeEndian>().unwrap()
+    }
+}
+
+impl SseDecode for i64 {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
+        deserializer.cursor.read_i64::<NativeEndian>().unwrap()
     }
 }
 
@@ -689,22 +792,6 @@ impl SseDecode for Vec<String> {
         let mut ans_ = vec![];
         for idx_ in 0..len_ {
             ans_.push(<String>::sse_decode(deserializer));
-        }
-        return ans_;
-    }
-}
-
-impl SseDecode for Vec<crate::api::models::connection::connection_config::ConnectionConfig> {
-    // Codec=Sse (Serialization based), see doc to use other codecs
-    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
-        let mut len_ = <i32>::sse_decode(deserializer);
-        let mut ans_ = vec![];
-        for idx_ in 0..len_ {
-            ans_.push(
-                <crate::api::models::connection::connection_config::ConnectionConfig>::sse_decode(
-                    deserializer,
-                ),
-            );
         }
         return ans_;
     }
@@ -982,12 +1069,14 @@ impl SseDecode for crate::api::models::descriptors::service_descriptor::ServiceD
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
         let mut var_name = <String>::sse_decode(deserializer);
+        let mut var_fullName = <String>::sse_decode(deserializer);
         let mut var_filePath = <String>::sse_decode(deserializer);
         let mut var_methods = <Vec<
             crate::api::models::descriptors::method_descriptor::MethodDescriptor,
         >>::sse_decode(deserializer);
         return crate::api::models::descriptors::service_descriptor::ServiceDescriptor {
             name: var_name,
+            full_name: var_fullName,
             file_path: var_filePath,
             methods: var_methods,
         };
@@ -1238,7 +1327,7 @@ impl flutter_rust_bridge::IntoDart for crate::api::models::environment::environm
         [
             self.id.into_into_dart().into_dart(),
             self.display_name.into_into_dart().into_dart(),
-            self.connections.into_into_dart().into_dart(),
+            self.connection.into_into_dart().into_dart(),
         ]
         .into_dart()
     }
@@ -1341,6 +1430,75 @@ impl flutter_rust_bridge::IntoIntoDart<crate::api::models::project::project::Fil
     for crate::api::models::project::project::FileProjectLoader
 {
     fn into_into_dart(self) -> crate::api::models::project::project::FileProjectLoader {
+        self
+    }
+}
+// Codec=Dco (DartCObject based), see doc to use other codecs
+impl flutter_rust_bridge::IntoDart for crate::api::models::stream_event::FluidError {
+    fn into_dart(self) -> flutter_rust_bridge::for_generated::DartAbi {
+        [
+            self.date_time.into_into_dart().into_dart(),
+            self.error.into_into_dart().into_dart(),
+        ]
+        .into_dart()
+    }
+}
+impl flutter_rust_bridge::for_generated::IntoDartExceptPrimitive
+    for crate::api::models::stream_event::FluidError
+{
+}
+impl flutter_rust_bridge::IntoIntoDart<crate::api::models::stream_event::FluidError>
+    for crate::api::models::stream_event::FluidError
+{
+    fn into_into_dart(self) -> crate::api::models::stream_event::FluidError {
+        self
+    }
+}
+// Codec=Dco (DartCObject based), see doc to use other codecs
+impl flutter_rust_bridge::IntoDart for crate::api::models::stream_event::FluidFrontendStreamEvent {
+    fn into_dart(self) -> flutter_rust_bridge::for_generated::DartAbi {
+        match self {crate::api::models::stream_event::FluidFrontendStreamEvent::InitiatingConnection(field0) => { [0.into_dart(),
+field0.into_into_dart().into_dart()].into_dart() }
+crate::api::models::stream_event::FluidFrontendStreamEvent::Connected(field0) => { [1.into_dart(),
+field0.into_into_dart().into_dart()].into_dart() }
+crate::api::models::stream_event::FluidFrontendStreamEvent::Error(field0) => { [2.into_dart(),
+field0.into_into_dart().into_dart()].into_dart() }
+crate::api::models::stream_event::FluidFrontendStreamEvent::StreamingMessageReceived(field0) => { [3.into_dart(),
+field0.into_into_dart().into_dart()].into_dart() }
+crate::api::models::stream_event::FluidFrontendStreamEvent::UnaryMessageReceived(field0) => { [4.into_dart(),
+field0.into_into_dart().into_dart()].into_dart() }
+ _ => { unimplemented!(""); }}
+    }
+}
+impl flutter_rust_bridge::for_generated::IntoDartExceptPrimitive
+    for crate::api::models::stream_event::FluidFrontendStreamEvent
+{
+}
+impl flutter_rust_bridge::IntoIntoDart<crate::api::models::stream_event::FluidFrontendStreamEvent>
+    for crate::api::models::stream_event::FluidFrontendStreamEvent
+{
+    fn into_into_dart(self) -> crate::api::models::stream_event::FluidFrontendStreamEvent {
+        self
+    }
+}
+// Codec=Dco (DartCObject based), see doc to use other codecs
+impl flutter_rust_bridge::IntoDart for crate::api::models::stream_event::FluidMessageReceived {
+    fn into_dart(self) -> flutter_rust_bridge::for_generated::DartAbi {
+        [
+            self.date_time.into_into_dart().into_dart(),
+            self.contents.into_into_dart().into_dart(),
+        ]
+        .into_dart()
+    }
+}
+impl flutter_rust_bridge::for_generated::IntoDartExceptPrimitive
+    for crate::api::models::stream_event::FluidMessageReceived
+{
+}
+impl flutter_rust_bridge::IntoIntoDart<crate::api::models::stream_event::FluidMessageReceived>
+    for crate::api::models::stream_event::FluidMessageReceived
+{
+    fn into_into_dart(self) -> crate::api::models::stream_event::FluidMessageReceived {
         self
     }
 }
@@ -1527,6 +1685,7 @@ impl flutter_rust_bridge::IntoDart
     fn into_dart(self) -> flutter_rust_bridge::for_generated::DartAbi {
         [
             self.name.into_into_dart().into_dart(),
+            self.full_name.into_into_dart().into_dart(),
             self.file_path.into_into_dart().into_dart(),
             self.methods.into_into_dart().into_dart(),
         ]
@@ -1637,6 +1796,13 @@ impl SseEncode for flutter_rust_bridge::for_generated::anyhow::Error {
     }
 }
 
+impl SseEncode for chrono::DateTime<chrono::Local> {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
+        <i64>::sse_encode(self.timestamp_micros(), serializer);
+    }
+}
+
 impl SseEncode for std::collections::HashMap<String, String> {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
@@ -1645,6 +1811,18 @@ impl SseEncode for std::collections::HashMap<String, String> {
 }
 
 impl SseEncode for StreamSink<String, flutter_rust_bridge::for_generated::SseCodec> {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
+        unimplemented!("")
+    }
+}
+
+impl SseEncode
+    for StreamSink<
+        crate::api::models::stream_event::FluidFrontendStreamEvent,
+        flutter_rust_bridge::for_generated::SseCodec,
+    >
+{
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
         unimplemented!("")
@@ -1707,8 +1885,8 @@ impl SseEncode for crate::api::models::environment::environment::Environment {
     fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
         <String>::sse_encode(self.id, serializer);
         <String>::sse_encode(self.display_name, serializer);
-        <Vec<crate::api::models::connection::connection_config::ConnectionConfig>>::sse_encode(
-            self.connections,
+        <crate::api::models::connection::connection_config::ConnectionConfig>::sse_encode(
+            self.connection,
             serializer,
         );
     }
@@ -1761,10 +1939,50 @@ impl SseEncode for crate::api::models::project::project::FileProjectLoader {
     }
 }
 
+impl SseEncode for crate::api::models::stream_event::FluidError {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
+        <chrono::DateTime<chrono::Local>>::sse_encode(self.date_time, serializer);
+        <String>::sse_encode(self.error, serializer);
+    }
+}
+
+impl SseEncode for crate::api::models::stream_event::FluidFrontendStreamEvent {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
+        match self {crate::api::models::stream_event::FluidFrontendStreamEvent::InitiatingConnection(field0) => { <i32>::sse_encode(0, serializer); <chrono::DateTime::<chrono::Local>>::sse_encode(field0, serializer);
+ }
+crate::api::models::stream_event::FluidFrontendStreamEvent::Connected(field0) => { <i32>::sse_encode(1, serializer); <chrono::DateTime::<chrono::Local>>::sse_encode(field0, serializer);
+ }
+crate::api::models::stream_event::FluidFrontendStreamEvent::Error(field0) => { <i32>::sse_encode(2, serializer); <crate::api::models::stream_event::FluidError>::sse_encode(field0, serializer);
+ }
+crate::api::models::stream_event::FluidFrontendStreamEvent::StreamingMessageReceived(field0) => { <i32>::sse_encode(3, serializer); <crate::api::models::stream_event::FluidMessageReceived>::sse_encode(field0, serializer);
+ }
+crate::api::models::stream_event::FluidFrontendStreamEvent::UnaryMessageReceived(field0) => { <i32>::sse_encode(4, serializer); <crate::api::models::stream_event::FluidMessageReceived>::sse_encode(field0, serializer);
+ }
+ _ => { unimplemented!(""); }}
+    }
+}
+
+impl SseEncode for crate::api::models::stream_event::FluidMessageReceived {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
+        <chrono::DateTime<chrono::Local>>::sse_encode(self.date_time, serializer);
+        <String>::sse_encode(self.contents, serializer);
+    }
+}
+
 impl SseEncode for i32 {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
         serializer.cursor.write_i32::<NativeEndian>(self).unwrap();
+    }
+}
+
+impl SseEncode for i64 {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
+        serializer.cursor.write_i64::<NativeEndian>(self).unwrap();
     }
 }
 
@@ -1774,18 +1992,6 @@ impl SseEncode for Vec<String> {
         <i32>::sse_encode(self.len() as _, serializer);
         for item in self {
             <String>::sse_encode(item, serializer);
-        }
-    }
-}
-
-impl SseEncode for Vec<crate::api::models::connection::connection_config::ConnectionConfig> {
-    // Codec=Sse (Serialization based), see doc to use other codecs
-    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
-        <i32>::sse_encode(self.len() as _, serializer);
-        for item in self {
-            <crate::api::models::connection::connection_config::ConnectionConfig>::sse_encode(
-                item, serializer,
-            );
         }
     }
 }
@@ -2006,6 +2212,7 @@ impl SseEncode for crate::api::models::descriptors::service_descriptor::ServiceD
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
         <String>::sse_encode(self.name, serializer);
+        <String>::sse_encode(self.full_name, serializer);
         <String>::sse_encode(self.file_path, serializer);
         <Vec<crate::api::models::descriptors::method_descriptor::MethodDescriptor>>::sse_encode(
             self.methods,

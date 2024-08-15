@@ -12,6 +12,7 @@ import 'models/descriptors/method_descriptor.dart';
 import 'models/descriptors/oneof_descriptor.dart';
 import 'models/descriptors/server_descriptor.dart';
 import 'models/descriptors/service_descriptor.dart';
+import 'models/stream_event.dart';
 import 'package:flutter_rust_bridge/flutter_rust_bridge_for_generated.dart';
 
 String greet({required String name}) =>
@@ -22,7 +23,7 @@ Stream<String> testInvoke(
     RustLib.instance.api
         .crateApiSimpleTestInvoke(serverUrl: serverUrl, target: target);
 
-Stream<String> testInvokeWithPool(
+Stream<FluidFrontendStreamEvent> testInvokeWithPool(
         {required ServerDescriptor desc,
         required String serverUrl,
         required String target}) =>

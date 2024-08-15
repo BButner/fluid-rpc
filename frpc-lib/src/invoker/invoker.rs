@@ -1,6 +1,7 @@
 use std::str::FromStr;
 
 use anyhow::{bail, Result};
+use chrono::Local;
 use futures::channel::mpsc::UnboundedSender;
 use prost_reflect::{DescriptorPool, DynamicMessage, ReflectMessage};
 use regex::Regex;
@@ -106,6 +107,8 @@ pub async fn invoke_with_pool(
         )),
     };
 
+    tx.unbounded_send(FluidStreamEvent::InitiatingConnection(Local::now()))?;
+
     let endpoint = match Channel::from_shared(server_url.clone()) {
         Ok(c) => c,
         Err(e) => bail!(send_invoker_error(
@@ -125,6 +128,8 @@ pub async fn invoke_with_pool(
     let mut client = Grpc::new(channel);
 
     client.ready().await?;
+
+    tx.unbounded_send(FluidStreamEvent::Connected(Local::now()))?;
 
     let data = &data.unwrap_or(String::from("{}"));
 

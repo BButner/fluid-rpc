@@ -15,16 +15,16 @@ import 'package:flutter_rust_bridge/flutter_rust_bridge_for_generated.dart';
 class Environment {
   final String id;
   final String displayName;
-  final List<ConnectionConfig> connections;
+  final ConnectionConfig connection;
 
   const Environment({
     required this.id,
     required this.displayName,
-    required this.connections,
+    required this.connection,
   });
 
   @override
-  int get hashCode => id.hashCode ^ displayName.hashCode ^ connections.hashCode;
+  int get hashCode => id.hashCode ^ displayName.hashCode ^ connection.hashCode;
 
   @override
   bool operator ==(Object other) =>
@@ -33,5 +33,5 @@ class Environment {
           runtimeType == other.runtimeType &&
           id == other.id &&
           displayName == other.displayName &&
-          connections == other.connections;
+          connection == other.connection;
 }
