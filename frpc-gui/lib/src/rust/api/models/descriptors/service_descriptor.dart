@@ -16,17 +16,20 @@ import 'package:flutter_rust_bridge/flutter_rust_bridge_for_generated.dart';
 
 class ServiceDescriptor {
   final String name;
+  final String fullName;
   final String filePath;
   final List<MethodDescriptor> methods;
 
   const ServiceDescriptor({
     required this.name,
+    required this.fullName,
     required this.filePath,
     required this.methods,
   });
 
   @override
-  int get hashCode => name.hashCode ^ filePath.hashCode ^ methods.hashCode;
+  int get hashCode =>
+      name.hashCode ^ fullName.hashCode ^ filePath.hashCode ^ methods.hashCode;
 
   @override
   bool operator ==(Object other) =>
@@ -34,6 +37,7 @@ class ServiceDescriptor {
       other is ServiceDescriptor &&
           runtimeType == other.runtimeType &&
           name == other.name &&
+          fullName == other.fullName &&
           filePath == other.filePath &&
           methods == other.methods;
 }

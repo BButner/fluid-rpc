@@ -6,7 +6,7 @@ use futures::StreamExt;
 
 use crate::frb_generated::StreamSink;
 
-use super::models::descriptors::server_descriptor::ServerDescriptor;
+use super::models::{descriptors::server_descriptor::ServerDescriptor, stream_event::FluidFrontendStreamEvent};
 
 #[flutter_rust_bridge::frb(sync)] // Synchronous mode for simplicity of the demo
 pub fn greet(name: String) -> String {
@@ -34,7 +34,7 @@ pub async fn test_invoke_with_pool(
     desc: ServerDescriptor,
     server_url: String,
     target: String,
-    sink: StreamSink<String>,
+    sink: StreamSink<FluidFrontendStreamEvent>,
 ) -> Result<()> {
     let mut stream = invoke_method_raw(desc.descriptor_pool_bytes, server_url, target, None)
         .await
@@ -42,7 +42,8 @@ pub async fn test_invoke_with_pool(
 
     while let Some(item) = stream.next().await {
         // dbg!(item);
-        sink.add(String::from(format!("{:?}", item)));
+        let res = sink.add(FluidFrontendStreamEvent::from(item));
+        dbg!(res);
     }
 
     Ok(())
