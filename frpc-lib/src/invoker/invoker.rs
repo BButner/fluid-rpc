@@ -7,6 +7,7 @@ use prost_reflect::{DescriptorPool, DynamicMessage, ReflectMessage};
 use regex::Regex;
 use serde_json::Deserializer;
 use tokio_stream::StreamExt;
+use tokio_util::sync::CancellationToken;
 use tonic::codegen::http::uri::PathAndQuery;
 use tonic::{client::Grpc, transport::Channel, Request};
 use tonic::{Response, Status};
@@ -28,6 +29,7 @@ pub async fn invoke(
     data: Option<String>,
     file_paths: Option<Vec<String>>,
     include_paths: Option<Vec<String>>,
+    token: CancellationToken,
 ) -> Result<()> {
     if (file_paths.is_some() && include_paths.is_none())
         || (file_paths.is_none() && include_paths.is_some())
@@ -52,7 +54,7 @@ pub async fn invoke(
         )),
     };
 
-    invoke_with_pool(tx, pool, server_url, target_method, data).await
+    invoke_with_pool(tx, pool, server_url, target_method, data, token).await
 }
 
 pub async fn invoke_with_pool(
@@ -61,6 +63,7 @@ pub async fn invoke_with_pool(
     server_url: String,
     target_method: String,
     data: Option<String>,
+    token: CancellationToken,
 ) -> Result<()> {
     let re = Regex::new(r"^(\/)?(?<servicePath>\w+(\.\w+)+)\/(?<methodName>\w+)$").unwrap();
     let caps = re.captures(&target_method);
@@ -162,29 +165,27 @@ pub async fn invoke_with_pool(
                 .await;
 
             let mut streaming = stream.unwrap().into_inner();
-
-            while let Some(result) = streaming.next().await {
-                match result {
-                    Ok(message) => {
-                        // if has_output {
-                        //     let line_count = pretty.clone().split('\n').count();
-
-                        //     for _ in 0..line_count {
-                        //         print!("\r\x1B[K\r\x1B[A");
-                        //     }
-                        //     print!("\r\x1B[K");
-                        // }
-                        // has_output = true;
-                        // println!("{}", pretty);
-                        let _ = tx.unbounded_send(FluidStreamEvent::StreamingMessageReceived(
-                            FluidMessageReceived::new(message),
-                        ));
-                    }
-                    Err(e) => bail!(send_invoker_error(
-                        &mut tx,
-                        InvokerError::StreamingError(e.to_string())
-                    )),
-                };
+            
+            loop {
+                tokio::select! {
+                    result = streaming.next() => {
+                         match result {
+                            Some(Ok(message)) => {
+                                let _ = tx.unbounded_send(FluidStreamEvent::StreamingMessageReceived(
+                                    FluidMessageReceived::new(message),
+                                ));
+                            }
+                            Some(Err(e)) => bail!(send_invoker_error(
+                                &mut tx,
+                                InvokerError::StreamingError(e.to_string())
+                            )),
+                            None => break,
+                        };
+                    },
+                    _ = token.cancelled() => {
+                        break;
+                    },
+                }
             }
         }
         false => {

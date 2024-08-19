@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:frpc_gui/core/theme/fluid_theme.dart';
 import 'package:frpc_gui/features/router/router.dart';
 import 'package:frpc_gui/src/rust/frb_generated.dart';
 
@@ -25,6 +26,7 @@ class FrpcApp extends ConsumerWidget {
       data: (router) => MaterialApp.router(
         routerConfig: router,
         title: 'Fluid RPC',
+        theme: FluidTheme.fluidTheme,
       ),
       error: (error, stackTrace) => Directionality(
         textDirection: TextDirection.ltr,

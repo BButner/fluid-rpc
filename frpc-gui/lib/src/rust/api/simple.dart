@@ -19,17 +19,35 @@ String greet({required String name}) =>
     RustLib.instance.api.crateApiSimpleGreet(name: name);
 
 Stream<String> testInvoke(
-        {required String serverUrl, required String target}) =>
-    RustLib.instance.api
-        .crateApiSimpleTestInvoke(serverUrl: serverUrl, target: target);
+        {required String serverUrl,
+        required String target,
+        required CancelableExecution cancelExec}) =>
+    RustLib.instance.api.crateApiSimpleTestInvoke(
+        serverUrl: serverUrl, target: target, cancelExec: cancelExec);
 
 Stream<FluidFrontendStreamEvent> testInvokeWithPool(
         {required ServerDescriptor desc,
         required String serverUrl,
-        required String target}) =>
+        required String target,
+        required CancelableExecution cancelExec}) =>
     RustLib.instance.api.crateApiSimpleTestInvokeWithPool(
-        desc: desc, serverUrl: serverUrl, target: target);
+        desc: desc,
+        serverUrl: serverUrl,
+        target: target,
+        cancelExec: cancelExec);
 
 Future<ServerDescriptor> testGetServerDescriptor({required String serverUrl}) =>
     RustLib.instance.api
         .crateApiSimpleTestGetServerDescriptor(serverUrl: serverUrl);
+
+// Rust type: RustOpaqueMoi<flutter_rust_bridge::for_generated::RustAutoOpaqueInner<CancelableExecution>>
+abstract class CancelableExecution implements RustOpaqueInterface {
+  void cancel();
+
+  static Future<CancelableExecution> default_() =>
+      RustLib.instance.api.crateApiSimpleCancelableExecutionDefault();
+
+  // HINT: Make it `#[frb(sync)]` to let it become the default constructor of Dart class.
+  static Future<CancelableExecution> newInstance() =>
+      RustLib.instance.api.crateApiSimpleCancelableExecutionNew();
+}
