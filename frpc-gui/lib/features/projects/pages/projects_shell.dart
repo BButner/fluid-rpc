@@ -142,13 +142,46 @@ class ProjectNavigationShell extends ConsumerWidget {
                                                   (m) => Padding(
                                                     padding:
                                                         const EdgeInsets.only(
-                                                      left: 32.0,
+                                                      left: 16.0,
                                                     ),
-                                                    child: Text(
-                                                      m.name,
-                                                      style: Theme.of(context)
-                                                          .textTheme
-                                                          .bodyMedium,
+                                                    child: Row(
+                                                      children: [
+                                                        DecoratedBox(
+                                                          decoration:
+                                                              BoxDecoration(
+                                                            borderRadius:
+                                                                BorderRadius
+                                                                    .circular(
+                                                              4.0,
+                                                            ),
+                                                            border: Border.all(
+                                                              color: FluidColors
+                                                                  .emerald
+                                                                  .shade600,
+                                                              width: 2.0,
+                                                            ),
+                                                          ),
+                                                          child: const Padding(
+                                                            padding:
+                                                                EdgeInsets.all(
+                                                              8.0,
+                                                            ),
+                                                            child: Text('U'),
+                                                          ),
+                                                        ),
+                                                        const SizedBox(
+                                                          width: 8.0,
+                                                        ),
+                                                        Expanded(
+                                                          child: Text(
+                                                            m.name,
+                                                            style: Theme.of(
+                                                                    context)
+                                                                .textTheme
+                                                                .bodyMedium,
+                                                          ),
+                                                        ),
+                                                      ],
                                                     ),
                                                   ),
                                                 )

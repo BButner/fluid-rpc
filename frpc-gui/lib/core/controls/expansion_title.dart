@@ -34,10 +34,18 @@ class _ExpansionTitleState extends State<ExpansionTitle> {
           }),
           child: Row(
             children: [
-              Expanded(
-                child: Text(
-                  widget.title,
-                  style: Theme.of(context).textTheme.labelLarge,
+              Text(
+                widget.title,
+                style: Theme.of(context).textTheme.labelLarge!.copyWith(
+                      color: FluidColors.zinc.shade400,
+                    ),
+              ),
+              AnimatedRotation(
+                turns: _isExpanded ? 1.00 / 4.0 : 0.0,
+                duration: const Duration(milliseconds: 100),
+                child: Icon(
+                  Icons.arrow_right_rounded,
+                  color: FluidColors.zinc.shade400,
                 ),
               ),
             ],
@@ -51,7 +59,10 @@ class _ExpansionTitleState extends State<ExpansionTitle> {
             ),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
-              children: widget.children,
+              children: [
+                ...widget.children,
+                const SizedBox(height: 12.0),
+              ],
             ),
           ),
         ),
