@@ -74,7 +74,7 @@ class RustLib extends BaseEntrypoint<RustLibApi, RustLibApiImpl, RustLibWire> {
   String get codegenVersion => '2.1.0';
 
   @override
-  int get rustContentHash => 183989411;
+  int get rustContentHash => -2105508790;
 
   static const kDefaultExternalLibraryLoaderConfig =
       ExternalLibraryLoaderConfig(
@@ -102,6 +102,13 @@ abstract class RustLibApi extends BaseApi {
   Future<void> crateApiModelsProjectProjectProjectSave(
       {required Project that, required String projectDirectoryPath});
 
+  void crateApiSimpleCancelableExecutionCancel(
+      {required CancelableExecution that});
+
+  Future<CancelableExecution> crateApiSimpleCancelableExecutionDefault();
+
+  Future<CancelableExecution> crateApiSimpleCancelableExecutionNew();
+
   String crateApiSimpleGreet({required String name});
 
   Future<void> crateApiSimpleInitApp();
@@ -110,12 +117,24 @@ abstract class RustLibApi extends BaseApi {
       {required String serverUrl});
 
   Stream<String> crateApiSimpleTestInvoke(
-      {required String serverUrl, required String target});
+      {required String serverUrl,
+      required String target,
+      required CancelableExecution cancelExec});
 
   Stream<FluidFrontendStreamEvent> crateApiSimpleTestInvokeWithPool(
       {required ServerDescriptor desc,
       required String serverUrl,
-      required String target});
+      required String target,
+      required CancelableExecution cancelExec});
+
+  RustArcIncrementStrongCountFnType
+      get rust_arc_increment_strong_count_CancelableExecution;
+
+  RustArcDecrementStrongCountFnType
+      get rust_arc_decrement_strong_count_CancelableExecution;
+
+  CrossPlatformFinalizerArg
+      get rust_arc_decrement_strong_count_CancelableExecutionPtr;
 }
 
 class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
@@ -283,12 +302,88 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
       );
 
   @override
+  void crateApiSimpleCancelableExecutionCancel(
+      {required CancelableExecution that}) {
+    return handler.executeSync(SyncTask(
+      callFfi: () {
+        final serializer = SseSerializer(generalizedFrbRustBinding);
+        sse_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerCancelableExecution(
+            that, serializer);
+        return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 7)!;
+      },
+      codec: SseCodec(
+        decodeSuccessData: sse_decode_unit,
+        decodeErrorData: null,
+      ),
+      constMeta: kCrateApiSimpleCancelableExecutionCancelConstMeta,
+      argValues: [that],
+      apiImpl: this,
+    ));
+  }
+
+  TaskConstMeta get kCrateApiSimpleCancelableExecutionCancelConstMeta =>
+      const TaskConstMeta(
+        debugName: "CancelableExecution_cancel",
+        argNames: ["that"],
+      );
+
+  @override
+  Future<CancelableExecution> crateApiSimpleCancelableExecutionDefault() {
+    return handler.executeNormal(NormalTask(
+      callFfi: (port_) {
+        final serializer = SseSerializer(generalizedFrbRustBinding);
+        pdeCallFfi(generalizedFrbRustBinding, serializer,
+            funcId: 8, port: port_);
+      },
+      codec: SseCodec(
+        decodeSuccessData:
+            sse_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerCancelableExecution,
+        decodeErrorData: null,
+      ),
+      constMeta: kCrateApiSimpleCancelableExecutionDefaultConstMeta,
+      argValues: [],
+      apiImpl: this,
+    ));
+  }
+
+  TaskConstMeta get kCrateApiSimpleCancelableExecutionDefaultConstMeta =>
+      const TaskConstMeta(
+        debugName: "CancelableExecution_default",
+        argNames: [],
+      );
+
+  @override
+  Future<CancelableExecution> crateApiSimpleCancelableExecutionNew() {
+    return handler.executeNormal(NormalTask(
+      callFfi: (port_) {
+        final serializer = SseSerializer(generalizedFrbRustBinding);
+        pdeCallFfi(generalizedFrbRustBinding, serializer,
+            funcId: 9, port: port_);
+      },
+      codec: SseCodec(
+        decodeSuccessData:
+            sse_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerCancelableExecution,
+        decodeErrorData: null,
+      ),
+      constMeta: kCrateApiSimpleCancelableExecutionNewConstMeta,
+      argValues: [],
+      apiImpl: this,
+    ));
+  }
+
+  TaskConstMeta get kCrateApiSimpleCancelableExecutionNewConstMeta =>
+      const TaskConstMeta(
+        debugName: "CancelableExecution_new",
+        argNames: [],
+      );
+
+  @override
   String crateApiSimpleGreet({required String name}) {
     return handler.executeSync(SyncTask(
       callFfi: () {
         final serializer = SseSerializer(generalizedFrbRustBinding);
         sse_encode_String(name, serializer);
-        return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 7)!;
+        return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 10)!;
       },
       codec: SseCodec(
         decodeSuccessData: sse_decode_String,
@@ -311,7 +406,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
       callFfi: (port_) {
         final serializer = SseSerializer(generalizedFrbRustBinding);
         pdeCallFfi(generalizedFrbRustBinding, serializer,
-            funcId: 8, port: port_);
+            funcId: 11, port: port_);
       },
       codec: SseCodec(
         decodeSuccessData: sse_decode_unit,
@@ -336,7 +431,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
         final serializer = SseSerializer(generalizedFrbRustBinding);
         sse_encode_String(serverUrl, serializer);
         pdeCallFfi(generalizedFrbRustBinding, serializer,
-            funcId: 9, port: port_);
+            funcId: 12, port: port_);
       },
       codec: SseCodec(
         decodeSuccessData: sse_decode_server_descriptor,
@@ -356,7 +451,9 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
 
   @override
   Stream<String> crateApiSimpleTestInvoke(
-      {required String serverUrl, required String target}) {
+      {required String serverUrl,
+      required String target,
+      required CancelableExecution cancelExec}) {
     final sink = RustStreamSink<String>();
     unawaited(handler.executeNormal(NormalTask(
       callFfi: (port_) {
@@ -364,15 +461,17 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
         sse_encode_String(serverUrl, serializer);
         sse_encode_String(target, serializer);
         sse_encode_StreamSink_String_Sse(sink, serializer);
+        sse_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerCancelableExecution(
+            cancelExec, serializer);
         pdeCallFfi(generalizedFrbRustBinding, serializer,
-            funcId: 10, port: port_);
+            funcId: 13, port: port_);
       },
       codec: SseCodec(
         decodeSuccessData: sse_decode_unit,
         decodeErrorData: sse_decode_AnyhowException,
       ),
       constMeta: kCrateApiSimpleTestInvokeConstMeta,
-      argValues: [serverUrl, target, sink],
+      argValues: [serverUrl, target, sink, cancelExec],
       apiImpl: this,
     )));
     return sink.stream;
@@ -380,14 +479,15 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
 
   TaskConstMeta get kCrateApiSimpleTestInvokeConstMeta => const TaskConstMeta(
         debugName: "test_invoke",
-        argNames: ["serverUrl", "target", "sink"],
+        argNames: ["serverUrl", "target", "sink", "cancelExec"],
       );
 
   @override
   Stream<FluidFrontendStreamEvent> crateApiSimpleTestInvokeWithPool(
       {required ServerDescriptor desc,
       required String serverUrl,
-      required String target}) {
+      required String target,
+      required CancelableExecution cancelExec}) {
     final sink = RustStreamSink<FluidFrontendStreamEvent>();
     unawaited(handler.executeNormal(NormalTask(
       callFfi: (port_) {
@@ -396,15 +496,17 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
         sse_encode_String(serverUrl, serializer);
         sse_encode_String(target, serializer);
         sse_encode_StreamSink_fluid_frontend_stream_event_Sse(sink, serializer);
+        sse_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerCancelableExecution(
+            cancelExec, serializer);
         pdeCallFfi(generalizedFrbRustBinding, serializer,
-            funcId: 11, port: port_);
+            funcId: 14, port: port_);
       },
       codec: SseCodec(
         decodeSuccessData: sse_decode_unit,
         decodeErrorData: sse_decode_AnyhowException,
       ),
       constMeta: kCrateApiSimpleTestInvokeWithPoolConstMeta,
-      argValues: [desc, serverUrl, target, sink],
+      argValues: [desc, serverUrl, target, sink, cancelExec],
       apiImpl: this,
     )));
     return sink.stream;
@@ -413,13 +515,37 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   TaskConstMeta get kCrateApiSimpleTestInvokeWithPoolConstMeta =>
       const TaskConstMeta(
         debugName: "test_invoke_with_pool",
-        argNames: ["desc", "serverUrl", "target", "sink"],
+        argNames: ["desc", "serverUrl", "target", "sink", "cancelExec"],
       );
+
+  RustArcIncrementStrongCountFnType
+      get rust_arc_increment_strong_count_CancelableExecution => wire
+          .rust_arc_increment_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerCancelableExecution;
+
+  RustArcDecrementStrongCountFnType
+      get rust_arc_decrement_strong_count_CancelableExecution => wire
+          .rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerCancelableExecution;
 
   @protected
   AnyhowException dco_decode_AnyhowException(dynamic raw) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
     return AnyhowException(raw as String);
+  }
+
+  @protected
+  CancelableExecution
+      dco_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerCancelableExecution(
+          dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return CancelableExecutionImpl.frbInternalDcoDecode(raw as List<dynamic>);
+  }
+
+  @protected
+  CancelableExecution
+      dco_decode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerCancelableExecution(
+          dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return CancelableExecutionImpl.frbInternalDcoDecode(raw as List<dynamic>);
   }
 
   @protected
@@ -433,6 +559,14 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
     // Codec=Dco (DartCObject based), see doc to use other codecs
     return Map.fromEntries(dco_decode_list_record_string_string(raw)
         .map((e) => MapEntry(e.$1, e.$2)));
+  }
+
+  @protected
+  CancelableExecution
+      dco_decode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerCancelableExecution(
+          dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return CancelableExecutionImpl.frbInternalDcoDecode(raw as List<dynamic>);
   }
 
   @protected
@@ -979,10 +1113,34 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  BigInt dco_decode_usize(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return dcoDecodeU64(raw);
+  }
+
+  @protected
   AnyhowException sse_decode_AnyhowException(SseDeserializer deserializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
     var inner = sse_decode_String(deserializer);
     return AnyhowException(inner);
+  }
+
+  @protected
+  CancelableExecution
+      sse_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerCancelableExecution(
+          SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    return CancelableExecutionImpl.frbInternalSseDecode(
+        sse_decode_usize(deserializer), sse_decode_i_32(deserializer));
+  }
+
+  @protected
+  CancelableExecution
+      sse_decode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerCancelableExecution(
+          SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    return CancelableExecutionImpl.frbInternalSseDecode(
+        sse_decode_usize(deserializer), sse_decode_i_32(deserializer));
   }
 
   @protected
@@ -998,6 +1156,15 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
     // Codec=Sse (Serialization based), see doc to use other codecs
     var inner = sse_decode_list_record_string_string(deserializer);
     return Map.fromEntries(inner.map((e) => MapEntry(e.$1, e.$2)));
+  }
+
+  @protected
+  CancelableExecution
+      sse_decode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerCancelableExecution(
+          SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    return CancelableExecutionImpl.frbInternalSseDecode(
+        sse_decode_usize(deserializer), sse_decode_i_32(deserializer));
   }
 
   @protected
@@ -1573,10 +1740,36 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  BigInt sse_decode_usize(SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    return deserializer.buffer.getBigUint64();
+  }
+
+  @protected
   void sse_encode_AnyhowException(
       AnyhowException self, SseSerializer serializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
     sse_encode_String(self.message, serializer);
+  }
+
+  @protected
+  void
+      sse_encode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerCancelableExecution(
+          CancelableExecution self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_usize(
+        (self as CancelableExecutionImpl).frbInternalSseEncode(move: true),
+        serializer);
+  }
+
+  @protected
+  void
+      sse_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerCancelableExecution(
+          CancelableExecution self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_usize(
+        (self as CancelableExecutionImpl).frbInternalSseEncode(move: false),
+        serializer);
   }
 
   @protected
@@ -1592,6 +1785,16 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
     // Codec=Sse (Serialization based), see doc to use other codecs
     sse_encode_list_record_string_string(
         self.entries.map((e) => (e.key, e.value)).toList(), serializer);
+  }
+
+  @protected
+  void
+      sse_encode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerCancelableExecution(
+          CancelableExecution self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_usize(
+        (self as CancelableExecutionImpl).frbInternalSseEncode(move: null),
+        serializer);
   }
 
   @protected
@@ -2109,4 +2312,36 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   void sse_encode_unit(void self, SseSerializer serializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
   }
+
+  @protected
+  void sse_encode_usize(BigInt self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    serializer.buffer.putBigUint64(self);
+  }
+}
+
+@sealed
+class CancelableExecutionImpl extends RustOpaque
+    implements CancelableExecution {
+  // Not to be used by end users
+  CancelableExecutionImpl.frbInternalDcoDecode(List<dynamic> wire)
+      : super.frbInternalDcoDecode(wire, _kStaticData);
+
+  // Not to be used by end users
+  CancelableExecutionImpl.frbInternalSseDecode(
+      BigInt ptr, int externalSizeOnNative)
+      : super.frbInternalSseDecode(ptr, externalSizeOnNative, _kStaticData);
+
+  static final _kStaticData = RustArcStaticData(
+    rustArcIncrementStrongCount: RustLib
+        .instance.api.rust_arc_increment_strong_count_CancelableExecution,
+    rustArcDecrementStrongCount: RustLib
+        .instance.api.rust_arc_decrement_strong_count_CancelableExecution,
+    rustArcDecrementStrongCountPtr: RustLib
+        .instance.api.rust_arc_decrement_strong_count_CancelableExecutionPtr,
+  );
+
+  void cancel() => RustLib.instance.api.crateApiSimpleCancelableExecutionCancel(
+        that: this,
+      );
 }

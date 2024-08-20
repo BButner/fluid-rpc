@@ -17,6 +17,26 @@ class ProjectPage extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final projectState = ref.watch(projectStateProvider.call(projectId));
 
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        ElevatedButton(
+          onPressed: () {},
+          child: const Text('Testing'),
+        ),
+        const SizedBox(height: 8.0),
+        FilledButton(
+          onPressed: () {},
+          child: const Text('Testing'),
+        ),
+        const SizedBox(height: 8.0),
+        IconButton(
+          onPressed: () {},
+          icon: const Icon(Icons.add_rounded),
+        ),
+      ],
+    );
+
     return LayoutBuilder(
       builder: (context, constraints) => Column(
         children: [

@@ -3,6 +3,7 @@ use futures::channel::mpsc::{self, UnboundedReceiver};
 use invoker::invoker::{invoke, invoke_with_pool};
 use prost_reflect::DescriptorPool;
 use stream::fluid_stream_event::FluidStreamEvent;
+use tokio_util::sync::CancellationToken;
 
 pub(crate) mod invoker;
 pub(crate) mod loader;
@@ -34,6 +35,7 @@ pub async fn invoke_method(
     data: Option<String>,
     file_paths: Option<Vec<String>>,
     include_paths: Option<Vec<String>>,
+    cancellation_token: CancellationToken,
 ) -> Result<UnboundedReceiver<FluidStreamEvent>> {
     let (tx, rx) = mpsc::unbounded::<FluidStreamEvent>();
 
@@ -44,6 +46,7 @@ pub async fn invoke_method(
         data,
         file_paths,
         include_paths,
+        cancellation_token,
     ));
 
     Ok(rx)
@@ -54,12 +57,28 @@ pub async fn invoke_method_raw(
     server_url: String,
     target_method: String,
     data: Option<String>,
+    cancellation_token: CancellationToken,
 ) -> Result<UnboundedReceiver<FluidStreamEvent>> {
     let pool = DescriptorPool::decode(pool_bytes.as_slice())?;
 
     let (tx, rx) = mpsc::unbounded::<FluidStreamEvent>();
 
-    tokio::spawn(invoke_with_pool(tx, pool, server_url, target_method, data));
+    let tx_cancel = tx.clone();
+
+    tokio::spawn(invoke_with_pool(
+        tx,
+        pool,
+        server_url,
+        target_method,
+        data,
+        cancellation_token,
+    ));
+
+    // tokio::spawn(async move {
+    //     cancellation_token.cancelled().await;
+
+    //     tx_cancel.close_channel();
+    // });
 
     Ok(rx)
 }

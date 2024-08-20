@@ -26,7 +26,9 @@ class RpcTabViewer extends ConsumerWidget {
                   children: [
                     TabBar(
                       isScrollable: true,
-                      labelPadding: EdgeInsets.zero,
+                      labelPadding:
+                          const EdgeInsets.symmetric(horizontal: 12.0),
+                      tabAlignment: TabAlignment.start,
                       tabs: projectState.openedMethods
                           .map((m) => Tab(
                                 text: m.method.name,

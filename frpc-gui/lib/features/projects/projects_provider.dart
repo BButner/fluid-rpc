@@ -1,3 +1,4 @@
+import 'package:collection/collection.dart';
 import 'package:frpc_gui/features/app_config/app_config_provider.dart';
 import 'package:frpc_gui/src/rust/api/models/project/project.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
@@ -13,13 +14,14 @@ class Projects extends _$Projects {
     final List<LoadedProject> loadedProjects = [];
 
     for (final kv in appConfig.cachedProjectPaths.entries) {
-      print(kv.value);
       final project = await Project.loadProject(configFilePath: kv.value);
 
       if (project != null) {
         loadedProjects.add(project);
       }
     }
+
+    loadedProjects.sortBy((p) => p.project.displayName);
 
     return loadedProjects;
   }
