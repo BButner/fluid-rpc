@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:frpc_gui/core/controls/expansion_title.dart';
 import 'package:frpc_gui/core/theme/fluid_colors.dart';
 import 'package:frpc_gui/features/projects/project_state_provider.dart';
 import 'package:frpc_gui/features/projects/projects_provider.dart';
-import 'package:frpc_gui/src/rust/api/models/descriptors/server_descriptor.dart';
-import 'package:frpc_gui/src/rust/api/models/descriptors/service_descriptor.dart';
 import 'package:frpc_gui/src/rust/api/models/project/project.dart';
 import 'package:go_router/go_router.dart';
 
@@ -60,7 +59,7 @@ class ProjectNavigationShell extends ConsumerWidget {
                                           DecoratedBox(
                                             decoration: BoxDecoration(
                                               color:
-                                                  FluidColors.violet.shade600,
+                                                  FluidColors.violet.shade700,
                                               borderRadius:
                                                   BorderRadius.circular(6.0),
                                             ),
@@ -72,14 +71,23 @@ class ProjectNavigationShell extends ConsumerWidget {
                                                   displayName: currentProject
                                                       .project.displayName,
                                                 ),
+                                                style: Theme.of(context)
+                                                    .textTheme
+                                                    .bodyMedium!
+                                                    .copyWith(
+                                                      fontWeight:
+                                                          FontWeight.w600,
+                                                    ),
                                               ),
                                             ),
                                           ),
                                           const SizedBox(width: 8.0),
-                                          Text(currentProject
-                                              .project.displayName),
+                                          Text(
+                                            currentProject.project.displayName,
+                                          ),
                                           const Icon(
-                                              Icons.arrow_drop_down_rounded),
+                                            Icons.arrow_drop_down_rounded,
+                                          ),
                                         ],
                                       ),
                                       onSelected: (project) {
@@ -105,15 +113,20 @@ class ProjectNavigationShell extends ConsumerWidget {
                                     ),
                                   ],
                                 ),
-                                const SizedBox(height: 32.0),
-                                Text(
-                                  'Services',
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .labelMedium!
-                                      .copyWith(
-                                        color: FluidColors.zinc.shade400,
-                                      ),
+                                const SizedBox(height: 16.0),
+                                Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                    horizontal: 8.0,
+                                  ),
+                                  child: Text(
+                                    'Services',
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .labelMedium!
+                                        .copyWith(
+                                          color: FluidColors.zinc.shade400,
+                                        ),
+                                  ),
                                 ),
                                 const SizedBox(height: 4.0),
                                 Expanded(
@@ -122,30 +135,24 @@ class ProjectNavigationShell extends ConsumerWidget {
                                       if (projectState.serverDescriptor != null)
                                         for (final s in projectState
                                             .serverDescriptor!.services)
-                                          Column(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            children: [
-                                              Text(
-                                                s.name,
-                                                style: Theme.of(context)
-                                                    .textTheme
-                                                    .labelLarge,
-                                              ),
-                                              for (final m in s.methods)
-                                                Padding(
-                                                  padding:
-                                                      const EdgeInsets.only(
-                                                          left: 24.0,),
-                                                  child: Text(
-                                                    m.name,
-                                                    style: Theme.of(context)
-                                                        .textTheme
-                                                        .bodyMedium,
+                                          ExpansionTitle(
+                                            title: s.name,
+                                            children: s.methods
+                                                .map(
+                                                  (m) => Padding(
+                                                    padding:
+                                                        const EdgeInsets.only(
+                                                      left: 32.0,
+                                                    ),
+                                                    child: Text(
+                                                      m.name,
+                                                      style: Theme.of(context)
+                                                          .textTheme
+                                                          .bodyMedium,
+                                                    ),
                                                   ),
-                                                ),
-                                              const SizedBox(height: 8.0),
-                                            ],
+                                                )
+                                                .toList(),
                                           ),
                                     ],
                                   ),
