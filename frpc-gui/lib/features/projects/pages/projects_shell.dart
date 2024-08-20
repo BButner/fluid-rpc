@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:frpc_gui/core/theme/fluid_colors.dart';
+import 'package:frpc_gui/features/projects/project_state_provider.dart';
 import 'package:frpc_gui/features/projects/projects_provider.dart';
-import 'package:frpc_gui/features/projects/widgets/create_project_popup.dart';
-import 'package:frpc_gui/features/projects/widgets/project_nav_button.dart';
+import 'package:frpc_gui/src/rust/api/models/descriptors/server_descriptor.dart';
+import 'package:frpc_gui/src/rust/api/models/descriptors/service_descriptor.dart';
 import 'package:frpc_gui/src/rust/api/models/project/project.dart';
 import 'package:go_router/go_router.dart';
 
@@ -33,106 +34,141 @@ class ProjectNavigationShell extends ConsumerWidget {
           data: (projects) {
             final currentProject = projects[navigationShell.currentIndex];
 
-            return Row(
-              children: [
-                SizedBox(
-                  width: 280.0,
-                  child: Padding(
-                    padding: const EdgeInsets.fromLTRB(
-                      8.0,
-                      8.0,
-                      0.0,
-                      8.0,
-                    ),
-                    child: Column(
+            final projectStateAsync =
+                ref.watch(projectStateProvider.call(currentProject.project.id));
+
+            return projectStateAsync.when(
+                data: (projectState) => Row(
                       children: [
-                        DropdownMenu(
-                          expandedInsets: EdgeInsets.zero,
-                          initialSelection: currentProject,
-                          onSelected: (project) {
-                            if (project == null) return;
+                        SizedBox(
+                          width: 280.0,
+                          child: Padding(
+                            padding: const EdgeInsets.fromLTRB(
+                              8.0,
+                              8.0,
+                              0.0,
+                              8.0,
+                            ),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Row(
+                                  children: [
+                                    PopupMenuButton(
+                                      child: Row(
+                                        children: [
+                                          DecoratedBox(
+                                            decoration: BoxDecoration(
+                                              color:
+                                                  FluidColors.violet.shade600,
+                                              borderRadius:
+                                                  BorderRadius.circular(6.0),
+                                            ),
+                                            child: Padding(
+                                              padding:
+                                                  const EdgeInsets.all(8.0),
+                                              child: Text(
+                                                Project.getDefaultAvatar(
+                                                  displayName: currentProject
+                                                      .project.displayName,
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                          const SizedBox(width: 8.0),
+                                          Text(currentProject
+                                              .project.displayName),
+                                          const Icon(
+                                              Icons.arrow_drop_down_rounded),
+                                        ],
+                                      ),
+                                      onSelected: (project) {
+                                        final index = projects.indexOf(project);
 
-                            final index = projects.indexOf(project);
-
-                            _goBranch(index);
-                          },
-                          dropdownMenuEntries: projects
-                              .map((p) => DropdownMenuEntry(
-                                    value: p,
-                                    label: p.project.displayName,
-                                  ))
-                              .toList(),
+                                        _goBranch(index);
+                                      },
+                                      itemBuilder: (context) => projects
+                                          .map(
+                                            (p) => PopupMenuItem(
+                                              value: p,
+                                              child: Text(
+                                                p.project.displayName,
+                                              ),
+                                            ),
+                                          )
+                                          .toList(),
+                                    ),
+                                    const Spacer(),
+                                    IconButton(
+                                      onPressed: () {},
+                                      icon: const Icon(Icons.refresh_rounded),
+                                    ),
+                                  ],
+                                ),
+                                const SizedBox(height: 32.0),
+                                Text(
+                                  'Services',
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .labelMedium!
+                                      .copyWith(
+                                        color: FluidColors.zinc.shade400,
+                                      ),
+                                ),
+                                const SizedBox(height: 4.0),
+                                Expanded(
+                                  child: ListView(
+                                    children: [
+                                      if (projectState.serverDescriptor != null)
+                                        for (final s in projectState
+                                            .serverDescriptor!.services)
+                                          Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              Text(
+                                                s.name,
+                                                style: Theme.of(context)
+                                                    .textTheme
+                                                    .labelLarge,
+                                              ),
+                                              for (final m in s.methods)
+                                                Padding(
+                                                  padding:
+                                                      const EdgeInsets.only(
+                                                          left: 24.0,),
+                                                  child: Text(
+                                                    m.name,
+                                                    style: Theme.of(context)
+                                                        .textTheme
+                                                        .bodyMedium,
+                                                  ),
+                                                ),
+                                              const SizedBox(height: 8.0),
+                                            ],
+                                          ),
+                                    ],
+                                  ),
+                                )
+                              ],
+                            ),
+                          ),
                         ),
-                        const SizedBox(height: 8.0),
-                        
+                        Expanded(
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Card(
+                              child: navigationShell,
+                            ),
+                          ),
+                        ),
                       ],
                     ),
-                  ),
-                ),
-                Expanded(
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Card(
-                      child: navigationShell,
+                error: (error, stackTrace) => Text(
+                      error.toString(),
                     ),
-                  ),
-                ),
-              ],
-            );
+                loading: () => const CircularProgressIndicator());
           },
-          error: (error, stackTrace) => Text(
-                error.toString(),
-              ),
-          loading: () => const CircularProgressIndicator()),
-    );
-
-    return Scaffold(
-      body: projectsAsync.when(
-          data: (projects) => Row(
-                children: [
-                  DecoratedBox(
-                    decoration: const BoxDecoration(
-                      border: Border(
-                        right: BorderSide(
-                          width: 2.0,
-                          color: Color(0xFF383141),
-                        ),
-                      ),
-                    ),
-                    child: SizedBox(
-                      width: sidebarWidth,
-                      child: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Column(
-                          children: [
-                            for (int i = 0; i < projects.length; i++)
-                              ProjectNavButton(
-                                project: projects[i].project,
-                                index: i,
-                                goBranch: _goBranch,
-                              ),
-                            IconButton(
-                              onPressed: () {
-                                showDialog(
-                                  context: context,
-                                  builder: (context) =>
-                                      const CreateProjectPopup(),
-                                );
-                              },
-                              icon: const Icon(
-                                Icons.add_rounded,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ),
-                  Expanded(
-                    child: navigationShell,
-                  ),
-                ],
-              ),
           error: (error, stackTrace) => Text(
                 error.toString(),
               ),

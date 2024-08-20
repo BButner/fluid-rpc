@@ -35,10 +35,18 @@ class ButtonThemes {
   static final iconButtonTheme = IconButtonThemeData(
     style: IconButton.styleFrom(
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(14.0),
+        borderRadius: BorderRadius.circular(12.0),
       ),
+      backgroundColor: FluidColors.zinc.shade800,
       foregroundColor: FluidColors.zinc.shade300,
       padding: const EdgeInsets.all(2.0),
+      iconSize: 18.0,
+    ),
+  );
+
+  static final popupMenuButton = PopupMenuThemeData(
+    shape: RoundedRectangleBorder(
+      borderRadius: BorderRadius.circular(4.0),
     ),
   );
 }

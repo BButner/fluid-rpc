@@ -4,6 +4,7 @@ import 'package:frpc_gui/src/rust/api/models/descriptors/server_descriptor.dart'
 import 'package:frpc_gui/src/rust/api/models/descriptors/service_descriptor.dart';
 import 'package:frpc_gui/src/rust/api/models/environment/environment.dart';
 import 'package:frpc_gui/src/rust/api/models/project/project.dart';
+import 'package:frpc_gui/src/rust/api/simple.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'project_state_provider.g.dart';
@@ -14,6 +15,7 @@ class ActiveProjectState {
     required this.projectDirectoryPath,
     required this.selectedEnvironment,
     required this.openedMethods,
+    required this.serverDescriptor,
   });
 
   /// The instance of the [Project].
@@ -28,15 +30,20 @@ class ActiveProjectState {
   /// The list of opened [MethodDescriptor]s.
   final List<OpenedMethod> openedMethods;
 
+  /// The current [ServerDescriptor] data.
+  final ServerDescriptor? serverDescriptor;
+
   ActiveProjectState copyWith({
     Environment? selectedEnvironment,
     List<OpenedMethod>? openedMethods,
+    ServerDescriptor? serverDescriptor,
   }) =>
       ActiveProjectState(
         project: project,
         projectDirectoryPath: projectDirectoryPath,
         selectedEnvironment: selectedEnvironment ?? this.selectedEnvironment,
         openedMethods: openedMethods ?? this.openedMethods,
+        serverDescriptor: serverDescriptor ?? this.serverDescriptor,
       );
 }
 
@@ -61,11 +68,24 @@ class ProjectState extends _$ProjectState {
     final project =
         loadedProjects.firstWhere((lp) => lp.project.id == projectId);
 
+    final initialEnvironment = project.project.environments.firstOrNull;
+
+    ServerDescriptor? desc;
+
+    if (initialEnvironment != null &&
+        project.project.loaderType is ProjectLoader_ServerReflection) {
+      // TODO(bbutner): This needs to be improved to build the string based on the connection.
+      final con = initialEnvironment.connection;
+      desc = await testGetServerDescriptor(
+          serverUrl: 'http://${con.host}:${con.port}');
+    }
+
     return ActiveProjectState(
       project: project.project,
       projectDirectoryPath: project.projectDirectoryPath,
-      selectedEnvironment: project.project.environments.firstOrNull,
+      selectedEnvironment: initialEnvironment,
       openedMethods: [],
+      serverDescriptor: desc,
     );
   }
 

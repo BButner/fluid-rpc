@@ -19,5 +19,6 @@ class FluidTheme {
     ),
     expansionTileTheme: FluidExpansionTileTheme.expansionTileTheme,
     dropdownMenuTheme: FluidDropdownMenuTheme.dropdownMenuTheme,
+    popupMenuTheme: ButtonThemes.popupMenuButton,
   );
 }
