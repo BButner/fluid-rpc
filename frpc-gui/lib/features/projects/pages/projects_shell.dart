@@ -4,6 +4,7 @@ import 'package:frpc_gui/core/theme/fluid_colors.dart';
 import 'package:frpc_gui/features/projects/projects_provider.dart';
 import 'package:frpc_gui/features/projects/widgets/create_project_popup.dart';
 import 'package:frpc_gui/features/projects/widgets/project_nav_button.dart';
+import 'package:frpc_gui/src/rust/api/models/project/project.dart';
 import 'package:go_router/go_router.dart';
 
 class ProjectNavigationShell extends ConsumerWidget {
@@ -34,29 +35,44 @@ class ProjectNavigationShell extends ConsumerWidget {
 
             return Row(
               children: [
-                Padding(
-                  padding: const EdgeInsets.all(12.0),
-                  child: Column(
-                    children: [
-                      Text(
-                        currentProject.project.displayName,
-                        style: Theme.of(context).textTheme.bodyLarge,
-                      ),
-                    ],
+                SizedBox(
+                  width: 280.0,
+                  child: Padding(
+                    padding: const EdgeInsets.fromLTRB(
+                      8.0,
+                      8.0,
+                      0.0,
+                      8.0,
+                    ),
+                    child: Column(
+                      children: [
+                        DropdownMenu(
+                          expandedInsets: EdgeInsets.zero,
+                          initialSelection: currentProject,
+                          onSelected: (project) {
+                            if (project == null) return;
+
+                            final index = projects.indexOf(project);
+
+                            _goBranch(index);
+                          },
+                          dropdownMenuEntries: projects
+                              .map((p) => DropdownMenuEntry(
+                                    value: p,
+                                    label: p.project.displayName,
+                                  ))
+                              .toList(),
+                        ),
+                        const SizedBox(height: 8.0),
+                        
+                      ],
+                    ),
                   ),
                 ),
                 Expanded(
                   child: Padding(
                     padding: const EdgeInsets.all(8.0),
-                    child: DecoratedBox(
-                      decoration: BoxDecoration(
-                        color: FluidColors.zinc.shade900,
-                        borderRadius: BorderRadius.circular(6.0),
-                        border: Border.all(
-                          //color: const Color(0xFF27272A),
-                          color: FluidColors.zinc.shade800,
-                        ),
-                      ),
+                    child: Card(
                       child: navigationShell,
                     ),
                   ),
