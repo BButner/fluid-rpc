@@ -10,10 +10,6 @@ pub(crate) mod loader;
 pub mod misc;
 pub mod stream;
 
-pub mod reflection {
-    tonic::include_proto!("grpc.reflection.v1alpha");
-}
-
 pub async fn list_from_server_reflection(server_url: String) -> Result<DescriptorPool> {
     let pool = loader::reflection_loader::load_from_server_reflection(server_url).await?;
 
@@ -63,8 +59,6 @@ pub async fn invoke_method_raw(
 
     let (tx, rx) = mpsc::unbounded::<FluidStreamEvent>();
 
-    let tx_cancel = tx.clone();
-
     tokio::spawn(invoke_with_pool(
         tx,
         pool,
@@ -73,12 +67,6 @@ pub async fn invoke_method_raw(
         data,
         cancellation_token,
     ));
-
-    // tokio::spawn(async move {
-    //     cancellation_token.cancelled().await;
-
-    //     tx_cancel.close_channel();
-    // });
 
     Ok(rx)
 }
