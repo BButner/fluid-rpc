@@ -38,14 +38,16 @@ impl FooService for TestFooServer {
         &self,
         request: Request<FooStreamIntervalRequest>,
     ) -> ResponseWrapper<Self::GetIntervalStreamStream> {
-        let repeat = std::iter::repeat(FooStreamResponse {
+        let repeat = std::iter::repeat_with(|| FooStreamResponse {
             result: Local::now().to_rfc3339(),
         });
+
         let mut stream = Box::pin(tokio_stream::iter(repeat).throttle(Duration::from_millis(
             request.into_inner().delay_milliseconds,
         )));
 
         let (tx, rx) = mpsc::channel(128);
+
         tokio::spawn(async move {
             while let Some(item) = stream.next().await {
                 match tx.send(Result::<_, Status>::Ok(item)).await {
@@ -67,7 +69,7 @@ impl FooService for TestFooServer {
         &self,
         _request: Request<FooStreamRequest>,
     ) -> ResponseWrapper<Self::GetIntervalStreamStream> {
-        let repeat = std::iter::repeat(FooStreamResponse {
+        let repeat = std::iter::repeat_with(|| FooStreamResponse {
             result: Local::now().to_rfc3339(),
         });
         let mut stream = Box::pin(tokio_stream::iter(repeat).throttle(Duration::from_millis(200)));
