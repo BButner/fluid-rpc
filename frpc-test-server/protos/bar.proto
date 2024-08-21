@@ -1,0 +1,29 @@
+syntax = "proto3";
+
+package com.bbutner.frpc.testserver;
+
+service BarService {
+  rpc SayHello (BarRequest) returns (BarResponse);
+  rpc GetStream (BarStreamRequest) returns (stream BarStreamResponse);
+  rpc GetIntervalStream (BarStreamIntervalRequest) returns (stream BarStreamResponse);
+}
+
+message BarRequest {
+  string name = 1;
+}
+
+message BarResponse {
+  string message = 1;
+}
+
+message BarStreamRequest {
+  uint64 id = 1;
+}
+
+message BarStreamResponse {
+  string result = 1;
+}
+
+message BarStreamIntervalRequest {
+  uint64 delayMilliseconds = 1;
+} 
