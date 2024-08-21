@@ -4,19 +4,15 @@ use anyhow::{bail, Result};
 use prost::Message;
 use prost_reflect::DescriptorPool;
 use prost_types::FileDescriptorProto;
-use reflection::server_reflection_client::ServerReflectionClient;
-use reflection::server_reflection_request::MessageRequest;
-use reflection::server_reflection_response::MessageResponse;
-use reflection::{FileDescriptorResponse, ServerReflectionRequest};
 use tokio_stream::StreamExt;
 use tonic::{
     transport::{Channel, Endpoint},
     Request,
 };
-
-pub mod reflection {
-    tonic::include_proto!("grpc.reflection.v1alpha");
-}
+use tonic_reflection::pb::v1::{
+    server_reflection_client::ServerReflectionClient, server_reflection_request::MessageRequest,
+    server_reflection_response::MessageResponse, FileDescriptorResponse, ServerReflectionRequest,
+};
 
 pub(crate) async fn load_from_server_reflection(server_url: String) -> Result<DescriptorPool> {
     let mut pool = DescriptorPool::new();

@@ -1,0 +1,29 @@
+syntax = "proto3";
+
+package com.bbutner.frpc.testserver;
+
+service FooService {
+  rpc SayHello (FooRequest) returns (FooResponse);
+  rpc GetStream (FooStreamRequest) returns (stream FooStreamResponse);
+  rpc GetIntervalStream (FooStreamIntervalRequest) returns (stream FooStreamResponse);
+}
+
+message FooRequest {
+  string name = 1;
+}
+
+message FooResponse {
+  string message = 1;
+}
+
+message FooStreamRequest {
+  uint64 id = 1;
+}
+
+message FooStreamResponse {
+  string result = 1;
+}
+
+message FooStreamIntervalRequest {
+  uint64 delayMilliseconds = 1;
+}
