@@ -5,12 +5,15 @@ class ExpansionTitle extends StatefulWidget {
   const ExpansionTitle({
     required this.title,
     required this.children,
+    this.padding = const EdgeInsets.symmetric(vertical: 8.0),
     super.key,
   });
 
   final String title;
 
   final List<Widget> children;
+
+  final EdgeInsets padding;
 
   @override
   State<ExpansionTitle> createState() => _ExpansionTitleState();
@@ -28,7 +31,7 @@ class _ExpansionTitleState extends State<ExpansionTitle> {
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(6.0),
           ),
-          hoverColor: FluidColors.zinc.shade900,
+          hoverColor: FluidColors.zinc.shade800,
           onPressed: () => setState(() {
             _isExpanded = !_isExpanded;
           }),
@@ -51,18 +54,25 @@ class _ExpansionTitleState extends State<ExpansionTitle> {
             ],
           ),
         ),
-        AnimatedSize(
-          duration: const Duration(milliseconds: 100),
-          child: ConstrainedBox(
-            constraints: BoxConstraints(
-              maxHeight: _isExpanded ? double.infinity : 0.0,
-            ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                ...widget.children,
-                const SizedBox(height: 12.0),
-              ],
+        LayoutBuilder(
+          builder: (context, constraints) => AnimatedSize(
+            duration: const Duration(milliseconds: 100),
+            child: AnimatedSwitcher(
+              duration: const Duration(milliseconds: 100),
+              child: !_isExpanded
+                  ? SizedBox(
+                      width: constraints.maxWidth,
+                    )
+                  : Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 8.0),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          ...widget.children,
+                          const SizedBox(height: 12.0),
+                        ],
+                      ),
+                    ),
             ),
           ),
         ),

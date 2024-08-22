@@ -103,6 +103,9 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   MessageDescriptor dco_decode_box_autoadd_message_descriptor(dynamic raw);
 
   @protected
+  MethodDescriptor dco_decode_box_autoadd_method_descriptor(dynamic raw);
+
+  @protected
   Project dco_decode_box_autoadd_project(dynamic raw);
 
   @protected
@@ -301,6 +304,10 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
 
   @protected
   MessageDescriptor sse_decode_box_autoadd_message_descriptor(
+      SseDeserializer deserializer);
+
+  @protected
+  MethodDescriptor sse_decode_box_autoadd_method_descriptor(
       SseDeserializer deserializer);
 
   @protected
@@ -521,6 +528,10 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   @protected
   void sse_encode_box_autoadd_message_descriptor(
       MessageDescriptor self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_box_autoadd_method_descriptor(
+      MethodDescriptor self, SseSerializer serializer);
 
   @protected
   void sse_encode_box_autoadd_project(Project self, SseSerializer serializer);

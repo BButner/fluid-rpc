@@ -1,5 +1,3 @@
-use std::{fmt::format, sync::Arc};
-
 use anyhow::Result;
 use flutter_rust_bridge::frb;
 use frpc_lib::{invoke_method, invoke_method_raw};

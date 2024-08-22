@@ -1,8 +1,9 @@
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:frpc_gui/core/controls/expansion_title.dart';
+import 'package:frpc_gui/core/theme/fluid_colors.dart';
 import 'package:frpc_gui/features/projects/project_state_provider.dart';
-import 'package:frpc_gui/features/projects/widgets/tree_service_widget.dart';
 import 'package:frpc_gui/src/rust/api/models/descriptors/server_descriptor.dart';
 import 'package:frpc_gui/src/rust/api/simple.dart';
 
@@ -35,47 +36,95 @@ class _RpcTreeState extends ConsumerState<RpcTree> {
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder(
-      future: _getServerDescriptor(),
-      builder: (context, snapshot) {
-        if (snapshot.hasError) {
-          return Text(snapshot.error.toString());
-        }
+    final projectStateAsync =
+        ref.watch(projectStateProvider.call(widget.projectId));
 
-        if (snapshot.hasData) {
-          final desc = snapshot.data!;
-
-          return Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
+    return projectStateAsync.when(
+      data: (projectState) => Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Padding(
+            padding: const EdgeInsets.symmetric(
+              horizontal: 8.0,
+            ),
+            child: Row(
+              children: [
+                Icon(
+                  Icons.dns_rounded,
+                  size: 14.0,
+                  color: FluidColors.zinc.shade400,
+                ),
+                const SizedBox(width: 8.0),
+                Expanded(
+                  child: Text(
+                    'Services',
+                    style: Theme.of(context).textTheme.labelMedium!.copyWith(
+                          color: FluidColors.zinc.shade400,
+                        ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+          const SizedBox(height: 4.0),
+          Column(
             children: [
-              Padding(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 14.0,
-                  vertical: 8.0,
-                ),
-                child: Text(
-                  'RPC Tree',
-                  style: Theme.of(context).textTheme.titleLarge,
-                ),
-              ),
-              Expanded(
-                child: ListView(
-                  children: [
-                    for (final service in desc.services.sortedBy((s) => s.name))
-                      TreeServiceWidget(
-                        projectId: widget.projectId,
-                        service: service,
-                        server: desc,
-                      ),
-                  ],
-                ),
-              ),
+              if (projectState.serverDescriptor != null)
+                for (final s in projectState.serverDescriptor!.services
+                    .sortedBy((s) => s.name))
+                  ExpansionTitle(
+                    title: s.name,
+                    children: s.methods
+                        .sortedBy((m) => m.name)
+                        .map(
+                          (m) => Padding(
+                            padding: const EdgeInsets.only(
+                              left: 16.0,
+                            ),
+                            child: Row(
+                              children: [
+                                DecoratedBox(
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(
+                                      4.0,
+                                    ),
+                                    border: Border.all(
+                                      color: FluidColors.emerald.shade600,
+                                      width: 2.0,
+                                    ),
+                                  ),
+                                  child: const Padding(
+                                    padding: EdgeInsets.all(
+                                      8.0,
+                                    ),
+                                    child: Text('U'),
+                                  ),
+                                ),
+                                const SizedBox(
+                                  width: 8.0,
+                                ),
+                                Expanded(
+                                  child: Text(
+                                    m.name,
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .bodyMedium,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        )
+                        .toList(),
+                  ),
             ],
-          );
-        }
-
-        return const CircularProgressIndicator();
-      },
+          )
+        ],
+      ),
+      error: (error, stackTrace) => Text(
+        error.toString(),
+      ),
+      loading: () => const CircularProgressIndicator(),
     );
   }
 }

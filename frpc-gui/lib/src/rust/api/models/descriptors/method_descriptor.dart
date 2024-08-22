@@ -15,17 +15,31 @@ import 'package:flutter_rust_bridge/flutter_rust_bridge_for_generated.dart';
 
 class MethodDescriptor {
   final String name;
+  final String fullName;
   final MessageDescriptor input;
   final MessageDescriptor output;
+  final bool isServerStreaming;
 
   const MethodDescriptor({
     required this.name,
+    required this.fullName,
     required this.input,
     required this.output,
+    required this.isServerStreaming,
   });
 
+  String target() => RustLib.instance.api
+          .crateApiModelsDescriptorsMethodDescriptorMethodDescriptorTarget(
+        that: this,
+      );
+
   @override
-  int get hashCode => name.hashCode ^ input.hashCode ^ output.hashCode;
+  int get hashCode =>
+      name.hashCode ^
+      fullName.hashCode ^
+      input.hashCode ^
+      output.hashCode ^
+      isServerStreaming.hashCode;
 
   @override
   bool operator ==(Object other) =>
@@ -33,6 +47,8 @@ class MethodDescriptor {
       other is MethodDescriptor &&
           runtimeType == other.runtimeType &&
           name == other.name &&
+          fullName == other.fullName &&
           input == other.input &&
-          output == other.output;
+          output == other.output &&
+          isServerStreaming == other.isServerStreaming;
 }

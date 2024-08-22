@@ -74,7 +74,7 @@ class RustLib extends BaseEntrypoint<RustLibApi, RustLibApiImpl, RustLibWire> {
   String get codegenVersion => '2.1.0';
 
   @override
-  int get rustContentHash => -2105508790;
+  int get rustContentHash => 2045548302;
 
   static const kDefaultExternalLibraryLoaderConfig =
       ExternalLibraryLoaderConfig(
@@ -92,6 +92,9 @@ abstract class RustLibApi extends BaseApi {
 
   Future<void> crateApiModelsConfigAppConfigAppConfigSave(
       {required AppConfig that, required String appSettingsDirectory});
+
+  String crateApiModelsDescriptorsMethodDescriptorMethodDescriptorTarget(
+      {required MethodDescriptor that});
 
   String crateApiModelsProjectProjectProjectGetDefaultAvatar(
       {required String displayName});
@@ -223,13 +226,40 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
       );
 
   @override
+  String crateApiModelsDescriptorsMethodDescriptorMethodDescriptorTarget(
+      {required MethodDescriptor that}) {
+    return handler.executeSync(SyncTask(
+      callFfi: () {
+        final serializer = SseSerializer(generalizedFrbRustBinding);
+        sse_encode_box_autoadd_method_descriptor(that, serializer);
+        return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 4)!;
+      },
+      codec: SseCodec(
+        decodeSuccessData: sse_decode_String,
+        decodeErrorData: null,
+      ),
+      constMeta:
+          kCrateApiModelsDescriptorsMethodDescriptorMethodDescriptorTargetConstMeta,
+      argValues: [that],
+      apiImpl: this,
+    ));
+  }
+
+  TaskConstMeta
+      get kCrateApiModelsDescriptorsMethodDescriptorMethodDescriptorTargetConstMeta =>
+          const TaskConstMeta(
+            debugName: "method_descriptor_target",
+            argNames: ["that"],
+          );
+
+  @override
   String crateApiModelsProjectProjectProjectGetDefaultAvatar(
       {required String displayName}) {
     return handler.executeSync(SyncTask(
       callFfi: () {
         final serializer = SseSerializer(generalizedFrbRustBinding);
         sse_encode_String(displayName, serializer);
-        return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 4)!;
+        return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 5)!;
       },
       codec: SseCodec(
         decodeSuccessData: sse_decode_String,
@@ -256,7 +286,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
         final serializer = SseSerializer(generalizedFrbRustBinding);
         sse_encode_String(configFilePath, serializer);
         pdeCallFfi(generalizedFrbRustBinding, serializer,
-            funcId: 5, port: port_);
+            funcId: 6, port: port_);
       },
       codec: SseCodec(
         decodeSuccessData: sse_decode_opt_box_autoadd_loaded_project,
@@ -283,7 +313,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
         sse_encode_box_autoadd_project(that, serializer);
         sse_encode_String(projectDirectoryPath, serializer);
         pdeCallFfi(generalizedFrbRustBinding, serializer,
-            funcId: 6, port: port_);
+            funcId: 7, port: port_);
       },
       codec: SseCodec(
         decodeSuccessData: sse_decode_unit,
@@ -309,7 +339,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
         final serializer = SseSerializer(generalizedFrbRustBinding);
         sse_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerCancelableExecution(
             that, serializer);
-        return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 7)!;
+        return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 8)!;
       },
       codec: SseCodec(
         decodeSuccessData: sse_decode_unit,
@@ -333,7 +363,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
       callFfi: (port_) {
         final serializer = SseSerializer(generalizedFrbRustBinding);
         pdeCallFfi(generalizedFrbRustBinding, serializer,
-            funcId: 8, port: port_);
+            funcId: 9, port: port_);
       },
       codec: SseCodec(
         decodeSuccessData:
@@ -358,7 +388,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
       callFfi: (port_) {
         final serializer = SseSerializer(generalizedFrbRustBinding);
         pdeCallFfi(generalizedFrbRustBinding, serializer,
-            funcId: 9, port: port_);
+            funcId: 10, port: port_);
       },
       codec: SseCodec(
         decodeSuccessData:
@@ -383,7 +413,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
       callFfi: () {
         final serializer = SseSerializer(generalizedFrbRustBinding);
         sse_encode_String(name, serializer);
-        return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 10)!;
+        return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 11)!;
       },
       codec: SseCodec(
         decodeSuccessData: sse_decode_String,
@@ -406,7 +436,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
       callFfi: (port_) {
         final serializer = SseSerializer(generalizedFrbRustBinding);
         pdeCallFfi(generalizedFrbRustBinding, serializer,
-            funcId: 11, port: port_);
+            funcId: 12, port: port_);
       },
       codec: SseCodec(
         decodeSuccessData: sse_decode_unit,
@@ -431,7 +461,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
         final serializer = SseSerializer(generalizedFrbRustBinding);
         sse_encode_String(serverUrl, serializer);
         pdeCallFfi(generalizedFrbRustBinding, serializer,
-            funcId: 12, port: port_);
+            funcId: 13, port: port_);
       },
       codec: SseCodec(
         decodeSuccessData: sse_decode_server_descriptor,
@@ -464,7 +494,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
         sse_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerCancelableExecution(
             cancelExec, serializer);
         pdeCallFfi(generalizedFrbRustBinding, serializer,
-            funcId: 13, port: port_);
+            funcId: 14, port: port_);
       },
       codec: SseCodec(
         decodeSuccessData: sse_decode_unit,
@@ -499,7 +529,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
         sse_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerCancelableExecution(
             cancelExec, serializer);
         pdeCallFfi(generalizedFrbRustBinding, serializer,
-            funcId: 14, port: port_);
+            funcId: 15, port: port_);
       },
       codec: SseCodec(
         decodeSuccessData: sse_decode_unit,
@@ -646,6 +676,12 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   MessageDescriptor dco_decode_box_autoadd_message_descriptor(dynamic raw) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
     return dco_decode_message_descriptor(raw);
+  }
+
+  @protected
+  MethodDescriptor dco_decode_box_autoadd_method_descriptor(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return dco_decode_method_descriptor(raw);
   }
 
   @protected
@@ -944,12 +980,14 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   MethodDescriptor dco_decode_method_descriptor(dynamic raw) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
     final arr = raw as List<dynamic>;
-    if (arr.length != 3)
-      throw Exception('unexpected arr length: expect 3 but see ${arr.length}');
+    if (arr.length != 5)
+      throw Exception('unexpected arr length: expect 5 but see ${arr.length}');
     return MethodDescriptor(
       name: dco_decode_String(arr[0]),
-      input: dco_decode_message_descriptor(arr[1]),
-      output: dco_decode_message_descriptor(arr[2]),
+      fullName: dco_decode_String(arr[1]),
+      input: dco_decode_message_descriptor(arr[2]),
+      output: dco_decode_message_descriptor(arr[3]),
+      isServerStreaming: dco_decode_bool(arr[4]),
     );
   }
 
@@ -1247,6 +1285,13 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
       SseDeserializer deserializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
     return (sse_decode_message_descriptor(deserializer));
+  }
+
+  @protected
+  MethodDescriptor sse_decode_box_autoadd_method_descriptor(
+      SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    return (sse_decode_method_descriptor(deserializer));
   }
 
   @protected
@@ -1576,10 +1621,16 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   MethodDescriptor sse_decode_method_descriptor(SseDeserializer deserializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
     var var_name = sse_decode_String(deserializer);
+    var var_fullName = sse_decode_String(deserializer);
     var var_input = sse_decode_message_descriptor(deserializer);
     var var_output = sse_decode_message_descriptor(deserializer);
+    var var_isServerStreaming = sse_decode_bool(deserializer);
     return MethodDescriptor(
-        name: var_name, input: var_input, output: var_output);
+        name: var_name,
+        fullName: var_fullName,
+        input: var_input,
+        output: var_output,
+        isServerStreaming: var_isServerStreaming);
   }
 
   @protected
@@ -1891,6 +1942,13 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  void sse_encode_box_autoadd_method_descriptor(
+      MethodDescriptor self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_method_descriptor(self, serializer);
+  }
+
+  @protected
   void sse_encode_box_autoadd_project(Project self, SseSerializer serializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
     sse_encode_project(self, serializer);
@@ -2175,8 +2233,10 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
       MethodDescriptor self, SseSerializer serializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
     sse_encode_String(self.name, serializer);
+    sse_encode_String(self.fullName, serializer);
     sse_encode_message_descriptor(self.input, serializer);
     sse_encode_message_descriptor(self.output, serializer);
+    sse_encode_bool(self.isServerStreaming, serializer);
   }
 
   @protected
