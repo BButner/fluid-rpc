@@ -162,6 +162,9 @@ class _$FieldTypeDescriptorCopyWithImpl<$Res, $Val extends FieldTypeDescriptor>
   final $Val _value;
   // ignore: unused_field
   final $Res Function($Val) _then;
+
+  /// Create a copy of FieldTypeDescriptor
+  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -181,6 +184,9 @@ class __$$FieldTypeDescriptor_DoubleImplCopyWithImpl<$Res>
       _$FieldTypeDescriptor_DoubleImpl _value,
       $Res Function(_$FieldTypeDescriptor_DoubleImpl) _then)
       : super(_value, _then);
+
+  /// Create a copy of FieldTypeDescriptor
+  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -378,6 +384,9 @@ class __$$FieldTypeDescriptor_FloatImplCopyWithImpl<$Res>
       _$FieldTypeDescriptor_FloatImpl _value,
       $Res Function(_$FieldTypeDescriptor_FloatImpl) _then)
       : super(_value, _then);
+
+  /// Create a copy of FieldTypeDescriptor
+  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -575,6 +584,9 @@ class __$$FieldTypeDescriptor_Int32ImplCopyWithImpl<$Res>
       _$FieldTypeDescriptor_Int32Impl _value,
       $Res Function(_$FieldTypeDescriptor_Int32Impl) _then)
       : super(_value, _then);
+
+  /// Create a copy of FieldTypeDescriptor
+  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -772,6 +784,9 @@ class __$$FieldTypeDescriptor_Int64ImplCopyWithImpl<$Res>
       _$FieldTypeDescriptor_Int64Impl _value,
       $Res Function(_$FieldTypeDescriptor_Int64Impl) _then)
       : super(_value, _then);
+
+  /// Create a copy of FieldTypeDescriptor
+  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -969,6 +984,9 @@ class __$$FieldTypeDescriptor_Uint32ImplCopyWithImpl<$Res>
       _$FieldTypeDescriptor_Uint32Impl _value,
       $Res Function(_$FieldTypeDescriptor_Uint32Impl) _then)
       : super(_value, _then);
+
+  /// Create a copy of FieldTypeDescriptor
+  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -1166,6 +1184,9 @@ class __$$FieldTypeDescriptor_Uint64ImplCopyWithImpl<$Res>
       _$FieldTypeDescriptor_Uint64Impl _value,
       $Res Function(_$FieldTypeDescriptor_Uint64Impl) _then)
       : super(_value, _then);
+
+  /// Create a copy of FieldTypeDescriptor
+  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -1363,6 +1384,9 @@ class __$$FieldTypeDescriptor_Sint32ImplCopyWithImpl<$Res>
       _$FieldTypeDescriptor_Sint32Impl _value,
       $Res Function(_$FieldTypeDescriptor_Sint32Impl) _then)
       : super(_value, _then);
+
+  /// Create a copy of FieldTypeDescriptor
+  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -1560,6 +1584,9 @@ class __$$FieldTypeDescriptor_Sint64ImplCopyWithImpl<$Res>
       _$FieldTypeDescriptor_Sint64Impl _value,
       $Res Function(_$FieldTypeDescriptor_Sint64Impl) _then)
       : super(_value, _then);
+
+  /// Create a copy of FieldTypeDescriptor
+  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -1757,6 +1784,9 @@ class __$$FieldTypeDescriptor_Fixed32ImplCopyWithImpl<$Res>
       _$FieldTypeDescriptor_Fixed32Impl _value,
       $Res Function(_$FieldTypeDescriptor_Fixed32Impl) _then)
       : super(_value, _then);
+
+  /// Create a copy of FieldTypeDescriptor
+  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -1955,6 +1985,9 @@ class __$$FieldTypeDescriptor_Fixed64ImplCopyWithImpl<$Res>
       _$FieldTypeDescriptor_Fixed64Impl _value,
       $Res Function(_$FieldTypeDescriptor_Fixed64Impl) _then)
       : super(_value, _then);
+
+  /// Create a copy of FieldTypeDescriptor
+  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -2153,6 +2186,9 @@ class __$$FieldTypeDescriptor_Sfixed32ImplCopyWithImpl<$Res>
       _$FieldTypeDescriptor_Sfixed32Impl _value,
       $Res Function(_$FieldTypeDescriptor_Sfixed32Impl) _then)
       : super(_value, _then);
+
+  /// Create a copy of FieldTypeDescriptor
+  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -2351,6 +2387,9 @@ class __$$FieldTypeDescriptor_Sfixed64ImplCopyWithImpl<$Res>
       _$FieldTypeDescriptor_Sfixed64Impl _value,
       $Res Function(_$FieldTypeDescriptor_Sfixed64Impl) _then)
       : super(_value, _then);
+
+  /// Create a copy of FieldTypeDescriptor
+  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -2549,6 +2588,9 @@ class __$$FieldTypeDescriptor_BoolImplCopyWithImpl<$Res>
       _$FieldTypeDescriptor_BoolImpl _value,
       $Res Function(_$FieldTypeDescriptor_BoolImpl) _then)
       : super(_value, _then);
+
+  /// Create a copy of FieldTypeDescriptor
+  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -2746,6 +2788,9 @@ class __$$FieldTypeDescriptor_StringImplCopyWithImpl<$Res>
       _$FieldTypeDescriptor_StringImpl _value,
       $Res Function(_$FieldTypeDescriptor_StringImpl) _then)
       : super(_value, _then);
+
+  /// Create a copy of FieldTypeDescriptor
+  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -2943,6 +2988,9 @@ class __$$FieldTypeDescriptor_BytesImplCopyWithImpl<$Res>
       _$FieldTypeDescriptor_BytesImpl _value,
       $Res Function(_$FieldTypeDescriptor_BytesImpl) _then)
       : super(_value, _then);
+
+  /// Create a copy of FieldTypeDescriptor
+  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -3143,6 +3191,8 @@ class __$$FieldTypeDescriptor_MessageImplCopyWithImpl<$Res>
       $Res Function(_$FieldTypeDescriptor_MessageImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of FieldTypeDescriptor
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -3181,7 +3231,9 @@ class _$FieldTypeDescriptor_MessageImpl extends FieldTypeDescriptor_Message {
   @override
   int get hashCode => Object.hash(runtimeType, field0);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of FieldTypeDescriptor
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$FieldTypeDescriptor_MessageImplCopyWith<_$FieldTypeDescriptor_MessageImpl>
@@ -3347,7 +3399,10 @@ abstract class FieldTypeDescriptor_Message extends FieldTypeDescriptor {
   const FieldTypeDescriptor_Message._() : super._();
 
   MessageDescriptor get field0;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of FieldTypeDescriptor
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$FieldTypeDescriptor_MessageImplCopyWith<_$FieldTypeDescriptor_MessageImpl>
       get copyWith => throw _privateConstructorUsedError;
 }
@@ -3372,6 +3427,8 @@ class __$$FieldTypeDescriptor_EnumImplCopyWithImpl<$Res>
       $Res Function(_$FieldTypeDescriptor_EnumImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of FieldTypeDescriptor
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -3410,7 +3467,9 @@ class _$FieldTypeDescriptor_EnumImpl extends FieldTypeDescriptor_Enum {
   @override
   int get hashCode => Object.hash(runtimeType, field0);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of FieldTypeDescriptor
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$FieldTypeDescriptor_EnumImplCopyWith<_$FieldTypeDescriptor_EnumImpl>
@@ -3576,7 +3635,10 @@ abstract class FieldTypeDescriptor_Enum extends FieldTypeDescriptor {
   const FieldTypeDescriptor_Enum._() : super._();
 
   EnumDescriptor get field0;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of FieldTypeDescriptor
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$FieldTypeDescriptor_EnumImplCopyWith<_$FieldTypeDescriptor_EnumImpl>
       get copyWith => throw _privateConstructorUsedError;
 }

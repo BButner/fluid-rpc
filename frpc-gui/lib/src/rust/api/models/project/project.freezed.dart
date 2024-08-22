@@ -73,6 +73,9 @@ class _$ProjectLoaderCopyWithImpl<$Res, $Val extends ProjectLoader>
   final $Val _value;
   // ignore: unused_field
   final $Res Function($Val) _then;
+
+  /// Create a copy of ProjectLoader
+  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -92,6 +95,9 @@ class __$$ProjectLoader_ServerReflectionImplCopyWithImpl<$Res>
       _$ProjectLoader_ServerReflectionImpl _value,
       $Res Function(_$ProjectLoader_ServerReflectionImpl) _then)
       : super(_value, _then);
+
+  /// Create a copy of ProjectLoader
+  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -202,6 +208,8 @@ class __$$ProjectLoader_FileImplCopyWithImpl<$Res>
       $Res Function(_$ProjectLoader_FileImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of ProjectLoader
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -240,7 +248,9 @@ class _$ProjectLoader_FileImpl extends ProjectLoader_File {
   @override
   int get hashCode => Object.hash(runtimeType, field0);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of ProjectLoader
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$ProjectLoader_FileImplCopyWith<_$ProjectLoader_FileImpl> get copyWith =>
@@ -317,7 +327,10 @@ abstract class ProjectLoader_File extends ProjectLoader {
   const ProjectLoader_File._() : super._();
 
   FileProjectLoader get field0;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of ProjectLoader
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$ProjectLoader_FileImplCopyWith<_$ProjectLoader_FileImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

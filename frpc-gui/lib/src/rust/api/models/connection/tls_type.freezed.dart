@@ -77,6 +77,9 @@ class _$TlsTypeCopyWithImpl<$Res, $Val extends TlsType>
   final $Val _value;
   // ignore: unused_field
   final $Res Function($Val) _then;
+
+  /// Create a copy of TlsType
+  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -93,6 +96,9 @@ class __$$TlsType_PlainTextImplCopyWithImpl<$Res>
   __$$TlsType_PlainTextImplCopyWithImpl(_$TlsType_PlainTextImpl _value,
       $Res Function(_$TlsType_PlainTextImpl) _then)
       : super(_value, _then);
+
+  /// Create a copy of TlsType
+  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -205,6 +211,8 @@ class __$$TlsType_OneWayImplCopyWithImpl<$Res>
       _$TlsType_OneWayImpl _value, $Res Function(_$TlsType_OneWayImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of TlsType
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -243,7 +251,9 @@ class _$TlsType_OneWayImpl extends TlsType_OneWay {
   @override
   int get hashCode => Object.hash(runtimeType, field0);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of TlsType
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$TlsType_OneWayImplCopyWith<_$TlsType_OneWayImpl> get copyWith =>
@@ -325,7 +335,10 @@ abstract class TlsType_OneWay extends TlsType {
   const TlsType_OneWay._() : super._();
 
   TlsTypeOneWay get field0;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of TlsType
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$TlsType_OneWayImplCopyWith<_$TlsType_OneWayImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -347,6 +360,8 @@ class __$$TlsType_TwoWayImplCopyWithImpl<$Res>
       _$TlsType_TwoWayImpl _value, $Res Function(_$TlsType_TwoWayImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of TlsType
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -385,7 +400,9 @@ class _$TlsType_TwoWayImpl extends TlsType_TwoWay {
   @override
   int get hashCode => Object.hash(runtimeType, field0);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of TlsType
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$TlsType_TwoWayImplCopyWith<_$TlsType_TwoWayImpl> get copyWith =>
@@ -467,7 +484,10 @@ abstract class TlsType_TwoWay extends TlsType {
   const TlsType_TwoWay._() : super._();
 
   TlsTypeTwoWay get field0;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of TlsType
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$TlsType_TwoWayImplCopyWith<_$TlsType_TwoWayImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

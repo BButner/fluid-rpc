@@ -69,7 +69,6 @@ class _ExpansionTitleState extends State<ExpansionTitle> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           ...widget.children,
-                          const SizedBox(height: 12.0),
                         ],
                       ),
                     ),
