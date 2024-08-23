@@ -5,15 +5,16 @@ import 'package:frpc_gui/core/controls/expansion_title.dart';
 import 'package:frpc_gui/core/theme/fluid_colors.dart';
 import 'package:frpc_gui/features/projects/project_state_provider.dart';
 import 'package:frpc_gui/features/projects/widgets/rpc_method_button.dart';
-import 'package:frpc_gui/src/rust/api/models/descriptors/server_descriptor.dart';
-import 'package:frpc_gui/src/rust/api/simple.dart';
 
+/// Displays the services and methods of the specified project.
 class RpcTree extends ConsumerStatefulWidget {
+  /// Creates a new [RpcTree].
   const RpcTree({
     required this.projectId,
     super.key,
   });
 
+  /// The project id to display.
   final String projectId;
 
   @override
@@ -21,20 +22,6 @@ class RpcTree extends ConsumerStatefulWidget {
 }
 
 class _RpcTreeState extends ConsumerState<RpcTree> {
-  Future<ServerDescriptor?> _getServerDescriptor() async {
-    final projectState =
-        await ref.read(projectStateProvider.call(widget.projectId).future);
-
-    if (projectState.selectedEnvironment == null) return null;
-
-    final connection = projectState.selectedEnvironment!.connection;
-
-    final desc = await testGetServerDescriptor(
-        serverUrl: 'http://${connection.host}:${connection.port}',);
-
-    return desc;
-  }
-
   @override
   Widget build(BuildContext context) {
     final projectStateAsync =

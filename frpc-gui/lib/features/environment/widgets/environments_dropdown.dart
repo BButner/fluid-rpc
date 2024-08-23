@@ -3,12 +3,15 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:frpc_gui/features/environment/widgets/manage_environments_popup.dart';
 import 'package:frpc_gui/features/projects/project_state_provider.dart';
 
+/// Dropdown list for the current project environments.
 class EnvironmentsDropdown extends ConsumerWidget {
+  /// Creates a new [EnvironmentsDropdown].
   const EnvironmentsDropdown({
     required this.projectId,
     super.key,
   });
 
+  /// The id of the project this belongs to.
   final String projectId;
 
   @override

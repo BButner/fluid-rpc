@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:frpc_gui/core/theme/fluid_colors.dart';
 
+/// The themes for the buttons.
 class ButtonThemes {
+  /// Theme for [ElevatedButton].
   static final elevatedButtonTheme = ElevatedButtonThemeData(
     style: ElevatedButton.styleFrom(
       shape: RoundedRectangleBorder(
@@ -16,6 +18,7 @@ class ButtonThemes {
     ),
   );
 
+  /// Theme for [FilledButton].
   static final filledButtonTheme = FilledButtonThemeData(
     style: FilledButton.styleFrom(
       shape: RoundedRectangleBorder(
@@ -30,6 +33,7 @@ class ButtonThemes {
     ),
   );
 
+  /// Theme for [IconButton].
   static final iconButtonTheme = IconButtonThemeData(
     style: IconButton.styleFrom(
       shape: RoundedRectangleBorder(
@@ -42,6 +46,7 @@ class ButtonThemes {
     ),
   );
 
+  /// Theme for [PopupMenuButton].
   static final popupMenuButton = PopupMenuThemeData(
     shape: RoundedRectangleBorder(
       borderRadius: BorderRadius.circular(4.0),

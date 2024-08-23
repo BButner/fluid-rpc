@@ -6,12 +6,15 @@ import 'package:frpc_gui/src/rust/api/models/connection/tls_type.dart';
 import 'package:frpc_gui/src/rust/api/models/environment/environment.dart';
 import 'package:uuid/uuid.dart';
 
+/// Popup to manage the environments in a project.
 class ManageEnvironmentsPopup extends ConsumerStatefulWidget {
+  /// Creates a new [ManageEnvironmentsPopup].
   const ManageEnvironmentsPopup({
     required this.projectId,
     super.key,
   });
 
+  /// The id of the project this belongs to.
   final String projectId;
 
   @override
@@ -32,12 +35,16 @@ class _ManageEnvironmentsPopupState
   void initState() {
     super.initState();
 
-    _displayNameController.addListener(() => setState(() {
-          _displayName = _displayNameController.text;
-        }),);
-    _hostnameController.addListener(() => setState(() {
-          _hostname = _hostnameController.text;
-        }),);
+    _displayNameController.addListener(
+      () => setState(() {
+        _displayName = _displayNameController.text;
+      }),
+    );
+    _hostnameController.addListener(
+      () => setState(() {
+        _hostname = _hostnameController.text;
+      }),
+    );
   }
 
   @override

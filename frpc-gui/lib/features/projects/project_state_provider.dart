@@ -1,7 +1,5 @@
 import 'package:frpc_gui/features/projects/projects_provider.dart';
-import 'package:frpc_gui/src/rust/api/models/descriptors/method_descriptor.dart';
 import 'package:frpc_gui/src/rust/api/models/descriptors/server_descriptor.dart';
-import 'package:frpc_gui/src/rust/api/models/descriptors/service_descriptor.dart';
 import 'package:frpc_gui/src/rust/api/models/environment/environment.dart';
 import 'package:frpc_gui/src/rust/api/models/project/project.dart';
 import 'package:frpc_gui/src/rust/api/simple.dart';
@@ -9,12 +7,13 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'project_state_provider.g.dart';
 
+/// Provides the state for an active project.
 class ActiveProjectState {
+  /// Creates a new [ActiveProjectState].
   ActiveProjectState({
     required this.project,
     required this.projectDirectoryPath,
     required this.selectedEnvironment,
-    required this.openedMethods,
     required this.serverDescriptor,
   });
 
@@ -27,38 +26,23 @@ class ActiveProjectState {
   /// The currently selected [Environment].
   final Environment? selectedEnvironment;
 
-  /// The list of opened [MethodDescriptor]s.
-  final List<OpenedMethod> openedMethods;
-
   /// The current [ServerDescriptor] data.
   final ServerDescriptor? serverDescriptor;
 
+  /// Copy with.
   ActiveProjectState copyWith({
-    Environment? selectedEnvironment,
-    List<OpenedMethod>? openedMethods,
     ServerDescriptor? serverDescriptor,
+    Environment? selectedEnvironment,
   }) =>
       ActiveProjectState(
         project: project,
         projectDirectoryPath: projectDirectoryPath,
         selectedEnvironment: selectedEnvironment ?? this.selectedEnvironment,
-        openedMethods: openedMethods ?? this.openedMethods,
         serverDescriptor: serverDescriptor ?? this.serverDescriptor,
       );
 }
 
-class OpenedMethod {
-  OpenedMethod({
-    required this.parentService,
-    required this.method,
-    required this.server,
-  });
-
-  final ServiceDescriptor parentService;
-  final MethodDescriptor method;
-  final ServerDescriptor server;
-}
-
+/// Provider for the state related to a project.
 @riverpod
 class ProjectState extends _$ProjectState {
   @override
@@ -77,18 +61,19 @@ class ProjectState extends _$ProjectState {
       // TODO(bbutner): This needs to be improved to build the string based on the connection.
       final con = initialEnvironment.connection;
       desc = await testGetServerDescriptor(
-          serverUrl: 'http://${con.host}:${con.port}',);
+        serverUrl: 'http://${con.host}:${con.port}',
+      );
     }
 
     return ActiveProjectState(
       project: project.project,
       projectDirectoryPath: project.projectDirectoryPath,
       selectedEnvironment: initialEnvironment,
-      openedMethods: [],
       serverDescriptor: desc,
     );
   }
 
+  /// Adds a new environment.
   Future<void> addEnvironment(Environment newEnv) async {
     final currentState = state.value!;
     currentState.project.environments.add(newEnv);
@@ -100,28 +85,13 @@ class ProjectState extends _$ProjectState {
     state = AsyncValue.data(currentState);
   }
 
+  /// Selects an existing environment by id.
   void selectEnvironment(String id) {
-    state = AsyncValue.data(state.value!.copyWith(
-        selectedEnvironment: state.value!.project.environments
-            .firstWhere((env) => env.id == id),),);
-  }
-
-  void openMethod(
-    ServiceDescriptor service,
-    MethodDescriptor desc,
-    ServerDescriptor server,
-  ) {
-    final currentState = state.value!;
-
-    state = AsyncValue.data(currentState.copyWith(
-      openedMethods: [
-        ...currentState.openedMethods,
-        OpenedMethod(
-          parentService: service,
-          method: desc,
-          server: server,
-        ),
-      ],
-    ),);
+    state = AsyncValue.data(
+      state.value!.copyWith(
+        selectedEnvironment:
+            state.value!.project.environments.firstWhere((env) => env.id == id),
+      ),
+    );
   }
 }

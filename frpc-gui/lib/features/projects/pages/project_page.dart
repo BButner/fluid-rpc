@@ -1,16 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:frpc_gui/core/theme/fluid_colors.dart';
-import 'package:frpc_gui/features/projects/project_state_provider.dart';
 import 'package:frpc_gui/features/projects/project_tab_controller_provider.dart';
 import 'package:tabbed_view/tabbed_view.dart';
 
+/// Page that displays the data related to a project.
 class ProjectPage extends ConsumerStatefulWidget {
-
+  /// Creates a new [ProjectPage].
   const ProjectPage({
     required this.projectId,
     super.key,
   });
+
+  /// The id of the project that this page is displaying.
   final String projectId;
 
   @override
@@ -20,7 +22,6 @@ class ProjectPage extends ConsumerStatefulWidget {
 class _ProjectPageState extends ConsumerState<ProjectPage> {
   @override
   Widget build(BuildContext context) {
-    final projectState = ref.watch(projectStateProvider.call(widget.projectId));
     final projectTabController =
         ref.watch(projectTabControllerProvider.call(widget.projectId));
 
@@ -77,10 +78,12 @@ class _ProjectPageState extends ConsumerState<ProjectPage> {
             child: TabbedView(
               controller: projectTabController.tabController,
               onDraggableBuild: (controller, index, data) => DraggableConfig(
-                    feedback: Container(
-                        padding: const EdgeInsets.all(4),
-                        decoration: BoxDecoration(border: Border.all()),
-                        child: Text(data.text),),),
+                feedback: Container(
+                  padding: const EdgeInsets.all(4),
+                  decoration: BoxDecoration(border: Border.all()),
+                  child: Text(data.text),
+                ),
+              ),
             ),
           ),
         ),

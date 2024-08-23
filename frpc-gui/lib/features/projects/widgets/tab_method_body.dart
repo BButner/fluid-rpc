@@ -5,12 +5,15 @@ import 'package:frpc_gui/features/projects/widgets/horizontal_resize_area.dart';
 import 'package:frpc_gui/features/projects/widgets/method_avatar.dart';
 import 'package:frpc_gui/src/rust/api/models/descriptors/method_descriptor.dart';
 
+/// The body of the selected method in a tab.
 class TabMethodBody extends ConsumerWidget {
+  /// Creates a new [TabMethodBody].
   const TabMethodBody({
     required this.method,
     super.key,
   });
 
+  /// The [MethodDescriptor] to be displayed.
   final MethodDescriptor method;
 
   @override

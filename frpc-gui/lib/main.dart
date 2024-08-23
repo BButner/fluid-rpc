@@ -13,7 +13,9 @@ Future<void> main() async {
   );
 }
 
+/// Main entry point for the app.
 class FrpcApp extends ConsumerWidget {
+  /// Creatse a new [FrpcApp].
   const FrpcApp({
     super.key,
   });
