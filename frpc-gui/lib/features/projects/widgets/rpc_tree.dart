@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:frpc_gui/core/controls/expansion_title.dart';
 import 'package:frpc_gui/core/theme/fluid_colors.dart';
 import 'package:frpc_gui/features/projects/project_state_provider.dart';
+import 'package:frpc_gui/features/projects/widgets/rpc_method_button.dart';
 import 'package:frpc_gui/src/rust/api/models/descriptors/server_descriptor.dart';
 import 'package:frpc_gui/src/rust/api/simple.dart';
 
@@ -77,42 +78,9 @@ class _RpcTreeState extends ConsumerState<RpcTree> {
                     children: s.methods
                         .sortedBy((m) => m.name)
                         .map(
-                          (m) => Padding(
-                            padding: const EdgeInsets.only(
-                              left: 16.0,
-                            ),
-                            child: Row(
-                              children: [
-                                DecoratedBox(
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(
-                                      4.0,
-                                    ),
-                                    border: Border.all(
-                                      color: FluidColors.emerald.shade600,
-                                      width: 2.0,
-                                    ),
-                                  ),
-                                  child: const Padding(
-                                    padding: EdgeInsets.all(
-                                      8.0,
-                                    ),
-                                    child: Text('U'),
-                                  ),
-                                ),
-                                const SizedBox(
-                                  width: 8.0,
-                                ),
-                                Expanded(
-                                  child: Text(
-                                    m.name,
-                                    style: Theme.of(context)
-                                        .textTheme
-                                        .bodyMedium,
-                                  ),
-                                ),
-                              ],
-                            ),
+                          (m) => RpcMethodButton(
+                            projectId: widget.projectId,
+                            method: m,
                           ),
                         )
                         .toList(),

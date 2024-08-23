@@ -980,14 +980,15 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   MethodDescriptor dco_decode_method_descriptor(dynamic raw) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
     final arr = raw as List<dynamic>;
-    if (arr.length != 5)
-      throw Exception('unexpected arr length: expect 5 but see ${arr.length}');
+    if (arr.length != 6)
+      throw Exception('unexpected arr length: expect 6 but see ${arr.length}');
     return MethodDescriptor(
       name: dco_decode_String(arr[0]),
       fullName: dco_decode_String(arr[1]),
-      input: dco_decode_message_descriptor(arr[2]),
-      output: dco_decode_message_descriptor(arr[3]),
-      isServerStreaming: dco_decode_bool(arr[4]),
+      parentServiceName: dco_decode_String(arr[2]),
+      input: dco_decode_message_descriptor(arr[3]),
+      output: dco_decode_message_descriptor(arr[4]),
+      isServerStreaming: dco_decode_bool(arr[5]),
     );
   }
 
@@ -1622,12 +1623,14 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
     // Codec=Sse (Serialization based), see doc to use other codecs
     var var_name = sse_decode_String(deserializer);
     var var_fullName = sse_decode_String(deserializer);
+    var var_parentServiceName = sse_decode_String(deserializer);
     var var_input = sse_decode_message_descriptor(deserializer);
     var var_output = sse_decode_message_descriptor(deserializer);
     var var_isServerStreaming = sse_decode_bool(deserializer);
     return MethodDescriptor(
         name: var_name,
         fullName: var_fullName,
+        parentServiceName: var_parentServiceName,
         input: var_input,
         output: var_output,
         isServerStreaming: var_isServerStreaming);
@@ -2234,6 +2237,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
     // Codec=Sse (Serialization based), see doc to use other codecs
     sse_encode_String(self.name, serializer);
     sse_encode_String(self.fullName, serializer);
+    sse_encode_String(self.parentServiceName, serializer);
     sse_encode_message_descriptor(self.input, serializer);
     sse_encode_message_descriptor(self.output, serializer);
     sse_encode_bool(self.isServerStreaming, serializer);

@@ -16,6 +16,7 @@ import 'package:flutter_rust_bridge/flutter_rust_bridge_for_generated.dart';
 class MethodDescriptor {
   final String name;
   final String fullName;
+  final String parentServiceName;
   final MessageDescriptor input;
   final MessageDescriptor output;
   final bool isServerStreaming;
@@ -23,6 +24,7 @@ class MethodDescriptor {
   const MethodDescriptor({
     required this.name,
     required this.fullName,
+    required this.parentServiceName,
     required this.input,
     required this.output,
     required this.isServerStreaming,
@@ -37,6 +39,7 @@ class MethodDescriptor {
   int get hashCode =>
       name.hashCode ^
       fullName.hashCode ^
+      parentServiceName.hashCode ^
       input.hashCode ^
       output.hashCode ^
       isServerStreaming.hashCode;
@@ -48,6 +51,7 @@ class MethodDescriptor {
           runtimeType == other.runtimeType &&
           name == other.name &&
           fullName == other.fullName &&
+          parentServiceName == other.parentServiceName &&
           input == other.input &&
           output == other.output &&
           isServerStreaming == other.isServerStreaming;

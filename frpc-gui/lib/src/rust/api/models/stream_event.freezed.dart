@@ -106,6 +106,9 @@ class _$FluidFrontendStreamEventCopyWithImpl<$Res,
   final $Val _value;
   // ignore: unused_field
   final $Res Function($Val) _then;
+
+  /// Create a copy of FluidFrontendStreamEvent
+  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -131,6 +134,8 @@ class __$$FluidFrontendStreamEvent_InitiatingConnectionImplCopyWithImpl<$Res>
       $Res Function(_$FluidFrontendStreamEvent_InitiatingConnectionImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of FluidFrontendStreamEvent
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -171,7 +176,9 @@ class _$FluidFrontendStreamEvent_InitiatingConnectionImpl
   @override
   int get hashCode => Object.hash(runtimeType, field0);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of FluidFrontendStreamEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$FluidFrontendStreamEvent_InitiatingConnectionImplCopyWith<
@@ -285,7 +292,10 @@ abstract class FluidFrontendStreamEvent_InitiatingConnection
 
   @override
   DateTime get field0;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of FluidFrontendStreamEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$FluidFrontendStreamEvent_InitiatingConnectionImplCopyWith<
           _$FluidFrontendStreamEvent_InitiatingConnectionImpl>
       get copyWith => throw _privateConstructorUsedError;
@@ -311,6 +321,8 @@ class __$$FluidFrontendStreamEvent_ConnectedImplCopyWithImpl<$Res>
       $Res Function(_$FluidFrontendStreamEvent_ConnectedImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of FluidFrontendStreamEvent
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -350,7 +362,9 @@ class _$FluidFrontendStreamEvent_ConnectedImpl
   @override
   int get hashCode => Object.hash(runtimeType, field0);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of FluidFrontendStreamEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$FluidFrontendStreamEvent_ConnectedImplCopyWith<
@@ -461,7 +475,10 @@ abstract class FluidFrontendStreamEvent_Connected
 
   @override
   DateTime get field0;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of FluidFrontendStreamEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$FluidFrontendStreamEvent_ConnectedImplCopyWith<
           _$FluidFrontendStreamEvent_ConnectedImpl>
       get copyWith => throw _privateConstructorUsedError;
@@ -487,6 +504,8 @@ class __$$FluidFrontendStreamEvent_ErrorImplCopyWithImpl<$Res>
       $Res Function(_$FluidFrontendStreamEvent_ErrorImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of FluidFrontendStreamEvent
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -526,7 +545,9 @@ class _$FluidFrontendStreamEvent_ErrorImpl
   @override
   int get hashCode => Object.hash(runtimeType, field0);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of FluidFrontendStreamEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$FluidFrontendStreamEvent_ErrorImplCopyWith<
@@ -636,7 +657,10 @@ abstract class FluidFrontendStreamEvent_Error extends FluidFrontendStreamEvent {
 
   @override
   FluidError get field0;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of FluidFrontendStreamEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$FluidFrontendStreamEvent_ErrorImplCopyWith<
           _$FluidFrontendStreamEvent_ErrorImpl>
       get copyWith => throw _privateConstructorUsedError;
@@ -668,6 +692,8 @@ class __$$FluidFrontendStreamEvent_StreamingMessageReceivedImplCopyWithImpl<
           _then)
       : super(_value, _then);
 
+  /// Create a copy of FluidFrontendStreamEvent
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -708,7 +734,9 @@ class _$FluidFrontendStreamEvent_StreamingMessageReceivedImpl
   @override
   int get hashCode => Object.hash(runtimeType, field0);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of FluidFrontendStreamEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$FluidFrontendStreamEvent_StreamingMessageReceivedImplCopyWith<
@@ -822,7 +850,10 @@ abstract class FluidFrontendStreamEvent_StreamingMessageReceived
 
   @override
   FluidMessageReceived get field0;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of FluidFrontendStreamEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$FluidFrontendStreamEvent_StreamingMessageReceivedImplCopyWith<
           _$FluidFrontendStreamEvent_StreamingMessageReceivedImpl>
       get copyWith => throw _privateConstructorUsedError;
@@ -851,6 +882,8 @@ class __$$FluidFrontendStreamEvent_UnaryMessageReceivedImplCopyWithImpl<$Res>
       $Res Function(_$FluidFrontendStreamEvent_UnaryMessageReceivedImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of FluidFrontendStreamEvent
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -891,7 +924,9 @@ class _$FluidFrontendStreamEvent_UnaryMessageReceivedImpl
   @override
   int get hashCode => Object.hash(runtimeType, field0);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of FluidFrontendStreamEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$FluidFrontendStreamEvent_UnaryMessageReceivedImplCopyWith<
@@ -1005,7 +1040,10 @@ abstract class FluidFrontendStreamEvent_UnaryMessageReceived
 
   @override
   FluidMessageReceived get field0;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of FluidFrontendStreamEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$FluidFrontendStreamEvent_UnaryMessageReceivedImplCopyWith<
           _$FluidFrontendStreamEvent_UnaryMessageReceivedImpl>
       get copyWith => throw _privateConstructorUsedError;

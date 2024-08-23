@@ -1176,6 +1176,7 @@ impl SseDecode for crate::api::models::descriptors::method_descriptor::MethodDes
     fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
         let mut var_name = <String>::sse_decode(deserializer);
         let mut var_fullName = <String>::sse_decode(deserializer);
+        let mut var_parentServiceName = <String>::sse_decode(deserializer);
         let mut var_input =
             <crate::api::models::descriptors::message_descriptor::MessageDescriptor>::sse_decode(
                 deserializer,
@@ -1188,6 +1189,7 @@ impl SseDecode for crate::api::models::descriptors::method_descriptor::MethodDes
         return crate::api::models::descriptors::method_descriptor::MethodDescriptor {
             name: var_name,
             full_name: var_fullName,
+            parent_service_name: var_parentServiceName,
             input: var_input,
             output: var_output,
             is_server_streaming: var_isServerStreaming,
@@ -1835,6 +1837,7 @@ impl flutter_rust_bridge::IntoDart
         [
             self.name.into_into_dart().into_dart(),
             self.full_name.into_into_dart().into_dart(),
+            self.parent_service_name.into_into_dart().into_dart(),
             self.input.into_into_dart().into_dart(),
             self.output.into_into_dart().into_dart(),
             self.is_server_streaming.into_into_dart().into_dart(),
@@ -2412,6 +2415,7 @@ impl SseEncode for crate::api::models::descriptors::method_descriptor::MethodDes
     fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
         <String>::sse_encode(self.name, serializer);
         <String>::sse_encode(self.full_name, serializer);
+        <String>::sse_encode(self.parent_service_name, serializer);
         <crate::api::models::descriptors::message_descriptor::MessageDescriptor>::sse_encode(
             self.input, serializer,
         );
