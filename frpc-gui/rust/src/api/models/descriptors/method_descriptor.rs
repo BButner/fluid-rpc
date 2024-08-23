@@ -6,6 +6,7 @@ use super::message_descriptor::MessageDescriptor;
 pub struct MethodDescriptor {
     pub name: String,
     pub full_name: String,
+    pub parent_service_name: String,
     pub input: MessageDescriptor,
     pub output: MessageDescriptor,
     pub is_server_streaming: bool,
@@ -28,6 +29,7 @@ impl From<prost_reflect::MethodDescriptor> for MethodDescriptor {
         MethodDescriptor {
             name: method.name().to_string(),
             full_name: method.full_name().to_string(),
+            parent_service_name: method.parent_service().full_name().to_string(),
             input: MessageDescriptor::from(method.input()),
             output: MessageDescriptor::from(method.input()),
             is_server_streaming: method.is_server_streaming(),

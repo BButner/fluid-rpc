@@ -26,6 +26,7 @@ class FrpcApp extends ConsumerWidget {
       data: (router) => MaterialApp.router(
         routerConfig: router,
         title: 'Fluid RPC',
+        debugShowCheckedModeBanner: false,
         theme: FluidTheme.fluidTheme,
       ),
       error: (error, stackTrace) => Directionality(

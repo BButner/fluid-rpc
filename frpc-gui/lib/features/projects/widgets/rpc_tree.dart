@@ -79,6 +79,7 @@ class _RpcTreeState extends ConsumerState<RpcTree> {
                         .sortedBy((m) => m.name)
                         .map(
                           (m) => RpcMethodButton(
+                            projectId: widget.projectId,
                             method: m,
                           ),
                         )
