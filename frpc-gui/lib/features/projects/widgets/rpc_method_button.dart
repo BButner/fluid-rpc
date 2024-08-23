@@ -17,8 +17,7 @@ class RpcMethodButton extends ConsumerWidget {
   final MethodDescriptor method;
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    return MaterialButton(
+  Widget build(BuildContext context, WidgetRef ref) => MaterialButton(
       onPressed: () {
         ref
             .read(projectTabControllerProvider.call(projectId).notifier)
@@ -44,5 +43,4 @@ class RpcMethodButton extends ConsumerWidget {
         ),
       ),
     );
-  }
 }

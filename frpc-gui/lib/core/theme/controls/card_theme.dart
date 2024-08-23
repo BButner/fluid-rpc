@@ -5,7 +5,6 @@ class FluidCardTheme {
   static final cardTheme = CardTheme(
     color: FluidColors.zinc.shade900,
     margin: EdgeInsets.zero,
-    surfaceTintColor: null,
     shape: RoundedRectangleBorder(
       borderRadius: BorderRadius.circular(6.0),
       side: BorderSide(

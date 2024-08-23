@@ -1,4 +1,3 @@
-import 'dart:ffi';
 
 import 'package:frpc_gui/src/rust/api/models/config/app_config.dart';
 import 'package:path/path.dart';

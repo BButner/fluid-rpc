@@ -6,12 +6,12 @@ import 'package:frpc_gui/features/projects/project_tab_controller_provider.dart'
 import 'package:tabbed_view/tabbed_view.dart';
 
 class ProjectPage extends ConsumerStatefulWidget {
-  final String projectId;
 
   const ProjectPage({
     required this.projectId,
     super.key,
   });
+  final String projectId;
 
   @override
   ConsumerState<ProjectPage> createState() => _ProjectPageState();
@@ -76,13 +76,11 @@ class _ProjectPageState extends ConsumerState<ProjectPage> {
             ),
             child: TabbedView(
               controller: projectTabController.tabController,
-              onDraggableBuild: (controller, index, data) {
-                return DraggableConfig(
+              onDraggableBuild: (controller, index, data) => DraggableConfig(
                     feedback: Container(
                         padding: const EdgeInsets.all(4),
                         decoration: BoxDecoration(border: Border.all()),
-                        child: Text(data.text)));
-              },
+                        child: Text(data.text),),),
             ),
           ),
         ),

@@ -34,10 +34,10 @@ class _ManageEnvironmentsPopupState
 
     _displayNameController.addListener(() => setState(() {
           _displayName = _displayNameController.text;
-        }));
+        }),);
     _hostnameController.addListener(() => setState(() {
           _hostname = _hostnameController.text;
-        }));
+        }),);
   }
 
   @override

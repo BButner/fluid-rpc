@@ -30,7 +30,7 @@ class _RpcTreeState extends ConsumerState<RpcTree> {
     final connection = projectState.selectedEnvironment!.connection;
 
     final desc = await testGetServerDescriptor(
-        serverUrl: 'http://${connection.host}:${connection.port}');
+        serverUrl: 'http://${connection.host}:${connection.port}',);
 
     return desc;
   }
@@ -86,7 +86,7 @@ class _RpcTreeState extends ConsumerState<RpcTree> {
                         .toList(),
                   ),
             ],
-          )
+          ),
         ],
       ),
       error: (error, stackTrace) => Text(

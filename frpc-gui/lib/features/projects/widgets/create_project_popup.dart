@@ -69,7 +69,7 @@ class _CreateCollectionPopupState extends ConsumerState<CreateProjectPopup> {
                   Project.getDefaultAvatar(
                       displayName: _displayNameController.text.isNotEmpty
                           ? _displayNameController.text
-                          : '?'),
+                          : '?',),
                 ),
               ),
               Expanded(
@@ -88,7 +88,7 @@ class _CreateCollectionPopupState extends ConsumerState<CreateProjectPopup> {
               ),
               ElevatedButton(
                 onPressed: () async {
-                  String? selectedDirectory =
+                  final String? selectedDirectory =
                       await FilePicker.platform.getDirectoryPath();
 
                   if (selectedDirectory == null) {
@@ -105,7 +105,7 @@ class _CreateCollectionPopupState extends ConsumerState<CreateProjectPopup> {
             onPressed: () async {
               final appConfig = ref.read(applicationConfigProvider.notifier);
 
-              var project = Project(
+              final project = Project(
                 id: const Uuid().v4(),
                 displayName: _displayName,
                 environments: [],

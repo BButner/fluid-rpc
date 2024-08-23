@@ -1,7 +1,5 @@
-import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:frpc_gui/core/controls/expansion_title.dart';
 import 'package:frpc_gui/core/theme/fluid_colors.dart';
 import 'package:frpc_gui/features/projects/project_state_provider.dart';
 import 'package:frpc_gui/features/projects/projects_provider.dart';
@@ -125,7 +123,7 @@ class ProjectNavigationShell extends ConsumerWidget {
                                       ),
                                     ],
                                   ),
-                                )
+                                ),
                               ],
                             ),
                           ),
@@ -141,12 +139,12 @@ class ProjectNavigationShell extends ConsumerWidget {
                 error: (error, stackTrace) => Text(
                       error.toString(),
                     ),
-                loading: () => const CircularProgressIndicator());
+                loading: () => const CircularProgressIndicator(),);
           },
           error: (error, stackTrace) => Text(
                 error.toString(),
               ),
-          loading: () => const CircularProgressIndicator()),
+          loading: () => const CircularProgressIndicator(),),
     );
   }
 }

@@ -13,7 +13,8 @@ analyzer:
   exclude:
     - "**/*.g.dart"
     - "**/*.freezed.dart"
-#    - "lib/src/rust"
+    - "lib/src/rust"
+    - "rust_builder"
   plugins:
     - custom_lint
 

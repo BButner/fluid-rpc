@@ -8,7 +8,6 @@ class ButtonThemes {
         borderRadius: BorderRadius.circular(4.0),
       ),
       side: BorderSide(
-        width: 1.0,
         color: FluidColors.violet.shade500,
       ),
       foregroundColor: FluidColors.violet.shade100,
@@ -23,7 +22,6 @@ class ButtonThemes {
         borderRadius: BorderRadius.circular(4.0),
       ),
       side: BorderSide(
-        width: 1.0,
         color: FluidColors.zinc.shade700,
       ),
       foregroundColor: FluidColors.zinc.shade50,

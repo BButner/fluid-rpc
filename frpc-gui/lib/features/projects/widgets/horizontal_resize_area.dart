@@ -24,8 +24,7 @@ class _HorizontalResizeAreaState extends State<HorizontalResizeArea> {
   double _leftRatio = 0.5;
 
   @override
-  Widget build(BuildContext context) {
-    return Stack(
+  Widget build(BuildContext context) => Stack(
       fit: StackFit.expand,
       children: [
         TransformableBox(
@@ -82,5 +81,4 @@ class _HorizontalResizeAreaState extends State<HorizontalResizeArea> {
         ),
       ],
     );
-  }
 }

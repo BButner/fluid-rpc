@@ -77,7 +77,7 @@ class ProjectState extends _$ProjectState {
       // TODO(bbutner): This needs to be improved to build the string based on the connection.
       final con = initialEnvironment.connection;
       desc = await testGetServerDescriptor(
-          serverUrl: 'http://${con.host}:${con.port}');
+          serverUrl: 'http://${con.host}:${con.port}',);
     }
 
     return ActiveProjectState(
@@ -103,7 +103,7 @@ class ProjectState extends _$ProjectState {
   void selectEnvironment(String id) {
     state = AsyncValue.data(state.value!.copyWith(
         selectedEnvironment: state.value!.project.environments
-            .firstWhere((env) => env.id == id)));
+            .firstWhere((env) => env.id == id),),);
   }
 
   void openMethod(
@@ -122,6 +122,6 @@ class ProjectState extends _$ProjectState {
           server: server,
         ),
       ],
-    ));
+    ),);
   }
 }

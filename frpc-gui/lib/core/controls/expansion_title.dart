@@ -23,8 +23,7 @@ class _ExpansionTitleState extends State<ExpansionTitle> {
   bool _isExpanded = false;
 
   @override
-  Widget build(BuildContext context) {
-    return Column(
+  Widget build(BuildContext context) => Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         MaterialButton(
@@ -77,5 +76,4 @@ class _ExpansionTitleState extends State<ExpansionTitle> {
         ),
       ],
     );
-  }
 }
