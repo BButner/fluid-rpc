@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:frpc_gui/core/theme/fluid_colors.dart';
+import 'package:frpc_gui/features/projects/widgets/horizontal_resize_area.dart';
 import 'package:frpc_gui/features/projects/widgets/method_avatar.dart';
 import 'package:frpc_gui/src/rust/api/models/descriptors/method_descriptor.dart';
-import 'package:resizable_widget/resizable_widget.dart';
 
 class TabMethodBody extends ConsumerWidget {
   const TabMethodBody({
@@ -66,13 +66,10 @@ class TabMethodBody extends ConsumerWidget {
           ),
           Expanded(
             child: LayoutBuilder(
-              builder: (context, constraints) => ResizableWidget(
-                separatorColor: FluidColors.zinc.shade800,
-                separatorSize: 1.0,
-                children: [
-                  Container(),
-                  Container(),
-                ],
+              builder: (context, constraints) => HorizontalResizeArea(
+                constraints: constraints,
+                leftChild: Text('method builder area'),
+                rightChild: Text('method response area'),
               ),
             ),
           ),

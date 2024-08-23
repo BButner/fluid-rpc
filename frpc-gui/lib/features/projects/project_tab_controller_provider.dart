@@ -1,7 +1,6 @@
 import 'package:collection/collection.dart';
 import 'package:frpc_gui/features/projects/widgets/tab_method_body.dart';
 import 'package:frpc_gui/src/rust/api/models/descriptors/method_descriptor.dart';
-import 'package:frpc_gui/src/rust/api/models/descriptors/service_descriptor.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:tabbed_view/tabbed_view.dart';
 
@@ -42,6 +41,7 @@ class ProjectTabController extends _$ProjectTabController {
     }
 
     final tabData = TabData(
+      keepAlive: true,
       value: method.fullName,
       text: method.name,
       content: TabMethodBody(method: method),
