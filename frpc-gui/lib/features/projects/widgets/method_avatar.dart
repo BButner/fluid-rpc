@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:frpc_gui/core/theme/fluid_colors.dart';
 
+/// Displays the avatar for a method.
 class MethodAvatar extends StatelessWidget {
+  /// Creates a new [MethodAvatar].
   const MethodAvatar({
     required this.isStreaming,
     super.key,
   });
 
+  /// Whether the method is streaming or not.
   final bool isStreaming;
 
   static const MaterialColor _unaryColor = FluidColors.emerald;

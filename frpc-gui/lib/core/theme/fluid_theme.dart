@@ -5,7 +5,9 @@ import 'package:frpc_gui/core/theme/controls/dropdown_menu.dart';
 import 'package:frpc_gui/core/theme/controls/expansion_tile.dart';
 import 'package:frpc_gui/core/theme/fluid_colors.dart';
 
+/// The app theme.
 class FluidTheme {
+  /// Defines the [ThemeData] for the app.
   static final fluidTheme = ThemeData(
     useMaterial3: true,
     brightness: Brightness.dark,

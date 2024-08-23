@@ -6,22 +6,28 @@ import 'package:tabbed_view/tabbed_view.dart';
 
 part 'project_tab_controller_provider.g.dart';
 
+/// The state for the project tabs.
 class ProjectTabState {
+  /// Creates a new [ProjectTabState].
   ProjectTabState({
     required this.projectId,
     required this.tabController,
   });
 
+  /// The id this project belongs to.
   final String projectId;
 
+  /// The [TabbedViewController] for this state.
   final TabbedViewController tabController;
 
+  /// Copy with.
   ProjectTabState copyWith() => ProjectTabState(
         projectId: projectId,
         tabController: tabController,
       );
 }
 
+/// Provider used to supply the state for project tab functionality.
 @riverpod
 class ProjectTabController extends _$ProjectTabController {
   @override
@@ -30,6 +36,7 @@ class ProjectTabController extends _$ProjectTabController {
         tabController: TabbedViewController([]),
       );
 
+  /// Attempt to open a new tab for a method, or activate it if its already open.
   void openOrActivateTab(
     MethodDescriptor method,
   ) {

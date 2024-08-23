@@ -5,6 +5,7 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'projects_provider.g.dart';
 
+/// Provider for the list of [LoadedProject].
 @riverpod
 class Projects extends _$Projects {
   @override

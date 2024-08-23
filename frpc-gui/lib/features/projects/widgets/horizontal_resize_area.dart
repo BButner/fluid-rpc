@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_box_transform/flutter_box_transform.dart';
 import 'package:frpc_gui/core/theme/fluid_colors.dart';
 
+/// Widget used to display a resizable split view of 2 child widgets.
 class HorizontalResizeArea extends StatefulWidget {
+  /// Creates a new [HorizontalResizeArea].
   const HorizontalResizeArea({
     required this.constraints,
     required this.leftChild,
@@ -10,10 +12,13 @@ class HorizontalResizeArea extends StatefulWidget {
     super.key,
   });
 
+  /// The incoming [BoxConstraints].
   final BoxConstraints constraints;
 
+  /// The widget on the left.
   final Widget leftChild;
 
+  /// The widget on the right.
   final Widget rightChild;
 
   @override
@@ -24,8 +29,7 @@ class _HorizontalResizeAreaState extends State<HorizontalResizeArea> {
   double _leftRatio = 0.5;
 
   @override
-  Widget build(BuildContext context) {
-    return Stack(
+  Widget build(BuildContext context) => Stack(
       fit: StackFit.expand,
       children: [
         TransformableBox(
@@ -82,5 +86,4 @@ class _HorizontalResizeAreaState extends State<HorizontalResizeArea> {
         ),
       ],
     );
-  }
 }

@@ -5,17 +5,19 @@ import 'package:frpc_gui/features/projects/widgets/horizontal_resize_area.dart';
 import 'package:frpc_gui/features/projects/widgets/method_avatar.dart';
 import 'package:frpc_gui/src/rust/api/models/descriptors/method_descriptor.dart';
 
+/// The body of the selected method in a tab.
 class TabMethodBody extends ConsumerWidget {
+  /// Creates a new [TabMethodBody].
   const TabMethodBody({
     required this.method,
     super.key,
   });
 
+  /// The [MethodDescriptor] to be displayed.
   final MethodDescriptor method;
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    return Card(
+  Widget build(BuildContext context, WidgetRef ref) => Card(
       margin: const EdgeInsets.only(top: 8.8),
       child: Column(
         children: [
@@ -59,7 +61,7 @@ class TabMethodBody extends ConsumerWidget {
                       Icons.play_arrow_rounded,
                     ),
                     label: const Text('Execute'),
-                  )
+                  ),
                 ],
               ),
             ),
@@ -68,13 +70,12 @@ class TabMethodBody extends ConsumerWidget {
             child: LayoutBuilder(
               builder: (context, constraints) => HorizontalResizeArea(
                 constraints: constraints,
-                leftChild: Text('method builder area'),
-                rightChild: Text('method response area'),
+                leftChild: const Text('method builder area'),
+                rightChild: const Text('method response area'),
               ),
             ),
           ),
         ],
       ),
     );
-  }
 }

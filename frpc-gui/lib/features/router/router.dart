@@ -1,11 +1,9 @@
 import 'package:frpc_gui/features/projects/pages/no_project_page.dart';
+import 'package:frpc_gui/features/projects/pages/project_page.dart';
 import 'package:frpc_gui/features/projects/pages/projects_shell.dart';
 import 'package:frpc_gui/features/projects/projects_provider.dart';
 import 'package:go_router/go_router.dart';
-import 'package:path/path.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
-
-import '../projects/pages/project_page.dart';
 
 part 'router.g.dart';
 

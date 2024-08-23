@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 
+/// The colors used throughout Fluid, which are the values from the TailwindCSS palette.
 class FluidColors {
+  /// The TailwindCSS slate color.
   static const MaterialColor slate = MaterialColor(
     0xFFF8FAFC,
     <int, Color>{
@@ -18,6 +20,7 @@ class FluidColors {
     },
   );
 
+  /// The TailwindCSS gray color.
   static const MaterialColor gray = MaterialColor(
     0xFFF9FAFB,
     <int, Color>{
@@ -35,6 +38,7 @@ class FluidColors {
     },
   );
 
+  /// The TailwindCSS zinc color.
   static const MaterialColor zinc = MaterialColor(
     0xFFFAFAFA,
     <int, Color>{
@@ -52,6 +56,7 @@ class FluidColors {
     },
   );
 
+  /// The TailwindCSS neutral color.
   static const MaterialColor neutral = MaterialColor(
     0xFFFAFAFA,
     <int, Color>{
@@ -69,6 +74,7 @@ class FluidColors {
     },
   );
 
+  /// The TailwindCSS stone color.
   static const MaterialColor stone = MaterialColor(
     0xFFFAFAF9,
     <int, Color>{
@@ -86,6 +92,7 @@ class FluidColors {
     },
   );
 
+  /// The TailwindCSS red color.
   static const MaterialColor red = MaterialColor(
     0xFFFEF2F2,
     <int, Color>{
@@ -103,6 +110,7 @@ class FluidColors {
     },
   );
 
+  /// The TailwindCSS orange color.
   static const MaterialColor orange = MaterialColor(
     0xFFFFF7ED,
     <int, Color>{
@@ -120,6 +128,7 @@ class FluidColors {
     },
   );
 
+  /// The TailwindCSS amber color.
   static const MaterialColor amber = MaterialColor(
     0xFFFFFBEB,
     <int, Color>{
@@ -137,6 +146,7 @@ class FluidColors {
     },
   );
 
+  /// The TailwindCSS yellow color.
   static const MaterialColor yellow = MaterialColor(
     0xFFFEFCE8,
     <int, Color>{
@@ -154,6 +164,7 @@ class FluidColors {
     },
   );
 
+  /// The TailwindCSS lime color.
   static const MaterialColor lime = MaterialColor(
     0xFFF7FEE7,
     <int, Color>{
@@ -171,6 +182,7 @@ class FluidColors {
     },
   );
 
+  /// The TailwindCSS green color.
   static const MaterialColor green = MaterialColor(
     0xFFF0FDF4,
     <int, Color>{
@@ -188,6 +200,7 @@ class FluidColors {
     },
   );
 
+  /// The TailwindCSS emerald color.
   static const MaterialColor emerald = MaterialColor(
     0xFFECFDF5,
     <int, Color>{
@@ -205,6 +218,7 @@ class FluidColors {
     },
   );
 
+  /// The TailwindCSS teal color.
   static const MaterialColor teal = MaterialColor(
     0xFFF0FDFA,
     <int, Color>{
@@ -222,6 +236,7 @@ class FluidColors {
     },
   );
 
+  /// The TailwindCSS cyan color.
   static const MaterialColor cyan = MaterialColor(
     0xFFECFEFF,
     <int, Color>{
@@ -239,6 +254,7 @@ class FluidColors {
     },
   );
 
+  /// The TailwindCSS sky color.
   static const MaterialColor sky = MaterialColor(
     0xFFF0F9FF,
     <int, Color>{
@@ -256,6 +272,7 @@ class FluidColors {
     },
   );
 
+  /// The TailwindCSS blue color.
   static const MaterialColor blue = MaterialColor(
     0xFFEFF6FF,
     <int, Color>{
@@ -273,6 +290,7 @@ class FluidColors {
     },
   );
 
+  /// The TailwindCSS indigo color.
   static const MaterialColor indigo = MaterialColor(
     0xFFEEF2FF,
     <int, Color>{
@@ -290,6 +308,7 @@ class FluidColors {
     },
   );
 
+  /// The TailwindCSS violet color.
   static const MaterialColor violet = MaterialColor(
     0xFFF5F3FF,
     <int, Color>{
@@ -307,6 +326,7 @@ class FluidColors {
     },
   );
 
+  /// The TailwindCSS purple color.
   static const MaterialColor purple = MaterialColor(
     0xFFFAF5FF,
     <int, Color>{
@@ -324,6 +344,7 @@ class FluidColors {
     },
   );
 
+  /// The TailwindCSS fuchsia color.
   static const MaterialColor fuchsia = MaterialColor(
     0xFFFDF4FF,
     <int, Color>{
@@ -341,6 +362,7 @@ class FluidColors {
     },
   );
 
+  /// The TailwindCSS pink color.
   static const MaterialColor pink = MaterialColor(
     0xFFFDF2F8,
     <int, Color>{
@@ -358,6 +380,7 @@ class FluidColors {
     },
   );
 
+  /// The TailwindCSS rose color.
   static const MaterialColor rose = MaterialColor(
     0xFFFFF1F2,
     <int, Color>{

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 
+/// Theme related to the [ExpensionTile].
 class FluidExpansionTileTheme {
+  /// The theme for the [ExpansionTile].
   static final expansionTileTheme = ExpansionTileThemeData(
     shape: RoundedRectangleBorder(
       borderRadius: BorderRadius.circular(4.0),
