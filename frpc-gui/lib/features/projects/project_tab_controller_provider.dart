@@ -51,7 +51,10 @@ class ProjectTabController extends _$ProjectTabController {
       keepAlive: true,
       value: method.fullName,
       text: method.name,
-      content: TabMethodBody(method: method),
+      content: TabMethodBody(
+        projectId: state.projectId,
+        method: method,
+      ),
     );
 
     state.tabController.addTab(tabData);

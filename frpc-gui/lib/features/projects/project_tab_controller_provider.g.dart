@@ -7,7 +7,7 @@ part of 'project_tab_controller_provider.dart';
 // **************************************************************************
 
 String _$projectTabControllerHash() =>
-    r'89f761f5be5ccd142945c90a15692b354225a5f2';
+    r'a367e94076d434aa7a78d49e6d690093daba7cfa';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -39,16 +39,24 @@ abstract class _$ProjectTabController
   );
 }
 
-/// See also [ProjectTabController].
+/// Provider used to supply the state for project tab functionality.
+///
+/// Copied from [ProjectTabController].
 @ProviderFor(ProjectTabController)
 const projectTabControllerProvider = ProjectTabControllerFamily();
 
-/// See also [ProjectTabController].
+/// Provider used to supply the state for project tab functionality.
+///
+/// Copied from [ProjectTabController].
 class ProjectTabControllerFamily extends Family<ProjectTabState> {
-  /// See also [ProjectTabController].
+  /// Provider used to supply the state for project tab functionality.
+  ///
+  /// Copied from [ProjectTabController].
   const ProjectTabControllerFamily();
 
-  /// See also [ProjectTabController].
+  /// Provider used to supply the state for project tab functionality.
+  ///
+  /// Copied from [ProjectTabController].
   ProjectTabControllerProvider call(
     String projectId,
   ) {
@@ -81,10 +89,14 @@ class ProjectTabControllerFamily extends Family<ProjectTabState> {
   String? get name => r'projectTabControllerProvider';
 }
 
-/// See also [ProjectTabController].
+/// Provider used to supply the state for project tab functionality.
+///
+/// Copied from [ProjectTabController].
 class ProjectTabControllerProvider extends AutoDisposeNotifierProviderImpl<
     ProjectTabController, ProjectTabState> {
-  /// See also [ProjectTabController].
+  /// Provider used to supply the state for project tab functionality.
+  ///
+  /// Copied from [ProjectTabController].
   ProjectTabControllerProvider(
     String projectId,
   ) : this._internal(

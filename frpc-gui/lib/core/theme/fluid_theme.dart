@@ -3,6 +3,7 @@ import 'package:frpc_gui/core/theme/controls/buttons.dart';
 import 'package:frpc_gui/core/theme/controls/card_theme.dart';
 import 'package:frpc_gui/core/theme/controls/dropdown_menu.dart';
 import 'package:frpc_gui/core/theme/controls/expansion_tile.dart';
+import 'package:frpc_gui/core/theme/controls/text_field.dart';
 import 'package:frpc_gui/core/theme/fluid_colors.dart';
 
 /// The app theme.
@@ -22,5 +23,7 @@ class FluidTheme {
     expansionTileTheme: FluidExpansionTileTheme.expansionTileTheme,
     dropdownMenuTheme: FluidDropdownMenuTheme.dropdownMenuTheme,
     popupMenuTheme: ButtonThemes.popupMenuButton,
+    inputDecorationTheme: FluidTextFieldThemes.inputDecorationTheme,
+    textSelectionTheme: FluidTextFieldThemes.textSelectionTheme,
   );
 }
