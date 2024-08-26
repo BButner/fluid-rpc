@@ -40,6 +40,8 @@ class _MethodBuilderState extends ConsumerState<MethodBuilder> {
           .read(methodStateProvider.call(widget.method.fullName).notifier)
           .updateRequestData(_dataController.text),
     );
+
+    _dataController.text = widget.method.defaultData;
   }
 
   @override

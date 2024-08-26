@@ -1186,6 +1186,7 @@ impl SseDecode for crate::api::models::descriptors::method_descriptor::MethodDes
                 deserializer,
             );
         let mut var_isServerStreaming = <bool>::sse_decode(deserializer);
+        let mut var_defaultData = <String>::sse_decode(deserializer);
         return crate::api::models::descriptors::method_descriptor::MethodDescriptor {
             name: var_name,
             full_name: var_fullName,
@@ -1193,6 +1194,7 @@ impl SseDecode for crate::api::models::descriptors::method_descriptor::MethodDes
             input: var_input,
             output: var_output,
             is_server_streaming: var_isServerStreaming,
+            default_data: var_defaultData,
         };
     }
 }
@@ -1841,6 +1843,7 @@ impl flutter_rust_bridge::IntoDart
             self.input.into_into_dart().into_dart(),
             self.output.into_into_dart().into_dart(),
             self.is_server_streaming.into_into_dart().into_dart(),
+            self.default_data.into_into_dart().into_dart(),
         ]
         .into_dart()
     }
@@ -2424,6 +2427,7 @@ impl SseEncode for crate::api::models::descriptors::method_descriptor::MethodDes
             serializer,
         );
         <bool>::sse_encode(self.is_server_streaming, serializer);
+        <String>::sse_encode(self.default_data, serializer);
     }
 }
 

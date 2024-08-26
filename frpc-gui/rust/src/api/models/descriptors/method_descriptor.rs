@@ -1,4 +1,6 @@
 use flutter_rust_bridge::frb;
+use prost_reflect::{DynamicMessage, SerializeOptions};
+use serde_json::{ser::PrettyFormatter, Deserializer};
 
 use super::message_descriptor::MessageDescriptor;
 
@@ -10,6 +12,7 @@ pub struct MethodDescriptor {
     pub input: MessageDescriptor,
     pub output: MessageDescriptor,
     pub is_server_streaming: bool,
+    pub default_data: String,
 }
 
 impl MethodDescriptor {
@@ -26,6 +29,15 @@ impl MethodDescriptor {
 
 impl From<prost_reflect::MethodDescriptor> for MethodDescriptor {
     fn from(method: prost_reflect::MethodDescriptor) -> Self {
+        let mut deserializer = Deserializer::from_str("{}");
+        let dynamic_message =
+            DynamicMessage::deserialize(method.clone().input(), &mut deserializer).unwrap();
+
+        let mut serializer = serde_json::Serializer::with_formatter(vec![], PrettyFormatter::new());
+        let options = SerializeOptions::new().skip_default_fields(false);
+
+        let _ = dynamic_message.serialize_with_options(&mut serializer, &options);
+
         MethodDescriptor {
             name: method.name().to_string(),
             full_name: method.full_name().to_string(),
@@ -33,6 +45,7 @@ impl From<prost_reflect::MethodDescriptor> for MethodDescriptor {
             input: MessageDescriptor::from(method.input()),
             output: MessageDescriptor::from(method.input()),
             is_server_streaming: method.is_server_streaming(),
+            default_data: String::from_utf8(serializer.into_inner()).expect("ERROR"),
         }
     }
 }

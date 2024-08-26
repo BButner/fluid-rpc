@@ -1,6 +1,7 @@
 use chrono::{DateTime, Local};
 use flutter_rust_bridge::frb;
-use prost_reflect::text_format::FormatOptions;
+use prost_reflect::{text_format::FormatOptions, SerializeOptions};
+use serde_json::ser::PrettyFormatter;
 
 #[derive(Debug)]
 #[frb(non_opaque)]
@@ -42,9 +43,16 @@ impl From<frpc_lib::stream::fluid_message_received::FluidMessageReceived> for Fl
             .expand_any(true)
             .skip_unknown_fields(false);
 
+        let mut serializer = serde_json::Serializer::with_formatter(vec![], PrettyFormatter::new());
+        let options = SerializeOptions::new().skip_default_fields(false);
+
+        let _ = message
+            .message
+            .serialize_with_options(&mut serializer, &options);
+
         FluidMessageReceived {
             date_time: Local::now(),
-            contents: message.message.to_text_format_with_options(&options),
+            contents: String::from_utf8(serializer.into_inner()).expect("ERROR"),
         }
     }
 }
