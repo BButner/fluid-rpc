@@ -6,52 +6,40 @@ import 'package:frpc_gui/features/projects/method_state_provider.dart';
 import 'package:frpc_gui/src/rust/api/models/descriptors/method_descriptor.dart';
 import 'package:highlight/languages/json.dart' as highlight;
 
-/// Widget used as the encompassing widget to build a gRPC Method request for invocation.
-class MethodBuilder extends ConsumerStatefulWidget {
-  /// Creates a new [MethodBuilder].
-  const MethodBuilder({
+/// Widget that contains all of the functionality related to the method response.
+class MethodResponseArea extends ConsumerStatefulWidget {
+  /// Creates a new [MethodResponseArea].
+  const MethodResponseArea({
     required this.projectId,
     required this.method,
     super.key,
   });
 
-  /// The project id this belongs to.
+  /// The id of the project this belongs to.
   final String projectId;
 
-  /// The [MethodDescriptor] we're building the request for.
+  /// The [MethodDescriptor] to display the invocation responses of.
   final MethodDescriptor method;
 
   @override
-  ConsumerState<MethodBuilder> createState() => _MethodBuilderState();
+  ConsumerState<MethodResponseArea> createState() => _MethodResponseAreaState();
 }
 
-class _MethodBuilderState extends ConsumerState<MethodBuilder> {
-  final _dataController = CodeController(
-    text: '{\n}',
+class _MethodResponseAreaState extends ConsumerState<MethodResponseArea> {
+  final _responseController = CodeController(
     language: highlight.json,
   );
 
   @override
-  void initState() {
-    super.initState();
-
-    _dataController.addListener(
-      () => ref
-          .read(methodStateProvider.call(widget.method.fullName).notifier)
-          .updateRequestData(_dataController.text),
-    );
-  }
-
-  @override
-  void dispose() {
-    _dataController.dispose();
-    super.dispose();
-  }
-
-  @override
   Widget build(BuildContext context) {
-    final _ =
+    final methodState =
         ref.watch(methodStateProvider.call(widget.method.target()));
+
+    ref.listen(methodStateProvider.call(widget.method.target()), (prev, next) {
+      if (next.responseData != prev?.responseData) {
+        _responseController.text = next.responseData;
+      }
+    });
 
     return Column(
       children: [
@@ -68,7 +56,7 @@ class _MethodBuilderState extends ConsumerState<MethodBuilder> {
                 ),
                 child: CodeField(
                   expands: true,
-                  controller: _dataController,
+                  controller: _responseController,
                   textStyle: Theme.of(context).textTheme.bodySmall,
                   background: Colors.transparent,
                 ),

@@ -6,7 +6,7 @@ part of 'method_state_provider.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$methodStateHash() => r'72aa302d7ac2da87554c6255ec8db4c767eb92d2';
+String _$methodStateHash() => r'70690a30717757fe40b3dba98b58fb6951194f26';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -31,10 +31,10 @@ class _SystemHash {
 
 abstract class _$MethodState
     extends BuildlessAutoDisposeNotifier<MethodBuilderState> {
-  late final String methodId;
+  late final String methodTarget;
 
   MethodBuilderState build(
-    String methodId,
+    String methodTarget,
   );
 }
 
@@ -57,10 +57,10 @@ class MethodStateFamily extends Family<MethodBuilderState> {
   ///
   /// Copied from [MethodState].
   MethodStateProvider call(
-    String methodId,
+    String methodTarget,
   ) {
     return MethodStateProvider(
-      methodId,
+      methodTarget,
     );
   }
 
@@ -69,7 +69,7 @@ class MethodStateFamily extends Family<MethodBuilderState> {
     covariant MethodStateProvider provider,
   ) {
     return call(
-      provider.methodId,
+      provider.methodTarget,
     );
   }
 
@@ -97,9 +97,9 @@ class MethodStateProvider
   ///
   /// Copied from [MethodState].
   MethodStateProvider(
-    String methodId,
+    String methodTarget,
   ) : this._internal(
-          () => MethodState()..methodId = methodId,
+          () => MethodState()..methodTarget = methodTarget,
           from: methodStateProvider,
           name: r'methodStateProvider',
           debugGetCreateSourceHash:
@@ -109,7 +109,7 @@ class MethodStateProvider
           dependencies: MethodStateFamily._dependencies,
           allTransitiveDependencies:
               MethodStateFamily._allTransitiveDependencies,
-          methodId: methodId,
+          methodTarget: methodTarget,
         );
 
   MethodStateProvider._internal(
@@ -119,17 +119,17 @@ class MethodStateProvider
     required super.allTransitiveDependencies,
     required super.debugGetCreateSourceHash,
     required super.from,
-    required this.methodId,
+    required this.methodTarget,
   }) : super.internal();
 
-  final String methodId;
+  final String methodTarget;
 
   @override
   MethodBuilderState runNotifierBuild(
     covariant MethodState notifier,
   ) {
     return notifier.build(
-      methodId,
+      methodTarget,
     );
   }
 
@@ -138,13 +138,13 @@ class MethodStateProvider
     return ProviderOverride(
       origin: this,
       override: MethodStateProvider._internal(
-        () => create()..methodId = methodId,
+        () => create()..methodTarget = methodTarget,
         from: from,
         name: null,
         dependencies: null,
         allTransitiveDependencies: null,
         debugGetCreateSourceHash: null,
-        methodId: methodId,
+        methodTarget: methodTarget,
       ),
     );
   }
@@ -157,21 +157,21 @@ class MethodStateProvider
 
   @override
   bool operator ==(Object other) {
-    return other is MethodStateProvider && other.methodId == methodId;
+    return other is MethodStateProvider && other.methodTarget == methodTarget;
   }
 
   @override
   int get hashCode {
     var hash = _SystemHash.combine(0, runtimeType.hashCode);
-    hash = _SystemHash.combine(hash, methodId.hashCode);
+    hash = _SystemHash.combine(hash, methodTarget.hashCode);
 
     return _SystemHash.finish(hash);
   }
 }
 
 mixin MethodStateRef on AutoDisposeNotifierProviderRef<MethodBuilderState> {
-  /// The parameter `methodId` of this provider.
-  String get methodId;
+  /// The parameter `methodTarget` of this provider.
+  String get methodTarget;
 }
 
 class _MethodStateProviderElement
@@ -180,7 +180,7 @@ class _MethodStateProviderElement
   _MethodStateProviderElement(super.provider);
 
   @override
-  String get methodId => (origin as MethodStateProvider).methodId;
+  String get methodTarget => (origin as MethodStateProvider).methodTarget;
 }
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member

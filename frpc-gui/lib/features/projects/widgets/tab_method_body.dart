@@ -5,6 +5,7 @@ import 'package:frpc_gui/features/projects/method_state_provider.dart';
 import 'package:frpc_gui/features/projects/widgets/horizontal_resize_area.dart';
 import 'package:frpc_gui/features/projects/widgets/method_avatar.dart';
 import 'package:frpc_gui/features/projects/widgets/method_builder.dart';
+import 'package:frpc_gui/features/projects/widgets/method_response_area.dart';
 import 'package:frpc_gui/src/rust/api/models/descriptors/method_descriptor.dart';
 
 /// The body of the selected method in a tab.
@@ -63,11 +64,17 @@ class TabMethodBody extends ConsumerWidget {
                       ),
                     ),
                     ElevatedButton.icon(
-                      onPressed: () {
+                      onPressed: () async {
                         final state =
-                            ref.read(methodStateProvider.call(method.fullName));
+                            ref.read(methodStateProvider.call(method.target()));
 
-                        print(state.requestData);
+                        final responseStream = await ref
+                            .read(
+                              methodStateProvider
+                                  .call(method.target())
+                                  .notifier,
+                            )
+                            .invoke(projectId);
                       },
                       icon: const Icon(
                         Icons.play_arrow_rounded,
@@ -86,7 +93,10 @@ class TabMethodBody extends ConsumerWidget {
                     projectId: projectId,
                     method: method,
                   ),
-                  rightChild: const Text('method response area'),
+                  rightChild: MethodResponseArea(
+                    projectId: projectId,
+                    method: method,
+                  ),
                 ),
               ),
             ),

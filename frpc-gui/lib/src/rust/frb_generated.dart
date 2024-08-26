@@ -860,11 +860,11 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
         );
       case 3:
         return FluidFrontendStreamEvent_StreamingMessageReceived(
-          dco_decode_box_autoadd_fluid_message_received(raw[1]),
+          message: dco_decode_box_autoadd_fluid_message_received(raw[1]),
         );
       case 4:
         return FluidFrontendStreamEvent_UnaryMessageReceived(
-          dco_decode_box_autoadd_fluid_message_received(raw[1]),
+          message: dco_decode_box_autoadd_fluid_message_received(raw[1]),
         );
       default:
         throw Exception("unreachable");
@@ -1456,13 +1456,15 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
         var var_field0 = sse_decode_box_autoadd_fluid_error(deserializer);
         return FluidFrontendStreamEvent_Error(var_field0);
       case 3:
-        var var_field0 =
+        var var_message =
             sse_decode_box_autoadd_fluid_message_received(deserializer);
-        return FluidFrontendStreamEvent_StreamingMessageReceived(var_field0);
+        return FluidFrontendStreamEvent_StreamingMessageReceived(
+            message: var_message);
       case 4:
-        var var_field0 =
+        var var_message =
             sse_decode_box_autoadd_fluid_message_received(deserializer);
-        return FluidFrontendStreamEvent_UnaryMessageReceived(var_field0);
+        return FluidFrontendStreamEvent_UnaryMessageReceived(
+            message: var_message);
       default:
         throw UnimplementedError('');
     }
@@ -2096,13 +2098,15 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
         sse_encode_i_32(2, serializer);
         sse_encode_box_autoadd_fluid_error(field0, serializer);
       case FluidFrontendStreamEvent_StreamingMessageReceived(
-          field0: final field0
+          message: final message
         ):
         sse_encode_i_32(3, serializer);
-        sse_encode_box_autoadd_fluid_message_received(field0, serializer);
-      case FluidFrontendStreamEvent_UnaryMessageReceived(field0: final field0):
+        sse_encode_box_autoadd_fluid_message_received(message, serializer);
+      case FluidFrontendStreamEvent_UnaryMessageReceived(
+          message: final message
+        ):
         sse_encode_i_32(4, serializer);
-        sse_encode_box_autoadd_fluid_message_received(field0, serializer);
+        sse_encode_box_autoadd_fluid_message_received(message, serializer);
       default:
         throw UnimplementedError('');
     }

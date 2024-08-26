@@ -8,8 +8,8 @@ pub enum FluidFrontendStreamEvent {
     InitiatingConnection(DateTime<Local>),
     Connected(DateTime<Local>),
     Error(FluidError),
-    StreamingMessageReceived(FluidMessageReceived),
-    UnaryMessageReceived(FluidMessageReceived),
+    StreamingMessageReceived { message: FluidMessageReceived },
+    UnaryMessageReceived { message: FluidMessageReceived },
 }
 
 #[derive(Debug)]
@@ -37,7 +37,10 @@ impl From<frpc_lib::stream::fluid_error::FluidError> for FluidError {
 
 impl From<frpc_lib::stream::fluid_message_received::FluidMessageReceived> for FluidMessageReceived {
     fn from(message: frpc_lib::stream::fluid_message_received::FluidMessageReceived) -> Self {
-        let options = FormatOptions::new().pretty(true);
+        let options = FormatOptions::new()
+            .pretty(true)
+            .expand_any(true)
+            .skip_unknown_fields(false);
 
         FluidMessageReceived {
             date_time: Local::now(),
@@ -60,10 +63,14 @@ impl From<frpc_lib::stream::fluid_stream_event::FluidStreamEvent> for FluidFront
             }
             frpc_lib::stream::fluid_stream_event::FluidStreamEvent::StreamingMessageReceived(
                 message,
-            ) => Self::StreamingMessageReceived(FluidMessageReceived::from(message)),
+            ) => Self::StreamingMessageReceived {
+                message: FluidMessageReceived::from(message),
+            },
             frpc_lib::stream::fluid_stream_event::FluidStreamEvent::UnaryMessageReceived(
                 message,
-            ) => Self::UnaryMessageReceived(FluidMessageReceived::from(message)),
+            ) => Self::UnaryMessageReceived {
+                message: FluidMessageReceived::from(message),
+            },
         }
     }
 }

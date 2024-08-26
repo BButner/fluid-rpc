@@ -16,15 +16,15 @@ final _privateConstructorUsedError = UnsupportedError(
 
 /// @nodoc
 mixin _$FluidFrontendStreamEvent {
-  Object get field0 => throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function(DateTime field0) initiatingConnection,
     required TResult Function(DateTime field0) connected,
     required TResult Function(FluidError field0) error,
-    required TResult Function(FluidMessageReceived field0)
+    required TResult Function(FluidMessageReceived message)
         streamingMessageReceived,
-    required TResult Function(FluidMessageReceived field0) unaryMessageReceived,
+    required TResult Function(FluidMessageReceived message)
+        unaryMessageReceived,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -32,8 +32,8 @@ mixin _$FluidFrontendStreamEvent {
     TResult? Function(DateTime field0)? initiatingConnection,
     TResult? Function(DateTime field0)? connected,
     TResult? Function(FluidError field0)? error,
-    TResult? Function(FluidMessageReceived field0)? streamingMessageReceived,
-    TResult? Function(FluidMessageReceived field0)? unaryMessageReceived,
+    TResult? Function(FluidMessageReceived message)? streamingMessageReceived,
+    TResult? Function(FluidMessageReceived message)? unaryMessageReceived,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -41,8 +41,8 @@ mixin _$FluidFrontendStreamEvent {
     TResult Function(DateTime field0)? initiatingConnection,
     TResult Function(DateTime field0)? connected,
     TResult Function(FluidError field0)? error,
-    TResult Function(FluidMessageReceived field0)? streamingMessageReceived,
-    TResult Function(FluidMessageReceived field0)? unaryMessageReceived,
+    TResult Function(FluidMessageReceived message)? streamingMessageReceived,
+    TResult Function(FluidMessageReceived message)? unaryMessageReceived,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
@@ -194,9 +194,10 @@ class _$FluidFrontendStreamEvent_InitiatingConnectionImpl
     required TResult Function(DateTime field0) initiatingConnection,
     required TResult Function(DateTime field0) connected,
     required TResult Function(FluidError field0) error,
-    required TResult Function(FluidMessageReceived field0)
+    required TResult Function(FluidMessageReceived message)
         streamingMessageReceived,
-    required TResult Function(FluidMessageReceived field0) unaryMessageReceived,
+    required TResult Function(FluidMessageReceived message)
+        unaryMessageReceived,
   }) {
     return initiatingConnection(field0);
   }
@@ -207,8 +208,8 @@ class _$FluidFrontendStreamEvent_InitiatingConnectionImpl
     TResult? Function(DateTime field0)? initiatingConnection,
     TResult? Function(DateTime field0)? connected,
     TResult? Function(FluidError field0)? error,
-    TResult? Function(FluidMessageReceived field0)? streamingMessageReceived,
-    TResult? Function(FluidMessageReceived field0)? unaryMessageReceived,
+    TResult? Function(FluidMessageReceived message)? streamingMessageReceived,
+    TResult? Function(FluidMessageReceived message)? unaryMessageReceived,
   }) {
     return initiatingConnection?.call(field0);
   }
@@ -219,8 +220,8 @@ class _$FluidFrontendStreamEvent_InitiatingConnectionImpl
     TResult Function(DateTime field0)? initiatingConnection,
     TResult Function(DateTime field0)? connected,
     TResult Function(FluidError field0)? error,
-    TResult Function(FluidMessageReceived field0)? streamingMessageReceived,
-    TResult Function(FluidMessageReceived field0)? unaryMessageReceived,
+    TResult Function(FluidMessageReceived message)? streamingMessageReceived,
+    TResult Function(FluidMessageReceived message)? unaryMessageReceived,
     required TResult orElse(),
   }) {
     if (initiatingConnection != null) {
@@ -290,7 +291,6 @@ abstract class FluidFrontendStreamEvent_InitiatingConnection
       _$FluidFrontendStreamEvent_InitiatingConnectionImpl;
   const FluidFrontendStreamEvent_InitiatingConnection._() : super._();
 
-  @override
   DateTime get field0;
 
   /// Create a copy of FluidFrontendStreamEvent
@@ -378,9 +378,10 @@ class _$FluidFrontendStreamEvent_ConnectedImpl
     required TResult Function(DateTime field0) initiatingConnection,
     required TResult Function(DateTime field0) connected,
     required TResult Function(FluidError field0) error,
-    required TResult Function(FluidMessageReceived field0)
+    required TResult Function(FluidMessageReceived message)
         streamingMessageReceived,
-    required TResult Function(FluidMessageReceived field0) unaryMessageReceived,
+    required TResult Function(FluidMessageReceived message)
+        unaryMessageReceived,
   }) {
     return connected(field0);
   }
@@ -391,8 +392,8 @@ class _$FluidFrontendStreamEvent_ConnectedImpl
     TResult? Function(DateTime field0)? initiatingConnection,
     TResult? Function(DateTime field0)? connected,
     TResult? Function(FluidError field0)? error,
-    TResult? Function(FluidMessageReceived field0)? streamingMessageReceived,
-    TResult? Function(FluidMessageReceived field0)? unaryMessageReceived,
+    TResult? Function(FluidMessageReceived message)? streamingMessageReceived,
+    TResult? Function(FluidMessageReceived message)? unaryMessageReceived,
   }) {
     return connected?.call(field0);
   }
@@ -403,8 +404,8 @@ class _$FluidFrontendStreamEvent_ConnectedImpl
     TResult Function(DateTime field0)? initiatingConnection,
     TResult Function(DateTime field0)? connected,
     TResult Function(FluidError field0)? error,
-    TResult Function(FluidMessageReceived field0)? streamingMessageReceived,
-    TResult Function(FluidMessageReceived field0)? unaryMessageReceived,
+    TResult Function(FluidMessageReceived message)? streamingMessageReceived,
+    TResult Function(FluidMessageReceived message)? unaryMessageReceived,
     required TResult orElse(),
   }) {
     if (connected != null) {
@@ -473,7 +474,6 @@ abstract class FluidFrontendStreamEvent_Connected
       _$FluidFrontendStreamEvent_ConnectedImpl;
   const FluidFrontendStreamEvent_Connected._() : super._();
 
-  @override
   DateTime get field0;
 
   /// Create a copy of FluidFrontendStreamEvent
@@ -561,9 +561,10 @@ class _$FluidFrontendStreamEvent_ErrorImpl
     required TResult Function(DateTime field0) initiatingConnection,
     required TResult Function(DateTime field0) connected,
     required TResult Function(FluidError field0) error,
-    required TResult Function(FluidMessageReceived field0)
+    required TResult Function(FluidMessageReceived message)
         streamingMessageReceived,
-    required TResult Function(FluidMessageReceived field0) unaryMessageReceived,
+    required TResult Function(FluidMessageReceived message)
+        unaryMessageReceived,
   }) {
     return error(field0);
   }
@@ -574,8 +575,8 @@ class _$FluidFrontendStreamEvent_ErrorImpl
     TResult? Function(DateTime field0)? initiatingConnection,
     TResult? Function(DateTime field0)? connected,
     TResult? Function(FluidError field0)? error,
-    TResult? Function(FluidMessageReceived field0)? streamingMessageReceived,
-    TResult? Function(FluidMessageReceived field0)? unaryMessageReceived,
+    TResult? Function(FluidMessageReceived message)? streamingMessageReceived,
+    TResult? Function(FluidMessageReceived message)? unaryMessageReceived,
   }) {
     return error?.call(field0);
   }
@@ -586,8 +587,8 @@ class _$FluidFrontendStreamEvent_ErrorImpl
     TResult Function(DateTime field0)? initiatingConnection,
     TResult Function(DateTime field0)? connected,
     TResult Function(FluidError field0)? error,
-    TResult Function(FluidMessageReceived field0)? streamingMessageReceived,
-    TResult Function(FluidMessageReceived field0)? unaryMessageReceived,
+    TResult Function(FluidMessageReceived message)? streamingMessageReceived,
+    TResult Function(FluidMessageReceived message)? unaryMessageReceived,
     required TResult orElse(),
   }) {
     if (error != null) {
@@ -655,7 +656,6 @@ abstract class FluidFrontendStreamEvent_Error extends FluidFrontendStreamEvent {
       _$FluidFrontendStreamEvent_ErrorImpl;
   const FluidFrontendStreamEvent_Error._() : super._();
 
-  @override
   FluidError get field0;
 
   /// Create a copy of FluidFrontendStreamEvent
@@ -676,7 +676,7 @@ abstract class _$$FluidFrontendStreamEvent_StreamingMessageReceivedImplCopyWith<
       __$$FluidFrontendStreamEvent_StreamingMessageReceivedImplCopyWithImpl<
           $Res>;
   @useResult
-  $Res call({FluidMessageReceived field0});
+  $Res call({FluidMessageReceived message});
 }
 
 /// @nodoc
@@ -697,12 +697,12 @@ class __$$FluidFrontendStreamEvent_StreamingMessageReceivedImplCopyWithImpl<
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? field0 = null,
+    Object? message = null,
   }) {
     return _then(_$FluidFrontendStreamEvent_StreamingMessageReceivedImpl(
-      null == field0
-          ? _value.field0
-          : field0 // ignore: cast_nullable_to_non_nullable
+      message: null == message
+          ? _value.message
+          : message // ignore: cast_nullable_to_non_nullable
               as FluidMessageReceived,
     ));
   }
@@ -712,15 +712,16 @@ class __$$FluidFrontendStreamEvent_StreamingMessageReceivedImplCopyWithImpl<
 
 class _$FluidFrontendStreamEvent_StreamingMessageReceivedImpl
     extends FluidFrontendStreamEvent_StreamingMessageReceived {
-  const _$FluidFrontendStreamEvent_StreamingMessageReceivedImpl(this.field0)
+  const _$FluidFrontendStreamEvent_StreamingMessageReceivedImpl(
+      {required this.message})
       : super._();
 
   @override
-  final FluidMessageReceived field0;
+  final FluidMessageReceived message;
 
   @override
   String toString() {
-    return 'FluidFrontendStreamEvent.streamingMessageReceived(field0: $field0)';
+    return 'FluidFrontendStreamEvent.streamingMessageReceived(message: $message)';
   }
 
   @override
@@ -728,11 +729,11 @@ class _$FluidFrontendStreamEvent_StreamingMessageReceivedImpl
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$FluidFrontendStreamEvent_StreamingMessageReceivedImpl &&
-            (identical(other.field0, field0) || other.field0 == field0));
+            (identical(other.message, message) || other.message == message));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, field0);
+  int get hashCode => Object.hash(runtimeType, message);
 
   /// Create a copy of FluidFrontendStreamEvent
   /// with the given fields replaced by the non-null parameter values.
@@ -752,11 +753,12 @@ class _$FluidFrontendStreamEvent_StreamingMessageReceivedImpl
     required TResult Function(DateTime field0) initiatingConnection,
     required TResult Function(DateTime field0) connected,
     required TResult Function(FluidError field0) error,
-    required TResult Function(FluidMessageReceived field0)
+    required TResult Function(FluidMessageReceived message)
         streamingMessageReceived,
-    required TResult Function(FluidMessageReceived field0) unaryMessageReceived,
+    required TResult Function(FluidMessageReceived message)
+        unaryMessageReceived,
   }) {
-    return streamingMessageReceived(field0);
+    return streamingMessageReceived(message);
   }
 
   @override
@@ -765,10 +767,10 @@ class _$FluidFrontendStreamEvent_StreamingMessageReceivedImpl
     TResult? Function(DateTime field0)? initiatingConnection,
     TResult? Function(DateTime field0)? connected,
     TResult? Function(FluidError field0)? error,
-    TResult? Function(FluidMessageReceived field0)? streamingMessageReceived,
-    TResult? Function(FluidMessageReceived field0)? unaryMessageReceived,
+    TResult? Function(FluidMessageReceived message)? streamingMessageReceived,
+    TResult? Function(FluidMessageReceived message)? unaryMessageReceived,
   }) {
-    return streamingMessageReceived?.call(field0);
+    return streamingMessageReceived?.call(message);
   }
 
   @override
@@ -777,12 +779,12 @@ class _$FluidFrontendStreamEvent_StreamingMessageReceivedImpl
     TResult Function(DateTime field0)? initiatingConnection,
     TResult Function(DateTime field0)? connected,
     TResult Function(FluidError field0)? error,
-    TResult Function(FluidMessageReceived field0)? streamingMessageReceived,
-    TResult Function(FluidMessageReceived field0)? unaryMessageReceived,
+    TResult Function(FluidMessageReceived message)? streamingMessageReceived,
+    TResult Function(FluidMessageReceived message)? unaryMessageReceived,
     required TResult orElse(),
   }) {
     if (streamingMessageReceived != null) {
-      return streamingMessageReceived(field0);
+      return streamingMessageReceived(message);
     }
     return orElse();
   }
@@ -844,12 +846,11 @@ class _$FluidFrontendStreamEvent_StreamingMessageReceivedImpl
 abstract class FluidFrontendStreamEvent_StreamingMessageReceived
     extends FluidFrontendStreamEvent {
   const factory FluidFrontendStreamEvent_StreamingMessageReceived(
-          final FluidMessageReceived field0) =
+          {required final FluidMessageReceived message}) =
       _$FluidFrontendStreamEvent_StreamingMessageReceivedImpl;
   const FluidFrontendStreamEvent_StreamingMessageReceived._() : super._();
 
-  @override
-  FluidMessageReceived get field0;
+  FluidMessageReceived get message;
 
   /// Create a copy of FluidFrontendStreamEvent
   /// with the given fields replaced by the non-null parameter values.
@@ -868,7 +869,7 @@ abstract class _$$FluidFrontendStreamEvent_UnaryMessageReceivedImplCopyWith<
               then) =
       __$$FluidFrontendStreamEvent_UnaryMessageReceivedImplCopyWithImpl<$Res>;
   @useResult
-  $Res call({FluidMessageReceived field0});
+  $Res call({FluidMessageReceived message});
 }
 
 /// @nodoc
@@ -887,12 +888,12 @@ class __$$FluidFrontendStreamEvent_UnaryMessageReceivedImplCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? field0 = null,
+    Object? message = null,
   }) {
     return _then(_$FluidFrontendStreamEvent_UnaryMessageReceivedImpl(
-      null == field0
-          ? _value.field0
-          : field0 // ignore: cast_nullable_to_non_nullable
+      message: null == message
+          ? _value.message
+          : message // ignore: cast_nullable_to_non_nullable
               as FluidMessageReceived,
     ));
   }
@@ -902,15 +903,16 @@ class __$$FluidFrontendStreamEvent_UnaryMessageReceivedImplCopyWithImpl<$Res>
 
 class _$FluidFrontendStreamEvent_UnaryMessageReceivedImpl
     extends FluidFrontendStreamEvent_UnaryMessageReceived {
-  const _$FluidFrontendStreamEvent_UnaryMessageReceivedImpl(this.field0)
+  const _$FluidFrontendStreamEvent_UnaryMessageReceivedImpl(
+      {required this.message})
       : super._();
 
   @override
-  final FluidMessageReceived field0;
+  final FluidMessageReceived message;
 
   @override
   String toString() {
-    return 'FluidFrontendStreamEvent.unaryMessageReceived(field0: $field0)';
+    return 'FluidFrontendStreamEvent.unaryMessageReceived(message: $message)';
   }
 
   @override
@@ -918,11 +920,11 @@ class _$FluidFrontendStreamEvent_UnaryMessageReceivedImpl
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$FluidFrontendStreamEvent_UnaryMessageReceivedImpl &&
-            (identical(other.field0, field0) || other.field0 == field0));
+            (identical(other.message, message) || other.message == message));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, field0);
+  int get hashCode => Object.hash(runtimeType, message);
 
   /// Create a copy of FluidFrontendStreamEvent
   /// with the given fields replaced by the non-null parameter values.
@@ -942,11 +944,12 @@ class _$FluidFrontendStreamEvent_UnaryMessageReceivedImpl
     required TResult Function(DateTime field0) initiatingConnection,
     required TResult Function(DateTime field0) connected,
     required TResult Function(FluidError field0) error,
-    required TResult Function(FluidMessageReceived field0)
+    required TResult Function(FluidMessageReceived message)
         streamingMessageReceived,
-    required TResult Function(FluidMessageReceived field0) unaryMessageReceived,
+    required TResult Function(FluidMessageReceived message)
+        unaryMessageReceived,
   }) {
-    return unaryMessageReceived(field0);
+    return unaryMessageReceived(message);
   }
 
   @override
@@ -955,10 +958,10 @@ class _$FluidFrontendStreamEvent_UnaryMessageReceivedImpl
     TResult? Function(DateTime field0)? initiatingConnection,
     TResult? Function(DateTime field0)? connected,
     TResult? Function(FluidError field0)? error,
-    TResult? Function(FluidMessageReceived field0)? streamingMessageReceived,
-    TResult? Function(FluidMessageReceived field0)? unaryMessageReceived,
+    TResult? Function(FluidMessageReceived message)? streamingMessageReceived,
+    TResult? Function(FluidMessageReceived message)? unaryMessageReceived,
   }) {
-    return unaryMessageReceived?.call(field0);
+    return unaryMessageReceived?.call(message);
   }
 
   @override
@@ -967,12 +970,12 @@ class _$FluidFrontendStreamEvent_UnaryMessageReceivedImpl
     TResult Function(DateTime field0)? initiatingConnection,
     TResult Function(DateTime field0)? connected,
     TResult Function(FluidError field0)? error,
-    TResult Function(FluidMessageReceived field0)? streamingMessageReceived,
-    TResult Function(FluidMessageReceived field0)? unaryMessageReceived,
+    TResult Function(FluidMessageReceived message)? streamingMessageReceived,
+    TResult Function(FluidMessageReceived message)? unaryMessageReceived,
     required TResult orElse(),
   }) {
     if (unaryMessageReceived != null) {
-      return unaryMessageReceived(field0);
+      return unaryMessageReceived(message);
     }
     return orElse();
   }
@@ -1034,12 +1037,11 @@ class _$FluidFrontendStreamEvent_UnaryMessageReceivedImpl
 abstract class FluidFrontendStreamEvent_UnaryMessageReceived
     extends FluidFrontendStreamEvent {
   const factory FluidFrontendStreamEvent_UnaryMessageReceived(
-          final FluidMessageReceived field0) =
+          {required final FluidMessageReceived message}) =
       _$FluidFrontendStreamEvent_UnaryMessageReceivedImpl;
   const FluidFrontendStreamEvent_UnaryMessageReceived._() : super._();
 
-  @override
-  FluidMessageReceived get field0;
+  FluidMessageReceived get message;
 
   /// Create a copy of FluidFrontendStreamEvent
   /// with the given fields replaced by the non-null parameter values.
