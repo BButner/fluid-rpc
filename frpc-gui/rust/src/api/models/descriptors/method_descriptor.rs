@@ -30,13 +30,20 @@ impl MethodDescriptor {
 impl From<prost_reflect::MethodDescriptor> for MethodDescriptor {
     fn from(method: prost_reflect::MethodDescriptor) -> Self {
         let mut deserializer = Deserializer::from_str("{}");
+
+        dbg!(&method.input());
+
         let dynamic_message =
             DynamicMessage::deserialize(method.clone().input(), &mut deserializer).unwrap();
 
         let mut serializer = serde_json::Serializer::with_formatter(vec![], PrettyFormatter::new());
-        let options = SerializeOptions::new().skip_default_fields(false);
+        let options = SerializeOptions::new()
+            .skip_default_fields(false)
+            .use_proto_field_name(true);
 
-        let _ = dynamic_message.serialize_with_options(&mut serializer, &options);
+        let res = dynamic_message.serialize_with_options(&mut serializer, &options);
+
+        dbg!(res);
 
         MethodDescriptor {
             name: method.name().to_string(),

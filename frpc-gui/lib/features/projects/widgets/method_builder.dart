@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_code_editor/flutter_code_editor.dart';
+import 'package:flutter_highlight/themes/dracula.dart';
 import 'package:flutter_highlight/themes/tomorrow-night.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:frpc_gui/features/projects/method_state_provider.dart';
@@ -26,14 +27,16 @@ class MethodBuilder extends ConsumerStatefulWidget {
 }
 
 class _MethodBuilderState extends ConsumerState<MethodBuilder> {
-  final _dataController = CodeController(
-    text: '{\n}',
-    language: highlight.json,
-  );
+  late final CodeController _dataController;
 
   @override
   void initState() {
     super.initState();
+
+    _dataController = CodeController(
+      text: widget.method.defaultData,
+      language: highlight.json,
+    );
 
     _dataController.addListener(
       () => ref
@@ -52,8 +55,7 @@ class _MethodBuilderState extends ConsumerState<MethodBuilder> {
 
   @override
   Widget build(BuildContext context) {
-    final _ =
-        ref.watch(methodStateProvider.call(widget.method.target()));
+    final _ = ref.watch(methodStateProvider.call(widget.method.target()));
 
     return Column(
       children: [
@@ -66,7 +68,7 @@ class _MethodBuilderState extends ConsumerState<MethodBuilder> {
               ),
               child: CodeTheme(
                 data: CodeThemeData(
-                  styles: tomorrowNightTheme,
+                  styles: draculaTheme,
                 ),
                 child: CodeField(
                   expands: true,

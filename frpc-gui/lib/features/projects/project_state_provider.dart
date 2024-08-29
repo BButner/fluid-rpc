@@ -73,6 +73,30 @@ class ProjectState extends _$ProjectState {
     );
   }
 
+  /// Refreshes the currently imported data.
+  Future<void> refreshImportData() async {
+    // TODO(bbutner): We NEED a better way to build a connection, this
+    // should probably be centralized, AND we need to remove any methods
+    // from the tabs that are no longer valid...
+    final curState = state.value!;
+
+    if (curState.selectedEnvironment == null ||
+        curState.project.loaderType is! ProjectLoader_ServerReflection) {
+      return;
+    }
+
+    final con = curState.selectedEnvironment!.connection;
+    final desc = await testGetServerDescriptor(
+      serverUrl: 'http://${con.host}:${con.port}',
+    );
+
+    state = AsyncValue.data(
+      state.value!.copyWith(
+        serverDescriptor: desc,
+      ),
+    );
+  }
+
   /// Adds a new environment.
   Future<void> addEnvironment(Environment newEnv) async {
     final currentState = state.value!;

@@ -6,7 +6,7 @@ part of 'project_state_provider.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$projectStateHash() => r'2172e6cbd5831e13ebe79da3b40cfade608ba9f6';
+String _$projectStateHash() => r'3a33817a357a8abb085dc2e99fb0daa1ba6c0a43';
 
 /// Copied from Dart SDK
 class _SystemHash {
