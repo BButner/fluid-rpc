@@ -17,7 +17,7 @@ use crate::stream::fluid_message_received::FluidMessageReceived;
 use crate::stream::fluid_stream_event::FluidStreamEvent;
 use crate::{
     invoker::invoker_error::InvokerError,
-    loader::{file_loader::load_from_files, reflection_loader::load_from_server_reflection},
+    loader::{file_loader::load_from_files, reflection_loader_v1::load_from_server_reflection},
 };
 
 use super::dynamic_message_codec::DynamicMessageCodec;
@@ -165,7 +165,7 @@ pub async fn invoke_with_pool(
                 .await;
 
             let mut streaming = stream.unwrap().into_inner();
-            
+
             loop {
                 tokio::select! {
                     result = streaming.next() => {

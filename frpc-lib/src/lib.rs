@@ -11,7 +11,7 @@ pub mod misc;
 pub mod stream;
 
 pub async fn list_from_server_reflection(server_url: String) -> Result<DescriptorPool> {
-    let pool = loader::reflection_loader::load_from_server_reflection(server_url).await?;
+    let pool = loader::reflection_loader_v1::load_from_server_reflection(server_url).await?;
 
     Ok(pool)
 }

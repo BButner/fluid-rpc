@@ -12,7 +12,8 @@ use tonic::{
 
 use tonic_reflection::pb::v1alpha::{
     server_reflection_client::ServerReflectionClient, server_reflection_request::MessageRequest,
-    server_reflection_response::MessageResponse, FileDescriptorResponse, ServerReflectionRequest,
+    server_reflection_response::MessageResponse, FileDescriptorResponse, ListServiceResponse,
+    ServerReflectionRequest,
 };
 
 pub(crate) async fn load_from_server_reflection(server_url: String) -> Result<DescriptorPool> {
@@ -25,6 +26,47 @@ pub(crate) async fn load_from_server_reflection(server_url: String) -> Result<De
             Ok(_) => Ok(pool),
             Err(e) => bail!("Error getting Server Reflections: {}", e),
         },
+        Err(e) => bail!("Error creating gRPC connection: {}", e),
+    }
+}
+
+pub(crate) async fn check_implemented(server_url: String) -> Result<bool> {
+    let connection = get_client(server_url).await;
+
+    match connection {
+        Ok(mut client) => {
+            let list_services_request = ServerReflectionRequest {
+                host: String::new(),
+                message_request: Some(MessageRequest::ListServices(String::new())),
+            };
+
+            let services_response = match client
+                .server_reflection_info(Request::new(tokio_stream::once(list_services_request)))
+                .await
+            {
+                Ok(resp) => resp,
+                Err(e) => {
+                    if e.code() == tonic::Code::Unimplemented {
+                        return Ok(false);
+                    } else {
+                        bail!(e);
+                    }
+                }
+            };
+
+            if let Some(MessageResponse::ListServicesResponse(services)) = services_response
+                .into_inner()
+                .next()
+                .await
+                .expect("Response did not exist")
+                .expect("Message did not exist")
+                .message_response
+            {
+                Ok(true)
+            } else {
+                Ok(false)
+            }
+        }
         Err(e) => bail!("Error creating gRPC connection: {}", e),
     }
 }
