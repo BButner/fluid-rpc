@@ -20,6 +20,7 @@ class MethodDescriptor {
   final MessageDescriptor input;
   final MessageDescriptor output;
   final bool isServerStreaming;
+  final String defaultData;
 
   const MethodDescriptor({
     required this.name,
@@ -28,6 +29,7 @@ class MethodDescriptor {
     required this.input,
     required this.output,
     required this.isServerStreaming,
+    required this.defaultData,
   });
 
   String target() => RustLib.instance.api
@@ -42,7 +44,8 @@ class MethodDescriptor {
       parentServiceName.hashCode ^
       input.hashCode ^
       output.hashCode ^
-      isServerStreaming.hashCode;
+      isServerStreaming.hashCode ^
+      defaultData.hashCode;
 
   @override
   bool operator ==(Object other) =>
@@ -54,5 +57,6 @@ class MethodDescriptor {
           parentServiceName == other.parentServiceName &&
           input == other.input &&
           output == other.output &&
-          isServerStreaming == other.isServerStreaming;
+          isServerStreaming == other.isServerStreaming &&
+          defaultData == other.defaultData;
 }

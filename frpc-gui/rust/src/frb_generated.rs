@@ -966,18 +966,18 @@ impl SseDecode for crate::api::models::stream_event::FluidFrontendStreamEvent {
                 );
             }
             3 => {
-                let mut var_field0 =
+                let mut var_message =
                     <crate::api::models::stream_event::FluidMessageReceived>::sse_decode(
                         deserializer,
                     );
-                return crate::api::models::stream_event::FluidFrontendStreamEvent::StreamingMessageReceived(var_field0);
+                return crate::api::models::stream_event::FluidFrontendStreamEvent::StreamingMessageReceived{message: var_message};
             }
             4 => {
-                let mut var_field0 =
+                let mut var_message =
                     <crate::api::models::stream_event::FluidMessageReceived>::sse_decode(
                         deserializer,
                     );
-                return crate::api::models::stream_event::FluidFrontendStreamEvent::UnaryMessageReceived(var_field0);
+                return crate::api::models::stream_event::FluidFrontendStreamEvent::UnaryMessageReceived{message: var_message};
             }
             _ => {
                 unimplemented!("");
@@ -1186,6 +1186,7 @@ impl SseDecode for crate::api::models::descriptors::method_descriptor::MethodDes
                 deserializer,
             );
         let mut var_isServerStreaming = <bool>::sse_decode(deserializer);
+        let mut var_defaultData = <String>::sse_decode(deserializer);
         return crate::api::models::descriptors::method_descriptor::MethodDescriptor {
             name: var_name,
             full_name: var_fullName,
@@ -1193,6 +1194,7 @@ impl SseDecode for crate::api::models::descriptors::method_descriptor::MethodDes
             input: var_input,
             output: var_output,
             is_server_streaming: var_isServerStreaming,
+            default_data: var_defaultData,
         };
     }
 }
@@ -1741,10 +1743,10 @@ crate::api::models::stream_event::FluidFrontendStreamEvent::Connected(field0) =>
 field0.into_into_dart().into_dart()].into_dart() }
 crate::api::models::stream_event::FluidFrontendStreamEvent::Error(field0) => { [2.into_dart(),
 field0.into_into_dart().into_dart()].into_dart() }
-crate::api::models::stream_event::FluidFrontendStreamEvent::StreamingMessageReceived(field0) => { [3.into_dart(),
-field0.into_into_dart().into_dart()].into_dart() }
-crate::api::models::stream_event::FluidFrontendStreamEvent::UnaryMessageReceived(field0) => { [4.into_dart(),
-field0.into_into_dart().into_dart()].into_dart() }
+crate::api::models::stream_event::FluidFrontendStreamEvent::StreamingMessageReceived{message} => { [3.into_dart(),
+message.into_into_dart().into_dart()].into_dart() }
+crate::api::models::stream_event::FluidFrontendStreamEvent::UnaryMessageReceived{message} => { [4.into_dart(),
+message.into_into_dart().into_dart()].into_dart() }
  _ => { unimplemented!(""); }}
     }
 }
@@ -1841,6 +1843,7 @@ impl flutter_rust_bridge::IntoDart
             self.input.into_into_dart().into_dart(),
             self.output.into_into_dart().into_dart(),
             self.is_server_streaming.into_into_dart().into_dart(),
+            self.default_data.into_into_dart().into_dart(),
         ]
         .into_dart()
     }
@@ -2255,9 +2258,9 @@ crate::api::models::stream_event::FluidFrontendStreamEvent::Connected(field0) =>
  }
 crate::api::models::stream_event::FluidFrontendStreamEvent::Error(field0) => { <i32>::sse_encode(2, serializer); <crate::api::models::stream_event::FluidError>::sse_encode(field0, serializer);
  }
-crate::api::models::stream_event::FluidFrontendStreamEvent::StreamingMessageReceived(field0) => { <i32>::sse_encode(3, serializer); <crate::api::models::stream_event::FluidMessageReceived>::sse_encode(field0, serializer);
+crate::api::models::stream_event::FluidFrontendStreamEvent::StreamingMessageReceived{message} => { <i32>::sse_encode(3, serializer); <crate::api::models::stream_event::FluidMessageReceived>::sse_encode(message, serializer);
  }
-crate::api::models::stream_event::FluidFrontendStreamEvent::UnaryMessageReceived(field0) => { <i32>::sse_encode(4, serializer); <crate::api::models::stream_event::FluidMessageReceived>::sse_encode(field0, serializer);
+crate::api::models::stream_event::FluidFrontendStreamEvent::UnaryMessageReceived{message} => { <i32>::sse_encode(4, serializer); <crate::api::models::stream_event::FluidMessageReceived>::sse_encode(message, serializer);
  }
  _ => { unimplemented!(""); }}
     }
@@ -2424,6 +2427,7 @@ impl SseEncode for crate::api::models::descriptors::method_descriptor::MethodDes
             serializer,
         );
         <bool>::sse_encode(self.is_server_streaming, serializer);
+        <String>::sse_encode(self.default_data, serializer);
     }
 }
 

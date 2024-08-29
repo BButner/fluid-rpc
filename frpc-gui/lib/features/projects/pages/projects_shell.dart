@@ -4,6 +4,7 @@ import 'package:frpc_gui/core/theme/fluid_colors.dart';
 import 'package:frpc_gui/features/projects/project_state_provider.dart';
 import 'package:frpc_gui/features/projects/projects_provider.dart';
 import 'package:frpc_gui/features/projects/widgets/rpc_tree.dart';
+import 'package:frpc_gui/features/projects/widgets/selected_environment_dropdown.dart';
 import 'package:frpc_gui/src/rust/api/models/project/project.dart';
 import 'package:go_router/go_router.dart';
 
@@ -105,10 +106,48 @@ class ProjectNavigationShell extends ConsumerWidget {
                             ),
                             const Spacer(),
                             IconButton(
-                              onPressed: () {},
+                              onPressed: () async {
+                                await ref
+                                    .read(
+                                      projectStateProvider
+                                          .call(currentProject.project.id)
+                                          .notifier,
+                                    )
+                                    .refreshImportData();
+                              },
                               icon: const Icon(Icons.refresh_rounded),
                             ),
                           ],
+                        ),
+                        const SizedBox(height: 16.0),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 8.0,
+                          ),
+                          child: Row(
+                            children: [
+                              Icon(
+                                Icons.eco_rounded,
+                                size: 14.0,
+                                color: FluidColors.zinc.shade400,
+                              ),
+                              const SizedBox(width: 8.0),
+                              Expanded(
+                                child: Text(
+                                  'Environment',
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .labelMedium!
+                                      .copyWith(
+                                        color: FluidColors.zinc.shade400,
+                                      ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        SelectedEnvironmentDropdown(
+                          projectId: projectState.project.id,
                         ),
                         const SizedBox(height: 16.0),
                         Expanded(

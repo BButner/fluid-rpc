@@ -8,7 +8,9 @@ part of 'app_config_provider.dart';
 
 String _$applicationConfigHash() => r'70bd3473a2f4c9f52fcb4dc5dbcfa60f2d719817';
 
-/// See also [ApplicationConfig].
+/// Provider for the application config.
+///
+/// Copied from [ApplicationConfig].
 @ProviderFor(ApplicationConfig)
 final applicationConfigProvider =
     AutoDisposeAsyncNotifierProvider<ApplicationConfig, AppConfig>.internal(

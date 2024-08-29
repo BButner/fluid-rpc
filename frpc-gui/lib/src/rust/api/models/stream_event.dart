@@ -44,12 +44,12 @@ sealed class FluidFrontendStreamEvent with _$FluidFrontendStreamEvent {
   const factory FluidFrontendStreamEvent.error(
     FluidError field0,
   ) = FluidFrontendStreamEvent_Error;
-  const factory FluidFrontendStreamEvent.streamingMessageReceived(
-    FluidMessageReceived field0,
-  ) = FluidFrontendStreamEvent_StreamingMessageReceived;
-  const factory FluidFrontendStreamEvent.unaryMessageReceived(
-    FluidMessageReceived field0,
-  ) = FluidFrontendStreamEvent_UnaryMessageReceived;
+  const factory FluidFrontendStreamEvent.streamingMessageReceived({
+    required FluidMessageReceived message,
+  }) = FluidFrontendStreamEvent_StreamingMessageReceived;
+  const factory FluidFrontendStreamEvent.unaryMessageReceived({
+    required FluidMessageReceived message,
+  }) = FluidFrontendStreamEvent_UnaryMessageReceived;
 }
 
 class FluidMessageReceived {

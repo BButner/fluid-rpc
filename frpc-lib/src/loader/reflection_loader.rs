@@ -9,7 +9,8 @@ use tonic::{
     transport::{Channel, Endpoint},
     Request,
 };
-use tonic_reflection::pb::v1::{
+
+use tonic_reflection::pb::v1alpha::{
     server_reflection_client::ServerReflectionClient, server_reflection_request::MessageRequest,
     server_reflection_response::MessageResponse, FileDescriptorResponse, ServerReflectionRequest,
 };

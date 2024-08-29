@@ -8,7 +8,9 @@ part of 'projects_provider.dart';
 
 String _$projectsHash() => r'96126f9239898409f10ee151b1170f3fdccfb79a';
 
-/// See also [Projects].
+/// Provider for the list of [LoadedProject].
+///
+/// Copied from [Projects].
 @ProviderFor(Projects)
 final projectsProvider =
     AutoDisposeAsyncNotifierProvider<Projects, List<LoadedProject>>.internal(

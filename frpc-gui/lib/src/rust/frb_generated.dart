@@ -860,11 +860,11 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
         );
       case 3:
         return FluidFrontendStreamEvent_StreamingMessageReceived(
-          dco_decode_box_autoadd_fluid_message_received(raw[1]),
+          message: dco_decode_box_autoadd_fluid_message_received(raw[1]),
         );
       case 4:
         return FluidFrontendStreamEvent_UnaryMessageReceived(
-          dco_decode_box_autoadd_fluid_message_received(raw[1]),
+          message: dco_decode_box_autoadd_fluid_message_received(raw[1]),
         );
       default:
         throw Exception("unreachable");
@@ -980,8 +980,8 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   MethodDescriptor dco_decode_method_descriptor(dynamic raw) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
     final arr = raw as List<dynamic>;
-    if (arr.length != 6)
-      throw Exception('unexpected arr length: expect 6 but see ${arr.length}');
+    if (arr.length != 7)
+      throw Exception('unexpected arr length: expect 7 but see ${arr.length}');
     return MethodDescriptor(
       name: dco_decode_String(arr[0]),
       fullName: dco_decode_String(arr[1]),
@@ -989,6 +989,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
       input: dco_decode_message_descriptor(arr[3]),
       output: dco_decode_message_descriptor(arr[4]),
       isServerStreaming: dco_decode_bool(arr[5]),
+      defaultData: dco_decode_String(arr[6]),
     );
   }
 
@@ -1456,13 +1457,15 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
         var var_field0 = sse_decode_box_autoadd_fluid_error(deserializer);
         return FluidFrontendStreamEvent_Error(var_field0);
       case 3:
-        var var_field0 =
+        var var_message =
             sse_decode_box_autoadd_fluid_message_received(deserializer);
-        return FluidFrontendStreamEvent_StreamingMessageReceived(var_field0);
+        return FluidFrontendStreamEvent_StreamingMessageReceived(
+            message: var_message);
       case 4:
-        var var_field0 =
+        var var_message =
             sse_decode_box_autoadd_fluid_message_received(deserializer);
-        return FluidFrontendStreamEvent_UnaryMessageReceived(var_field0);
+        return FluidFrontendStreamEvent_UnaryMessageReceived(
+            message: var_message);
       default:
         throw UnimplementedError('');
     }
@@ -1627,13 +1630,15 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
     var var_input = sse_decode_message_descriptor(deserializer);
     var var_output = sse_decode_message_descriptor(deserializer);
     var var_isServerStreaming = sse_decode_bool(deserializer);
+    var var_defaultData = sse_decode_String(deserializer);
     return MethodDescriptor(
         name: var_name,
         fullName: var_fullName,
         parentServiceName: var_parentServiceName,
         input: var_input,
         output: var_output,
-        isServerStreaming: var_isServerStreaming);
+        isServerStreaming: var_isServerStreaming,
+        defaultData: var_defaultData);
   }
 
   @protected
@@ -2096,13 +2101,15 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
         sse_encode_i_32(2, serializer);
         sse_encode_box_autoadd_fluid_error(field0, serializer);
       case FluidFrontendStreamEvent_StreamingMessageReceived(
-          field0: final field0
+          message: final message
         ):
         sse_encode_i_32(3, serializer);
-        sse_encode_box_autoadd_fluid_message_received(field0, serializer);
-      case FluidFrontendStreamEvent_UnaryMessageReceived(field0: final field0):
+        sse_encode_box_autoadd_fluid_message_received(message, serializer);
+      case FluidFrontendStreamEvent_UnaryMessageReceived(
+          message: final message
+        ):
         sse_encode_i_32(4, serializer);
-        sse_encode_box_autoadd_fluid_message_received(field0, serializer);
+        sse_encode_box_autoadd_fluid_message_received(message, serializer);
       default:
         throw UnimplementedError('');
     }
@@ -2241,6 +2248,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
     sse_encode_message_descriptor(self.input, serializer);
     sse_encode_message_descriptor(self.output, serializer);
     sse_encode_bool(self.isServerStreaming, serializer);
+    sse_encode_String(self.defaultData, serializer);
   }
 
   @protected

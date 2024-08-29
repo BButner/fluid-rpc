@@ -6,7 +6,7 @@ part of 'project_state_provider.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$projectStateHash() => r'dcc24cdcf2c558e9d832cafb51743e403259f323';
+String _$projectStateHash() => r'3a33817a357a8abb085dc2e99fb0daa1ba6c0a43';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -38,16 +38,24 @@ abstract class _$ProjectState
   );
 }
 
-/// See also [ProjectState].
+/// Provider for the state related to a project.
+///
+/// Copied from [ProjectState].
 @ProviderFor(ProjectState)
 const projectStateProvider = ProjectStateFamily();
 
-/// See also [ProjectState].
+/// Provider for the state related to a project.
+///
+/// Copied from [ProjectState].
 class ProjectStateFamily extends Family<AsyncValue<ActiveProjectState>> {
-  /// See also [ProjectState].
+  /// Provider for the state related to a project.
+  ///
+  /// Copied from [ProjectState].
   const ProjectStateFamily();
 
-  /// See also [ProjectState].
+  /// Provider for the state related to a project.
+  ///
+  /// Copied from [ProjectState].
   ProjectStateProvider call(
     String projectId,
   ) {
@@ -80,10 +88,14 @@ class ProjectStateFamily extends Family<AsyncValue<ActiveProjectState>> {
   String? get name => r'projectStateProvider';
 }
 
-/// See also [ProjectState].
+/// Provider for the state related to a project.
+///
+/// Copied from [ProjectState].
 class ProjectStateProvider extends AutoDisposeAsyncNotifierProviderImpl<
     ProjectState, ActiveProjectState> {
-  /// See also [ProjectState].
+  /// Provider for the state related to a project.
+  ///
+  /// Copied from [ProjectState].
   ProjectStateProvider(
     String projectId,
   ) : this._internal(
