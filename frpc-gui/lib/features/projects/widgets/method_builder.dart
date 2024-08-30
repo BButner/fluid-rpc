@@ -70,11 +70,12 @@ class _MethodBuilderState extends ConsumerState<MethodBuilder> {
                 data: CodeThemeData(
                   styles: draculaTheme,
                 ),
-                child: CodeField(
-                  expands: true,
-                  controller: _dataController,
-                  textStyle: Theme.of(context).textTheme.bodySmall,
-                  background: Colors.transparent,
+                child: SingleChildScrollView(
+                  child: CodeField(
+                    controller: _dataController,
+                    textStyle: Theme.of(context).textTheme.bodySmall,
+                    background: Colors.transparent,
+                  ),
                 ),
               ),
             ),

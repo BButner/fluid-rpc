@@ -54,11 +54,12 @@ class _MethodResponseAreaState extends ConsumerState<MethodResponseArea> {
                 data: CodeThemeData(
                   styles: tomorrowNightTheme,
                 ),
-                child: CodeField(
-                  expands: true,
-                  controller: _responseController,
-                  textStyle: Theme.of(context).textTheme.bodySmall,
-                  background: Colors.transparent,
+                child: SingleChildScrollView(
+                  child: CodeField(
+                    controller: _responseController,
+                    textStyle: Theme.of(context).textTheme.bodySmall,
+                    background: Colors.transparent,
+                  ),
                 ),
               ),
             ),
