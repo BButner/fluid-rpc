@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_code_editor/flutter_code_editor.dart';
-import 'package:flutter_highlight/themes/tomorrow-night.dart';
+import 'package:flutter_highlight/themes/vs2015.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:frpc_gui/features/projects/method_state_provider.dart';
 import 'package:frpc_gui/src/rust/api/models/descriptors/method_descriptor.dart';
@@ -52,7 +52,7 @@ class _MethodResponseAreaState extends ConsumerState<MethodResponseArea> {
               ),
               child: CodeTheme(
                 data: CodeThemeData(
-                  styles: tomorrowNightTheme,
+                  styles: vs2015Theme,
                 ),
                 child: SingleChildScrollView(
                   child: CodeField(
