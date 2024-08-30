@@ -41,8 +41,6 @@ impl From<prost_reflect::MethodDescriptor> for MethodDescriptor {
 
         let res = dynamic_message.serialize_with_options(&mut serializer, &options);
 
-        dbg!(res);
-
         MethodDescriptor {
             name: method.name().to_string(),
             full_name: method.full_name().to_string(),

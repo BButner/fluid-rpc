@@ -9,7 +9,7 @@ use super::{reflection_loader_v1, reflection_loader_v1alpha};
 pub enum TryGetReflectionVersionResponse {
     DetectedVersion(ReflectionVersion),
     VersionUndetectable,
-    ConnectionError,
+    ConnectionError { error: Box<dyn Error + Send + Sync> },
 }
 
 #[derive(Debug)]
@@ -31,13 +31,15 @@ pub(crate) async fn try_get_reflection_version(
         }
         Ok(_) => {}
         Err(e) => {
-            if let Some(transport) = e.downcast_ref::<tonic::transport::Error>() {
+            if let Some(transport) = &e.downcast_ref::<tonic::transport::Error>() {
                 let source = transport.source();
 
                 match source {
                     Some(source) => {
                         if source.is::<tonic::ConnectError>() {
-                            return Ok(TryGetReflectionVersionResponse::ConnectionError);
+                            return Ok(TryGetReflectionVersionResponse::ConnectionError {
+                                error: e.into(),
+                            });
                         }
                     }
                     None => {}
@@ -56,13 +58,15 @@ pub(crate) async fn try_get_reflection_version(
         }
         Ok(_) => {}
         Err(e) => {
-            if let Some(transport) = e.downcast_ref::<tonic::transport::Error>() {
+            if let Some(transport) = &e.downcast_ref::<tonic::transport::Error>() {
                 let source = transport.source();
 
                 match source {
                     Some(source) => {
                         if source.is::<tonic::ConnectError>() {
-                            return Ok(TryGetReflectionVersionResponse::ConnectionError);
+                            return Ok(TryGetReflectionVersionResponse::ConnectionError {
+                                error: e.into(),
+                            });
                         }
                     }
                     None => {}

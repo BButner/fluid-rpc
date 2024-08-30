@@ -21,14 +21,11 @@ pub async fn list_from_server_reflection(
             let auto_detect_verison =
                 loader::reflection_checker::try_get_reflection_version(server_url.clone()).await?;
 
-            dbg!(&auto_detect_verison);
-
-            // TODO: Fine for testing but... Handle this a lot better...
             let version = match auto_detect_verison {
                 TryGetReflectionVersionResponse::DetectedVersion(version) => version,
-                TryGetReflectionVersionResponse::ConnectionError => bail!("COULD NOT CONNECT"),
+                TryGetReflectionVersionResponse::ConnectionError { error } => bail!(error),
                 TryGetReflectionVersionResponse::VersionUndetectable => {
-                    bail!("VERSION UNDETECTABLE")
+                    bail!("Could not determine reflection version.")
                 }
             };
 
