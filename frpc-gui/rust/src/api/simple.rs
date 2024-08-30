@@ -1,6 +1,6 @@
 use anyhow::Result;
 use flutter_rust_bridge::frb;
-use frpc_lib::{invoke_method, invoke_method_raw};
+use frpc_lib::{invoke_method, invoke_method_raw, loader::reflection_checker::ReflectionVersion};
 use futures::StreamExt;
 pub use tokio_util::sync::CancellationToken;
 
@@ -13,6 +13,22 @@ use super::models::{
 #[flutter_rust_bridge::frb(sync)] // Synchronous mode for simplicity of the demo
 pub fn greet(name: String) -> String {
     format!("Hello, {name}!")
+}
+
+pub enum ReflectionVersionMode {
+    V1,
+    V1Alpha,
+    AutoDetect,
+}
+
+impl ReflectionVersionMode {
+    pub(crate) fn to_reflection_version(&self) -> Option<ReflectionVersion> {
+        match self {
+            ReflectionVersionMode::V1 => Some(ReflectionVersion::V1),
+            ReflectionVersionMode::V1Alpha => Some(ReflectionVersion::V1Alpha),
+            ReflectionVersionMode::AutoDetect => None,
+        }
+    }
 }
 
 pub struct CancelableExecution {
@@ -86,8 +102,15 @@ pub async fn test_invoke_with_pool(
     Ok(())
 }
 
-pub async fn test_get_server_descriptor(server_url: String) -> Result<ServerDescriptor> {
-    let pool = frpc_lib::list_from_server_reflection(server_url).await?;
+pub async fn test_get_server_descriptor(
+    server_url: String,
+    reflection_version_mode: ReflectionVersionMode,
+) -> Result<ServerDescriptor> {
+    let pool = frpc_lib::list_from_server_reflection(
+        server_url,
+        reflection_version_mode.to_reflection_version(),
+    )
+    .await?;
 
     Ok(ServerDescriptor::from(pool))
 }

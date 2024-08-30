@@ -59,13 +59,9 @@ impl Project {
 
         let mut file = File::open(&config_file_path).await?;
 
-        dbg!(&file);
-
         let mut buffer = String::new();
 
         file.read_to_string(&mut buffer).await?;
-
-        dbg!("after read");
 
         let project: Project = serde_json::from_str(&buffer)?;
 
@@ -96,16 +92,10 @@ impl Project {
 
         let contents = serde_json::to_string_pretty(&self)?;
 
-        dbg!("BEFORE");
-
         let mut file = File::create(&project_file_path).await?;
 
-        dbg!("CREATED");
-
         write(&project_file_path, contents).await?;
-
-        dbg!("WRITTEN");
-
+        
         Ok(())
     }
 

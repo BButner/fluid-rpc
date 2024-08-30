@@ -515,12 +515,17 @@ fn wire__crate__api__simple__test_get_server_descriptor_impl(
             let mut deserializer =
                 flutter_rust_bridge::for_generated::SseDeserializer::new(message);
             let api_server_url = <String>::sse_decode(&mut deserializer);
+            let api_reflection_version_mode =
+                <crate::api::simple::ReflectionVersionMode>::sse_decode(&mut deserializer);
             deserializer.end();
             move |context| async move {
                 transform_result_sse::<_, flutter_rust_bridge::for_generated::anyhow::Error>(
                     (move || async move {
-                        let output_ok =
-                            crate::api::simple::test_get_server_descriptor(api_server_url).await?;
+                        let output_ok = crate::api::simple::test_get_server_descriptor(
+                            api_server_url,
+                            api_reflection_version_mode,
+                        )
+                        .await?;
                         Ok(output_ok)
                     })()
                     .await,
@@ -1286,6 +1291,19 @@ impl SseDecode for (String, String) {
     }
 }
 
+impl SseDecode for crate::api::simple::ReflectionVersionMode {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
+        let mut inner = <i32>::sse_decode(deserializer);
+        return match inner {
+            0 => crate::api::simple::ReflectionVersionMode::V1,
+            1 => crate::api::simple::ReflectionVersionMode::V1Alpha,
+            2 => crate::api::simple::ReflectionVersionMode::AutoDetect,
+            _ => unreachable!("Invalid variant for ReflectionVersionMode: {}", inner),
+        };
+    }
+}
+
 impl SseDecode for crate::api::models::descriptors::server_descriptor::ServerDescriptor {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
@@ -1936,6 +1954,28 @@ impl flutter_rust_bridge::IntoIntoDart<crate::api::models::project::project::Pro
     }
 }
 // Codec=Dco (DartCObject based), see doc to use other codecs
+impl flutter_rust_bridge::IntoDart for crate::api::simple::ReflectionVersionMode {
+    fn into_dart(self) -> flutter_rust_bridge::for_generated::DartAbi {
+        match self {
+            Self::V1 => 0.into_dart(),
+            Self::V1Alpha => 1.into_dart(),
+            Self::AutoDetect => 2.into_dart(),
+            _ => unreachable!(),
+        }
+    }
+}
+impl flutter_rust_bridge::for_generated::IntoDartExceptPrimitive
+    for crate::api::simple::ReflectionVersionMode
+{
+}
+impl flutter_rust_bridge::IntoIntoDart<crate::api::simple::ReflectionVersionMode>
+    for crate::api::simple::ReflectionVersionMode
+{
+    fn into_into_dart(self) -> crate::api::simple::ReflectionVersionMode {
+        self
+    }
+}
+// Codec=Dco (DartCObject based), see doc to use other codecs
 impl flutter_rust_bridge::IntoDart
     for crate::api::models::descriptors::server_descriptor::ServerDescriptor
 {
@@ -2500,6 +2540,23 @@ impl SseEncode for (String, String) {
     fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
         <String>::sse_encode(self.0, serializer);
         <String>::sse_encode(self.1, serializer);
+    }
+}
+
+impl SseEncode for crate::api::simple::ReflectionVersionMode {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
+        <i32>::sse_encode(
+            match self {
+                crate::api::simple::ReflectionVersionMode::V1 => 0,
+                crate::api::simple::ReflectionVersionMode::V1Alpha => 1,
+                crate::api::simple::ReflectionVersionMode::AutoDetect => 2,
+                _ => {
+                    unimplemented!("");
+                }
+            },
+            serializer,
+        );
     }
 }
 

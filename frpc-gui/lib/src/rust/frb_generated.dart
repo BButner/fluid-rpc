@@ -117,7 +117,8 @@ abstract class RustLibApi extends BaseApi {
   Future<void> crateApiSimpleInitApp();
 
   Future<ServerDescriptor> crateApiSimpleTestGetServerDescriptor(
-      {required String serverUrl});
+      {required String serverUrl,
+      required ReflectionVersionMode reflectionVersionMode});
 
   Stream<String> crateApiSimpleTestInvoke(
       {required String serverUrl,
@@ -455,11 +456,13 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
 
   @override
   Future<ServerDescriptor> crateApiSimpleTestGetServerDescriptor(
-      {required String serverUrl}) {
+      {required String serverUrl,
+      required ReflectionVersionMode reflectionVersionMode}) {
     return handler.executeNormal(NormalTask(
       callFfi: (port_) {
         final serializer = SseSerializer(generalizedFrbRustBinding);
         sse_encode_String(serverUrl, serializer);
+        sse_encode_reflection_version_mode(reflectionVersionMode, serializer);
         pdeCallFfi(generalizedFrbRustBinding, serializer,
             funcId: 13, port: port_);
       },
@@ -468,7 +471,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
         decodeErrorData: sse_decode_AnyhowException,
       ),
       constMeta: kCrateApiSimpleTestGetServerDescriptorConstMeta,
-      argValues: [serverUrl],
+      argValues: [serverUrl, reflectionVersionMode],
       apiImpl: this,
     ));
   }
@@ -476,7 +479,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   TaskConstMeta get kCrateApiSimpleTestGetServerDescriptorConstMeta =>
       const TaskConstMeta(
         debugName: "test_get_server_descriptor",
-        argNames: ["serverUrl"],
+        argNames: ["serverUrl", "reflectionVersionMode"],
       );
 
   @override
@@ -1057,6 +1060,12 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
       dco_decode_String(arr[0]),
       dco_decode_String(arr[1]),
     );
+  }
+
+  @protected
+  ReflectionVersionMode dco_decode_reflection_version_mode(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return ReflectionVersionMode.values[raw as int];
   }
 
   @protected
@@ -1714,6 +1723,14 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  ReflectionVersionMode sse_decode_reflection_version_mode(
+      SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    var inner = sse_decode_i_32(deserializer);
+    return ReflectionVersionMode.values[inner];
+  }
+
+  @protected
   ServerDescriptor sse_decode_server_descriptor(SseDeserializer deserializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
     var var_services = sse_decode_list_service_descriptor(deserializer);
@@ -2309,6 +2326,13 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
     // Codec=Sse (Serialization based), see doc to use other codecs
     sse_encode_String(self.$1, serializer);
     sse_encode_String(self.$2, serializer);
+  }
+
+  @protected
+  void sse_encode_reflection_version_mode(
+      ReflectionVersionMode self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_i_32(self.index, serializer);
   }
 
   @protected
