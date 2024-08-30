@@ -1,7 +1,6 @@
 use std::error::Error;
 
-use anyhow::{bail, Result};
-use tonic::ConnectError;
+use anyhow::Result;
 
 use super::{reflection_loader_v1, reflection_loader_v1alpha};
 
