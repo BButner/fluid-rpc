@@ -66,7 +66,7 @@ pub(crate) async fn check_implemented(server_url: String) -> Result<bool> {
                 Ok(false)
             }
         }
-        Err(e) => bail!("Error creating gRPC connection: {}", e),
+        Err(e) => bail!(e),
     }
 }
 

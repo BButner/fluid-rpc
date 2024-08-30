@@ -31,8 +31,6 @@ impl From<prost_reflect::MethodDescriptor> for MethodDescriptor {
     fn from(method: prost_reflect::MethodDescriptor) -> Self {
         let mut deserializer = Deserializer::from_str("{}");
 
-        dbg!(&method.input());
-
         let dynamic_message =
             DynamicMessage::deserialize(method.clone().input(), &mut deserializer).unwrap();
 

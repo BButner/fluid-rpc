@@ -208,6 +208,9 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   (String, String) dco_decode_record_string_string(dynamic raw);
 
   @protected
+  ReflectionVersionMode dco_decode_reflection_version_mode(dynamic raw);
+
+  @protected
   ServerDescriptor dco_decode_server_descriptor(dynamic raw);
 
   @protected
@@ -426,6 +429,10 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
 
   @protected
   (String, String) sse_decode_record_string_string(
+      SseDeserializer deserializer);
+
+  @protected
+  ReflectionVersionMode sse_decode_reflection_version_mode(
       SseDeserializer deserializer);
 
   @protected
@@ -658,6 +665,10 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   @protected
   void sse_encode_record_string_string(
       (String, String) self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_reflection_version_mode(
+      ReflectionVersionMode self, SseSerializer serializer);
 
   @protected
   void sse_encode_server_descriptor(

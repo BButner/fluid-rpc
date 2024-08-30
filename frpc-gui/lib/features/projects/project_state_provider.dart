@@ -54,6 +54,9 @@ class ProjectState extends _$ProjectState {
 
     final initialEnvironment = project.project.environments.firstOrNull;
 
+    // TODO(bbutner): Realistically this shouldn't be the responsibility of the
+    // provider for the initial state. It should be a mutator to SET the
+    // data, already loaded elsewhere.
     ServerDescriptor? desc;
 
     if (initialEnvironment != null &&
@@ -62,6 +65,8 @@ class ProjectState extends _$ProjectState {
       final con = initialEnvironment.connection;
       desc = await testGetServerDescriptor(
         serverUrl: 'http://${con.host}:${con.port}',
+        // TODO(bbutner): This should be a setting in the environment.
+        reflectionVersionMode: ReflectionVersionMode.autoDetect,
       );
     }
 
@@ -88,6 +93,7 @@ class ProjectState extends _$ProjectState {
     final con = curState.selectedEnvironment!.connection;
     final desc = await testGetServerDescriptor(
       serverUrl: 'http://${con.host}:${con.port}',
+      reflectionVersionMode: ReflectionVersionMode.autoDetect,
     );
 
     state = AsyncValue.data(

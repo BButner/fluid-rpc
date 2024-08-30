@@ -1,19 +1,57 @@
-use anyhow::Result;
+use anyhow::{bail, Result};
 use futures::channel::mpsc::{self, UnboundedReceiver};
 use invoker::invoker::{invoke, invoke_with_pool};
+use loader::reflection_checker::{ReflectionVersion, TryGetReflectionVersionResponse};
 use prost_reflect::DescriptorPool;
 use stream::fluid_stream_event::FluidStreamEvent;
 use tokio_util::sync::CancellationToken;
 
 pub(crate) mod invoker;
-pub(crate) mod loader;
+pub mod loader;
 pub mod misc;
 pub mod stream;
 
-pub async fn list_from_server_reflection(server_url: String) -> Result<DescriptorPool> {
-    let pool = loader::reflection_loader_v1::load_from_server_reflection(server_url).await?;
+pub async fn list_from_server_reflection(
+    server_url: String,
+    reflection_version: Option<ReflectionVersion>,
+) -> Result<DescriptorPool> {
+    let pool = match reflection_version {
+        Some(version) => load_reflection_data(server_url, version),
+        None => {
+            let auto_detect_verison =
+                loader::reflection_checker::try_get_reflection_version(server_url.clone()).await?;
+
+            dbg!(&auto_detect_verison);
+
+            // TODO: Fine for testing but... Handle this a lot better...
+            let version = match auto_detect_verison {
+                TryGetReflectionVersionResponse::DetectedVersion(version) => version,
+                TryGetReflectionVersionResponse::ConnectionError => bail!("COULD NOT CONNECT"),
+                TryGetReflectionVersionResponse::VersionUndetectable => {
+                    bail!("VERSION UNDETECTABLE")
+                }
+            };
+
+            load_reflection_data(server_url, version)
+        }
+    }
+    .await?;
 
     Ok(pool)
+}
+
+async fn load_reflection_data(
+    server_url: String,
+    reflection_version: ReflectionVersion,
+) -> Result<DescriptorPool> {
+    Ok(match reflection_version {
+        ReflectionVersion::V1 => {
+            loader::reflection_loader_v1::load_from_server_reflection(server_url).await?
+        }
+        ReflectionVersion::V1Alpha => {
+            loader::reflection_loader_v1alpha::load_from_server_reflection(server_url).await?
+        }
+    })
 }
 
 pub async fn list_from_files(

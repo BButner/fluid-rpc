@@ -15,6 +15,8 @@ import 'models/descriptors/service_descriptor.dart';
 import 'models/stream_event.dart';
 import 'package:flutter_rust_bridge/flutter_rust_bridge_for_generated.dart';
 
+// These functions are ignored because they are not marked as `pub`: `to_reflection_version`
+
 String greet({required String name}) =>
     RustLib.instance.api.crateApiSimpleGreet(name: name);
 
@@ -36,9 +38,11 @@ Stream<FluidFrontendStreamEvent> testInvokeWithPool(
         target: target,
         cancelExec: cancelExec);
 
-Future<ServerDescriptor> testGetServerDescriptor({required String serverUrl}) =>
-    RustLib.instance.api
-        .crateApiSimpleTestGetServerDescriptor(serverUrl: serverUrl);
+Future<ServerDescriptor> testGetServerDescriptor(
+        {required String serverUrl,
+        required ReflectionVersionMode reflectionVersionMode}) =>
+    RustLib.instance.api.crateApiSimpleTestGetServerDescriptor(
+        serverUrl: serverUrl, reflectionVersionMode: reflectionVersionMode);
 
 // Rust type: RustOpaqueMoi<flutter_rust_bridge::for_generated::RustAutoOpaqueInner<CancelableExecution>>
 abstract class CancelableExecution implements RustOpaqueInterface {
@@ -50,4 +54,11 @@ abstract class CancelableExecution implements RustOpaqueInterface {
   // HINT: Make it `#[frb(sync)]` to let it become the default constructor of Dart class.
   static Future<CancelableExecution> newInstance() =>
       RustLib.instance.api.crateApiSimpleCancelableExecutionNew();
+}
+
+enum ReflectionVersionMode {
+  v1,
+  v1Alpha,
+  autoDetect,
+  ;
 }
