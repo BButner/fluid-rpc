@@ -12,6 +12,8 @@ class MethodBuilderState {
     required this.target,
     required this.requestData,
     required this.responses,
+    required this.startTime,
+    required this.lastUpdateTime,
     this.cancellation,
   });
 
@@ -28,9 +30,17 @@ class MethodBuilderState {
   /// invoking a method.
   final CancelableExecution? cancellation;
 
+  /// The optional start time for the method invocation.
+  final DateTime? startTime;
+
+  /// The last time we got an update from the backend.
+  final DateTime? lastUpdateTime;
+
   /// Copy with.
   MethodBuilderState copyWith({
     required CancelableExecution? cancellation,
+    required DateTime? startTime,
+    required DateTime? lastUpdateTime,
     String? requestData,
     List<FluidFrontendStreamEvent>? responses,
   }) =>
@@ -39,6 +49,8 @@ class MethodBuilderState {
         requestData: requestData ?? this.requestData,
         responses: responses ?? this.responses,
         cancellation: cancellation,
+        startTime: startTime,
+        lastUpdateTime: lastUpdateTime,
       );
 }
 
@@ -53,11 +65,15 @@ class MethodState extends _$MethodState {
         target: methodTarget,
         requestData: '{}',
         responses: [],
+        startTime: null,
+        lastUpdateTime: null,
       );
 
   /// Updates the current value of the request data.
   void updateRequestData(String data) => state = state.copyWith(
         cancellation: state.cancellation,
+        startTime: state.startTime,
+        lastUpdateTime: state.lastUpdateTime,
         requestData: data,
       );
 
@@ -85,6 +101,8 @@ class MethodState extends _$MethodState {
     state = state.copyWith(
       cancellation: cancel,
       responses: [],
+      startTime: DateTime.now(),
+      lastUpdateTime: null,
     );
 
     await for (final res in testInvokeWithPool(
@@ -96,6 +114,8 @@ class MethodState extends _$MethodState {
     )) {
       state = state.copyWith(
         cancellation: state.cancellation,
+        startTime: state.startTime,
+        lastUpdateTime: DateTime.now(),
         responses: [
           ...state.responses,
           res,
@@ -105,6 +125,8 @@ class MethodState extends _$MethodState {
 
     state = state.copyWith(
       cancellation: null,
+      startTime: state.startTime,
+      lastUpdateTime: state.lastUpdateTime,
     );
   }
 }

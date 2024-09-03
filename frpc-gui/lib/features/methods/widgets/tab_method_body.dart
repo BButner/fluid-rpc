@@ -66,6 +66,17 @@ class TabMethodBody extends ConsumerWidget {
                           ),
                     ),
                   ),
+                  if (methodState.startTime != null &&
+                      methodState.lastUpdateTime != null)
+                    Padding(
+                      padding: const EdgeInsets.only(right: 16.0),
+                      child: Text(
+                        'Duration: ${methodState.lastUpdateTime!.difference(methodState.startTime!).toString()}ms',
+                        style: Theme.of(context).textTheme.bodySmall!.copyWith(
+                              color: FluidColors.zinc.shade400,
+                            ),
+                      ),
+                    ),
                   ElevatedButton.icon(
                     onPressed: methodState.cancellation != null
                         ? null
