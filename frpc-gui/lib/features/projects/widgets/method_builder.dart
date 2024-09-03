@@ -39,7 +39,7 @@ class _MethodBuilderState extends ConsumerState<MethodBuilder> {
 
     _dataController.addListener(
       () => ref
-          .read(methodStateProvider.call(widget.method.fullName).notifier)
+          .read(methodStateProvider.call(widget.method.target()).notifier)
           .updateRequestData(_dataController.text),
     );
 

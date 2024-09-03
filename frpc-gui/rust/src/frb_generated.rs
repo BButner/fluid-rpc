@@ -631,6 +631,7 @@ fn wire__crate__api__simple__test_invoke_with_pool_impl(
                 );
             let api_server_url = <String>::sse_decode(&mut deserializer);
             let api_target = <String>::sse_decode(&mut deserializer);
+            let api_data = <String>::sse_decode(&mut deserializer);
             let api_sink = <StreamSink<
                 crate::api::models::stream_event::FluidFrontendStreamEvent,
                 flutter_rust_bridge::for_generated::SseCodec,
@@ -665,6 +666,7 @@ fn wire__crate__api__simple__test_invoke_with_pool_impl(
                             api_desc,
                             api_server_url,
                             api_target,
+                            api_data,
                             api_sink,
                             &*api_cancel_exec_guard,
                         )

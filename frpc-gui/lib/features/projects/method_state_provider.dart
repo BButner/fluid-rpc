@@ -44,7 +44,7 @@ class MethodState extends _$MethodState {
   ) =>
       MethodBuilderState(
         target: methodTarget,
-        requestData: '',
+        requestData: '{}',
         responseData: '',
       );
 
@@ -80,6 +80,7 @@ class MethodState extends _$MethodState {
       desc: projectState.serverDescriptor!,
       serverUrl: url,
       target: state.target,
+      data: state.requestData,
       cancelExec: cancel,
     )) {
       if (res is FluidFrontendStreamEvent_UnaryMessageReceived) {

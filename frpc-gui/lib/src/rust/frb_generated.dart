@@ -129,6 +129,7 @@ abstract class RustLibApi extends BaseApi {
       {required ServerDescriptor desc,
       required String serverUrl,
       required String target,
+      required String data,
       required CancelableExecution cancelExec});
 
   RustArcIncrementStrongCountFnType
@@ -520,6 +521,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
       {required ServerDescriptor desc,
       required String serverUrl,
       required String target,
+      required String data,
       required CancelableExecution cancelExec}) {
     final sink = RustStreamSink<FluidFrontendStreamEvent>();
     unawaited(handler.executeNormal(NormalTask(
@@ -528,6 +530,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
         sse_encode_box_autoadd_server_descriptor(desc, serializer);
         sse_encode_String(serverUrl, serializer);
         sse_encode_String(target, serializer);
+        sse_encode_String(data, serializer);
         sse_encode_StreamSink_fluid_frontend_stream_event_Sse(sink, serializer);
         sse_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerCancelableExecution(
             cancelExec, serializer);
@@ -539,7 +542,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
         decodeErrorData: sse_decode_AnyhowException,
       ),
       constMeta: kCrateApiSimpleTestInvokeWithPoolConstMeta,
-      argValues: [desc, serverUrl, target, sink, cancelExec],
+      argValues: [desc, serverUrl, target, data, sink, cancelExec],
       apiImpl: this,
     )));
     return sink.stream;
@@ -548,7 +551,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   TaskConstMeta get kCrateApiSimpleTestInvokeWithPoolConstMeta =>
       const TaskConstMeta(
         debugName: "test_invoke_with_pool",
-        argNames: ["desc", "serverUrl", "target", "sink", "cancelExec"],
+        argNames: ["desc", "serverUrl", "target", "data", "sink", "cancelExec"],
       );
 
   RustArcIncrementStrongCountFnType

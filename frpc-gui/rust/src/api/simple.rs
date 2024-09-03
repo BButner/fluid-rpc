@@ -82,6 +82,7 @@ pub async fn test_invoke_with_pool(
     desc: ServerDescriptor,
     server_url: String,
     target: String,
+    data: String,
     sink: StreamSink<FluidFrontendStreamEvent>,
     cancel_exec: &CancelableExecution,
 ) -> Result<()> {
@@ -89,7 +90,7 @@ pub async fn test_invoke_with_pool(
         desc.descriptor_pool_bytes,
         server_url,
         target,
-        None,
+        Some(data),
         cancel_exec.token.clone(),
     )
     .await

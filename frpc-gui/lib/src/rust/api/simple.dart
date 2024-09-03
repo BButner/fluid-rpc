@@ -31,11 +31,13 @@ Stream<FluidFrontendStreamEvent> testInvokeWithPool(
         {required ServerDescriptor desc,
         required String serverUrl,
         required String target,
+        required String data,
         required CancelableExecution cancelExec}) =>
     RustLib.instance.api.crateApiSimpleTestInvokeWithPool(
         desc: desc,
         serverUrl: serverUrl,
         target: target,
+        data: data,
         cancelExec: cancelExec);
 
 Future<ServerDescriptor> testGetServerDescriptor(
