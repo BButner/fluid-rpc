@@ -72,7 +72,9 @@ class _MethodBuilderState extends ConsumerState<MethodBuilder> {
                 child: SingleChildScrollView(
                   child: CodeField(
                     controller: _dataController,
-                    textStyle: Theme.of(context).textTheme.bodySmall,
+                    textStyle: Theme.of(context).textTheme.bodySmall!.copyWith(
+                          fontFamily: 'JetBrainsMono',
+                        ),
                     background: Colors.transparent,
                   ),
                 ),

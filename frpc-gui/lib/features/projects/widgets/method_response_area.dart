@@ -36,7 +36,8 @@ class _MethodResponseAreaState extends ConsumerState<MethodResponseArea> {
         ref.watch(methodStateProvider.call(widget.method.target()));
 
     ref.listen(methodStateProvider.call(widget.method.target()), (prev, next) {
-      if (next.responseData != prev?.responseData) {
+      if (next.responseData != prev?.responseData ||
+          _responseController.text != next.responseData) {
         _responseController.text = next.responseData;
       }
     });
@@ -57,7 +58,9 @@ class _MethodResponseAreaState extends ConsumerState<MethodResponseArea> {
                 child: SingleChildScrollView(
                   child: CodeField(
                     controller: _responseController,
-                    textStyle: Theme.of(context).textTheme.bodySmall,
+                    textStyle: Theme.of(context).textTheme.bodySmall!.copyWith(
+                          fontFamily: 'JetBrainsMono',
+                        ),
                     background: Colors.transparent,
                   ),
                 ),
