@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:frpc_gui/core/theme/fluid_colors.dart';
-import 'package:frpc_gui/features/projects/method_state_provider.dart';
+import 'package:frpc_gui/features/methods/method_state_provider.dart';
 import 'package:frpc_gui/features/projects/widgets/horizontal_resize_area.dart';
-import 'package:frpc_gui/features/projects/widgets/method_avatar.dart';
-import 'package:frpc_gui/features/projects/widgets/method_builder.dart';
-import 'package:frpc_gui/features/projects/widgets/method_response_area.dart';
+import 'package:frpc_gui/features/methods/widgets/method_avatar.dart';
+import 'package:frpc_gui/features/methods/widgets/method_builder.dart';
+import 'package:frpc_gui/features/methods/widgets/method_response_area.dart';
 import 'package:frpc_gui/src/rust/api/models/descriptors/method_descriptor.dart';
 
 /// The body of the selected method in a tab.

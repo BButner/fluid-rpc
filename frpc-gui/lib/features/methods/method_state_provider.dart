@@ -11,7 +11,7 @@ class MethodBuilderState {
   MethodBuilderState({
     required this.target,
     required this.requestData,
-    required this.responseData,
+    required this.responses,
   });
 
   /// The target string of this method.
@@ -20,18 +20,18 @@ class MethodBuilderState {
   /// The current JSON data that will be passed to the request.
   final String requestData;
 
-  /// The current JSON response data.
-  final String responseData;
+  /// The list of [FluidFrontendStreamEvent] received from the invocation.
+  final List<FluidFrontendStreamEvent> responses;
 
   /// Copy with.
   MethodBuilderState copyWith({
     String? requestData,
-    String? responseData,
+    List<FluidFrontendStreamEvent>? responses,
   }) =>
       MethodBuilderState(
         target: target,
         requestData: requestData ?? this.requestData,
-        responseData: responseData ?? this.responseData,
+        responses: responses ?? this.responses,
       );
 }
 
@@ -45,17 +45,12 @@ class MethodState extends _$MethodState {
       MethodBuilderState(
         target: methodTarget,
         requestData: '{}',
-        responseData: '',
+        responses: [],
       );
 
   /// Updates the current value of the request data.
   void updateRequestData(String data) => state = state.copyWith(
         requestData: data,
-      );
-
-  /// Updates the current value of the response data.
-  void updateResponseData(String data) => state = state.copyWith(
-        responseData: data,
       );
 
   /// Invokes the method.
@@ -83,11 +78,12 @@ class MethodState extends _$MethodState {
       data: state.requestData,
       cancelExec: cancel,
     )) {
-      if (res is FluidFrontendStreamEvent_UnaryMessageReceived) {
-        state = state.copyWith(
-          responseData: res.message.contents,
-        );
-      }
+      state = state.copyWith(
+        responses: [
+          ...state.responses,
+          res,
+        ],
+      );
     }
   }
 }
