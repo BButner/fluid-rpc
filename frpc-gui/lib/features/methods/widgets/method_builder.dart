@@ -44,6 +44,7 @@ class _MethodBuilderState extends ConsumerState<MethodBuilder> {
     );
 
     _dataController.text = widget.method.defaultData;
+    print(widget.method.defaultData);
   }
 
   @override
