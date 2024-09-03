@@ -12,6 +12,7 @@ class MethodBuilderState {
     required this.target,
     required this.requestData,
     required this.responses,
+    this.cancellation,
   });
 
   /// The target string of this method.
@@ -23,8 +24,13 @@ class MethodBuilderState {
   /// The list of [FluidFrontendStreamEvent] received from the invocation.
   final List<FluidFrontendStreamEvent> responses;
 
+  /// The current [CancelableExecution] of the invocation, if we are currently
+  /// invoking a method.
+  final CancelableExecution? cancellation;
+
   /// Copy with.
   MethodBuilderState copyWith({
+    required CancelableExecution? cancellation,
     String? requestData,
     List<FluidFrontendStreamEvent>? responses,
   }) =>
@@ -32,6 +38,7 @@ class MethodBuilderState {
         target: target,
         requestData: requestData ?? this.requestData,
         responses: responses ?? this.responses,
+        cancellation: cancellation,
       );
 }
 
@@ -50,8 +57,12 @@ class MethodState extends _$MethodState {
 
   /// Updates the current value of the request data.
   void updateRequestData(String data) => state = state.copyWith(
+        cancellation: state.cancellation,
         requestData: data,
       );
+
+  /// Cancels the current invocation.
+  void cancel() async => state.cancellation?.cancel();
 
   /// Invokes the method.
   Future<void> invoke(
@@ -72,6 +83,7 @@ class MethodState extends _$MethodState {
     final cancel = await CancelableExecution.newInstance();
 
     state = state.copyWith(
+      cancellation: cancel,
       responses: [],
     );
 
@@ -83,11 +95,16 @@ class MethodState extends _$MethodState {
       cancelExec: cancel,
     )) {
       state = state.copyWith(
+        cancellation: state.cancellation,
         responses: [
           ...state.responses,
           res,
         ],
       );
     }
+
+    state = state.copyWith(
+      cancellation: null,
+    );
   }
 }

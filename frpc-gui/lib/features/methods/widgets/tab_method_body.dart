@@ -24,83 +24,107 @@ class TabMethodBody extends ConsumerWidget {
   final MethodDescriptor method;
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) => Card(
-        margin: const EdgeInsets.only(top: 8.8),
-        clipBehavior: Clip.hardEdge,
-        child: Column(
-          children: [
-            DecoratedBox(
-              decoration: BoxDecoration(
-                border: Border(
-                  bottom: BorderSide(
-                    color: FluidColors.zinc.shade800,
-                  ),
-                ),
-              ),
-              child: Padding(
-                padding: const EdgeInsets.all(12.0),
-                child: Row(
-                  children: [
-                    MethodAvatar(isStreaming: method.isServerStreaming),
-                    const SizedBox(width: 12.0),
-                    Text(
-                      method.parentServiceName,
-                      style: Theme.of(context).textTheme.bodyMedium!.copyWith(
-                            color: FluidColors.zinc.shade400,
-                          ),
-                    ),
-                    Text(
-                      '/',
-                      style: Theme.of(context).textTheme.bodyMedium!.copyWith(
-                            color: FluidColors.zinc.shade400,
-                          ),
-                    ),
-                    Expanded(
-                      child: Text(
-                        method.name,
-                        style: Theme.of(context).textTheme.bodyMedium!.copyWith(
-                              fontWeight: FontWeight.w600,
-                            ),
-                      ),
-                    ),
-                    ElevatedButton.icon(
-                      onPressed: () async {
-                        final state =
-                            ref.read(methodStateProvider.call(method.target()));
+  Widget build(BuildContext context, WidgetRef ref) {
+    final methodState = ref.watch(methodStateProvider.call(method.target()));
 
-                        final responseStream = await ref
-                            .read(
-                              methodStateProvider
-                                  .call(method.target())
-                                  .notifier,
-                            )
-                            .invoke(projectId);
-                      },
-                      icon: const Icon(
-                        Icons.play_arrow_rounded,
-                      ),
-                      label: const Text('Execute'),
+    return Card(
+      margin: const EdgeInsets.only(top: 8.8),
+      clipBehavior: Clip.hardEdge,
+      child: Column(
+        children: [
+          DecoratedBox(
+            decoration: BoxDecoration(
+              border: Border(
+                bottom: BorderSide(
+                  color: FluidColors.zinc.shade800,
+                ),
+              ),
+            ),
+            child: Padding(
+              padding: const EdgeInsets.all(12.0),
+              child: Row(
+                children: [
+                  MethodAvatar(isStreaming: method.isServerStreaming),
+                  const SizedBox(width: 12.0),
+                  Text(
+                    method.parentServiceName,
+                    style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+                          color: FluidColors.zinc.shade400,
+                        ),
+                  ),
+                  Text(
+                    '/',
+                    style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+                          color: FluidColors.zinc.shade400,
+                        ),
+                  ),
+                  Expanded(
+                    child: Text(
+                      method.name,
+                      style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+                            fontWeight: FontWeight.w600,
+                          ),
                     ),
-                  ],
+                  ),
+                  ElevatedButton.icon(
+                    onPressed: methodState.cancellation != null
+                        ? null
+                        : () async {
+                            final state = ref.read(
+                                methodStateProvider.call(method.target()));
+
+                            final responseStream = await ref
+                                .read(
+                                  methodStateProvider
+                                      .call(method.target())
+                                      .notifier,
+                                )
+                                .invoke(projectId);
+                          },
+                    icon: const Icon(
+                      Icons.play_arrow_rounded,
+                    ),
+                    label: const Text('Execute'),
+                  ),
+                  const SizedBox(width: 8.0),
+                  FilledButton.icon(
+                    onPressed: methodState.cancellation == null
+                        ? null
+                        : () {
+                            ref
+                                .read(
+                                  methodStateProvider
+                                      .call(method.target())
+                                      .notifier,
+                                )
+                                .cancel();
+                          },
+                    icon: const Icon(
+                      Icons.close_rounded,
+                    ),
+                    label: const Text('Cancel'),
+                  ),
+                ],
+              ),
+            ),
+          ),
+          Expanded(
+            child: LayoutBuilder(
+              builder: (context, constraints) => HorizontalResizeArea(
+                constraints: constraints,
+                leftChild: MethodBuilder(
+                  projectId: projectId,
+                  method: method,
+                ),
+                rightChild: MethodResponseArea(
+                  projectId: projectId,
+                  method: method,
                 ),
               ),
             ),
-            Expanded(
-              child: LayoutBuilder(
-                builder: (context, constraints) => HorizontalResizeArea(
-                  constraints: constraints,
-                  leftChild: MethodBuilder(
-                    projectId: projectId,
-                    method: method,
-                  ),
-                  rightChild: MethodResponseArea(
-                    projectId: projectId,
-                    method: method,
-                  ),
-                ),
-              ),
-            ),
-          ],
-        ),
-      );
+          ),
+        ],
+      ),
+    );
+  }
 }
