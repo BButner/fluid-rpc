@@ -1,9 +1,11 @@
+import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_code_editor/flutter_code_editor.dart';
 import 'package:flutter_highlight/themes/vs2015.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:frpc_gui/features/methods/method_state_provider.dart';
 import 'package:frpc_gui/src/rust/api/models/descriptors/method_descriptor.dart';
+import 'package:frpc_gui/src/rust/api/models/stream_event.dart';
 import 'package:highlight/languages/json.dart' as highlight;
 
 /// Widget that contains all of the functionality related to the method response.
@@ -29,6 +31,7 @@ class _MethodResponseAreaState extends ConsumerState<MethodResponseArea> {
   final _responseController = CodeController(
     language: highlight.json,
   );
+  List<FluidFrontendStreamEvent> _responses = [];
 
   @override
   Widget build(BuildContext context) {
@@ -36,9 +39,35 @@ class _MethodResponseAreaState extends ConsumerState<MethodResponseArea> {
         ref.watch(methodStateProvider.call(widget.method.target()));
 
     ref.listen(methodStateProvider.call(widget.method.target()), (prev, next) {
-      if (next.responseData != prev?.responseData ||
-          _responseController.text != next.responseData) {
-        _responseController.text = next.responseData;
+      if (next.responses.isEmpty) {
+        setState(() {
+          _responses = [];
+        });
+      } else {
+        final notIncluded =
+            next.responses.where((r) => !_responses.contains(r));
+
+        setState(() {
+          _responses = [
+            ..._responses,
+            ...notIncluded,
+          ];
+        });
+
+        final lastMessage = _responses.lastWhereOrNull(
+          (r) =>
+              r is FluidFrontendStreamEvent_UnaryMessageReceived ||
+              r is FluidFrontendStreamEvent_StreamingMessageReceived,
+        );
+
+        switch (lastMessage) {
+          case FluidFrontendStreamEvent_StreamingMessageReceived():
+            _responseController.text = lastMessage.message.contents;
+          case FluidFrontendStreamEvent_UnaryMessageReceived():
+            _responseController.text = lastMessage.message.contents;
+          default:
+            break;
+        }
       }
     });
 

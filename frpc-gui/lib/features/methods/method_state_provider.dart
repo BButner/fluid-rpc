@@ -71,6 +71,10 @@ class MethodState extends _$MethodState {
 
     final cancel = await CancelableExecution.newInstance();
 
+    state = state.copyWith(
+      responses: [],
+    );
+
     await for (final res in testInvokeWithPool(
       desc: projectState.serverDescriptor!,
       serverUrl: url,
