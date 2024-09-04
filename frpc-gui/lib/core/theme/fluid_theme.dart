@@ -11,7 +11,13 @@ class FluidTheme {
   /// Defines the [ThemeData] for the app.
   static final _fluidTheme = ThemeData(
     useMaterial3: true,
-    brightness: Brightness.dark,
+    colorScheme: ColorScheme.fromSeed(
+      seedColor: FluidColors.zinc.shade900,
+      primary: FluidColors.zinc.shade50,
+      secondary: FluidColors.zinc.shade200,
+      tertiary: FluidColors.zinc.shade400,
+      brightness: Brightness.dark,
+    ),
     scaffoldBackgroundColor: FluidColors.zinc[950],
     cardTheme: FluidCardTheme.cardTheme,
     elevatedButtonTheme: ButtonThemes.elevatedButtonTheme,
