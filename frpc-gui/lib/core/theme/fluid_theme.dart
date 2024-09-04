@@ -11,6 +11,7 @@ class FluidTheme {
   /// Defines the [ThemeData] for the app.
   static final _fluidTheme = ThemeData(
     useMaterial3: true,
+    fontFamily: 'NotoSans',
     colorScheme: ColorScheme.fromSeed(
       seedColor: FluidColors.zinc.shade900,
       primary: FluidColors.zinc.shade50,
