@@ -2,45 +2,60 @@ import 'package:flutter/material.dart';
 import 'package:flutter_code_editor/flutter_code_editor.dart';
 import 'package:flutter_highlight/themes/vs2015.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:frpc_gui/features/projects/method_state_provider.dart';
+import 'package:frpc_gui/features/methods/method_state_provider.dart';
 import 'package:frpc_gui/src/rust/api/models/descriptors/method_descriptor.dart';
 import 'package:highlight/languages/json.dart' as highlight;
 
-/// Widget that contains all of the functionality related to the method response.
-class MethodResponseArea extends ConsumerStatefulWidget {
-  /// Creates a new [MethodResponseArea].
-  const MethodResponseArea({
+/// Widget used as the encompassing widget to build a gRPC Method request for invocation.
+class MethodBuilder extends ConsumerStatefulWidget {
+  /// Creates a new [MethodBuilder].
+  const MethodBuilder({
     required this.projectId,
     required this.method,
     super.key,
   });
 
-  /// The id of the project this belongs to.
+  /// The project id this belongs to.
   final String projectId;
 
-  /// The [MethodDescriptor] to display the invocation responses of.
+  /// The [MethodDescriptor] we're building the request for.
   final MethodDescriptor method;
 
   @override
-  ConsumerState<MethodResponseArea> createState() => _MethodResponseAreaState();
+  ConsumerState<MethodBuilder> createState() => _MethodBuilderState();
 }
 
-class _MethodResponseAreaState extends ConsumerState<MethodResponseArea> {
-  final _responseController = CodeController(
-    language: highlight.json,
-  );
+class _MethodBuilderState extends ConsumerState<MethodBuilder> {
+  late final CodeController _dataController;
+
+  @override
+  void initState() {
+    super.initState();
+
+    _dataController = CodeController(
+      text: widget.method.defaultData,
+      language: highlight.json,
+    );
+
+    _dataController.addListener(
+      () => ref
+          .read(methodStateProvider.call(widget.method.target()).notifier)
+          .updateRequestData(_dataController.text),
+    );
+
+    _dataController.text = widget.method.defaultData;
+    print(widget.method.defaultData);
+  }
+
+  @override
+  void dispose() {
+    _dataController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
-    final methodState =
-        ref.watch(methodStateProvider.call(widget.method.target()));
-
-    ref.listen(methodStateProvider.call(widget.method.target()), (prev, next) {
-      if (next.responseData != prev?.responseData ||
-          _responseController.text != next.responseData) {
-        _responseController.text = next.responseData;
-      }
-    });
+    final _ = ref.watch(methodStateProvider.call(widget.method.target()));
 
     return Column(
       children: [
@@ -57,7 +72,7 @@ class _MethodResponseAreaState extends ConsumerState<MethodResponseArea> {
                 ),
                 child: SingleChildScrollView(
                   child: CodeField(
-                    controller: _responseController,
+                    controller: _dataController,
                     textStyle: Theme.of(context).textTheme.bodySmall!.copyWith(
                           fontFamily: 'JetBrainsMono',
                         ),

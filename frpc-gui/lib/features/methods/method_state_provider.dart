@@ -11,7 +11,10 @@ class MethodBuilderState {
   MethodBuilderState({
     required this.target,
     required this.requestData,
-    required this.responseData,
+    required this.responses,
+    required this.startTime,
+    required this.lastUpdateTime,
+    this.cancellation,
   });
 
   /// The target string of this method.
@@ -20,18 +23,34 @@ class MethodBuilderState {
   /// The current JSON data that will be passed to the request.
   final String requestData;
 
-  /// The current JSON response data.
-  final String responseData;
+  /// The list of [FluidFrontendStreamEvent] received from the invocation.
+  final List<FluidFrontendStreamEvent> responses;
+
+  /// The current [CancelableExecution] of the invocation, if we are currently
+  /// invoking a method.
+  final CancelableExecution? cancellation;
+
+  /// The optional start time for the method invocation.
+  final DateTime? startTime;
+
+  /// The last time we got an update from the backend.
+  final DateTime? lastUpdateTime;
 
   /// Copy with.
   MethodBuilderState copyWith({
+    required CancelableExecution? cancellation,
+    required DateTime? startTime,
+    required DateTime? lastUpdateTime,
     String? requestData,
-    String? responseData,
+    List<FluidFrontendStreamEvent>? responses,
   }) =>
       MethodBuilderState(
         target: target,
         requestData: requestData ?? this.requestData,
-        responseData: responseData ?? this.responseData,
+        responses: responses ?? this.responses,
+        cancellation: cancellation,
+        startTime: startTime,
+        lastUpdateTime: lastUpdateTime,
       );
 }
 
@@ -45,18 +64,21 @@ class MethodState extends _$MethodState {
       MethodBuilderState(
         target: methodTarget,
         requestData: '{}',
-        responseData: '',
+        responses: [],
+        startTime: null,
+        lastUpdateTime: null,
       );
 
   /// Updates the current value of the request data.
   void updateRequestData(String data) => state = state.copyWith(
+        cancellation: state.cancellation,
+        startTime: state.startTime,
+        lastUpdateTime: state.lastUpdateTime,
         requestData: data,
       );
 
-  /// Updates the current value of the response data.
-  void updateResponseData(String data) => state = state.copyWith(
-        responseData: data,
-      );
+  /// Cancels the current invocation.
+  void cancel() async => state.cancellation?.cancel();
 
   /// Invokes the method.
   Future<void> invoke(
@@ -76,6 +98,13 @@ class MethodState extends _$MethodState {
 
     final cancel = await CancelableExecution.newInstance();
 
+    state = state.copyWith(
+      cancellation: cancel,
+      responses: [],
+      startTime: DateTime.now(),
+      lastUpdateTime: null,
+    );
+
     await for (final res in testInvokeWithPool(
       desc: projectState.serverDescriptor!,
       serverUrl: url,
@@ -83,11 +112,21 @@ class MethodState extends _$MethodState {
       data: state.requestData,
       cancelExec: cancel,
     )) {
-      if (res is FluidFrontendStreamEvent_UnaryMessageReceived) {
-        state = state.copyWith(
-          responseData: res.message.contents,
-        );
-      }
+      state = state.copyWith(
+        cancellation: state.cancellation,
+        startTime: state.startTime,
+        lastUpdateTime: DateTime.now(),
+        responses: [
+          ...state.responses,
+          res,
+        ],
+      );
     }
+
+    state = state.copyWith(
+      cancellation: null,
+      startTime: state.startTime,
+      lastUpdateTime: state.lastUpdateTime,
+    );
   }
 }

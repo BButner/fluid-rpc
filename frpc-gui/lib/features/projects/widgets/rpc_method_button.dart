@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:frpc_gui/core/theme/fluid_colors.dart';
 import 'package:frpc_gui/features/projects/project_tab_controller_provider.dart';
-import 'package:frpc_gui/features/projects/widgets/method_avatar.dart';
+import 'package:frpc_gui/features/methods/widgets/method_avatar.dart';
 import 'package:frpc_gui/src/rust/api/models/descriptors/method_descriptor.dart';
 
 /// Button for a method in the sidebar, used to open or select a tab.

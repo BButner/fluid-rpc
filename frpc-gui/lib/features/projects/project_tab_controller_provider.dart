@@ -1,5 +1,5 @@
 import 'package:collection/collection.dart';
-import 'package:frpc_gui/features/projects/widgets/tab_method_body.dart';
+import 'package:frpc_gui/features/methods/widgets/tab_method_body.dart';
 import 'package:frpc_gui/src/rust/api/models/descriptors/method_descriptor.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:tabbed_view/tabbed_view.dart';
