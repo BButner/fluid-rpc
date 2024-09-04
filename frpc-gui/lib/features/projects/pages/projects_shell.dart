@@ -58,24 +58,39 @@ class ProjectNavigationShell extends ConsumerWidget {
                             PopupMenuButton(
                               child: Row(
                                 children: [
-                                  DecoratedBox(
-                                    decoration: BoxDecoration(
-                                      color: FluidColors.violet.shade700,
-                                      borderRadius: BorderRadius.circular(6.0),
-                                    ),
-                                    child: Padding(
-                                      padding: const EdgeInsets.all(8.0),
-                                      child: Text(
-                                        Project.getDefaultAvatar(
-                                          displayName: currentProject
-                                              .project.displayName,
+                                  SizedBox(
+                                    width: 40.0,
+                                    height: 40.0,
+                                    child: Card(
+                                      color: FluidColors.zinc[1000],
+                                      surfaceTintColor:
+                                          FluidColors.violet.shade600,
+                                      shape: RoundedRectangleBorder(
+                                        side: BorderSide(
+                                          color: FluidColors.violet.shade600,
+                                          width: 2.0,
                                         ),
-                                        style: Theme.of(context)
-                                            .textTheme
-                                            .bodyMedium!
-                                            .copyWith(
-                                              fontWeight: FontWeight.w600,
+                                        borderRadius:
+                                            BorderRadius.circular(6.0),
+                                      ),
+                                      child: Padding(
+                                        padding: const EdgeInsets.all(8.0),
+                                        child: Center(
+                                          child: Text(
+                                            Project.getDefaultAvatar(
+                                              displayName: currentProject
+                                                  .project.displayName,
                                             ),
+                                            style: Theme.of(context)
+                                                .textTheme
+                                                .labelMedium!
+                                                .copyWith(
+                                                  fontWeight: FontWeight.bold,
+                                                  color: FluidColors
+                                                      .violet.shade300,
+                                                ),
+                                          ),
+                                        ),
                                       ),
                                     ),
                                   ),

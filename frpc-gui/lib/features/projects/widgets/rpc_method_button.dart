@@ -22,29 +22,29 @@ class RpcMethodButton extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) => MaterialButton(
-      onPressed: () {
-        ref
-            .read(projectTabControllerProvider.call(projectId).notifier)
-            .openOrActivateTab(method);
-      },
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(4.0),
-      ),
-      hoverColor: FluidColors.zinc.shade800,
-      child: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 4.0),
-        child: Row(
-          children: [
-            MethodAvatar(isStreaming: method.isServerStreaming),
-            const SizedBox(width: 8.0),
-            Expanded(
-              child: Text(
-                method.name,
-                style: Theme.of(context).textTheme.bodyMedium,
-              ),
-            ),
-          ],
+        onPressed: () {
+          ref
+              .read(projectTabControllerProvider.call(projectId).notifier)
+              .openOrActivateTab(method);
+        },
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(4.0),
         ),
-      ),
-    );
+        hoverColor: FluidColors.zinc.shade800,
+        child: Padding(
+          padding: const EdgeInsets.symmetric(vertical: 4.0),
+          child: Row(
+            children: [
+              MethodAvatar(isStreaming: method.isServerStreaming),
+              const SizedBox(width: 8.0),
+              Expanded(
+                child: Text(
+                  method.name,
+                  style: Theme.of(context).textTheme.bodySmall,
+                ),
+              ),
+            ],
+          ),
+        ),
+      );
 }
