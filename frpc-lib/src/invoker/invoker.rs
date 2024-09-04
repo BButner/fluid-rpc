@@ -149,7 +149,7 @@ pub async fn invoke_with_pool(
     let request = Request::new(message.clone());
     let path = PathAndQuery::from_str(&format!("/{}/{}", &service_path, &method_name)).unwrap();
 
-    let mut deserializer = Deserializer::from_str(data);
+    let mut deserializer = Deserializer::from_str("{}");
     let output_message =
         DynamicMessage::deserialize(method.clone().output(), &mut deserializer).unwrap();
     deserializer.end().unwrap();
