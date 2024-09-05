@@ -34,6 +34,8 @@ class _ProjectPageState extends ConsumerState<ProjectPage> {
                 color: FluidColors.zinc[950],
                 normalButtonColor: FluidColors.zinc.shade500,
                 hoverButtonColor: FluidColors.zinc.shade200,
+                middleGap: 8.0,
+                dropColor: FluidColors.violet.shade700,
               ),
               menu: TabbedViewMenuThemeData(
                 color: FluidColors.zinc.shade900,
@@ -51,6 +53,7 @@ class _ProjectPageState extends ConsumerState<ProjectPage> {
               tab: TabThemeData(
                 buttonsOffset: 10.0,
                 normalButtonColor: FluidColors.zinc.shade400,
+                disabledButtonColor: FluidColors.zinc.shade700,
                 hoverButtonColor: FluidColors.zinc.shade200,
                 padding: const EdgeInsets.fromLTRB(
                   12.0,
@@ -66,6 +69,17 @@ class _ProjectPageState extends ConsumerState<ProjectPage> {
                     ),
                     borderRadius: BorderRadius.circular(4.0),
                   ),
+                ),
+                highlightedStatus: TabStatusThemeData(
+                  decoration: BoxDecoration(
+                    color: Theme.of(context).cardTheme.color,
+                    border: Border.all(
+                      color: FluidColors.zinc.shade900,
+                    ),
+                    borderRadius: BorderRadius.circular(4.0),
+                  ),
+                  normalButtonColor: FluidColors.zinc.shade400,
+                  hoverButtonColor: FluidColors.zinc.shade200,
                 ),
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(4.0),
