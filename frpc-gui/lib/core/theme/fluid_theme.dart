@@ -50,67 +50,50 @@ class FluidTheme {
     return theme.copyWith(
       textTheme: base.copyWith(
         displayLarge: base.displayLarge?.copyWith(
-          fontSize: 34.0,
+          fontSize: 26.0,
           fontWeight: FontWeight.w400,
         ),
         displayMedium: base.displayMedium?.copyWith(
-          fontSize: 28.0,
+          fontSize: 22.0,
           fontWeight: FontWeight.w400,
         ),
         displaySmall: base.displaySmall?.copyWith(
-          fontSize: 22.0,
+          fontSize: 17.0,
           fontWeight: FontWeight.w400,
         ),
         headlineLarge: base.headlineLarge?.copyWith(
-          fontSize: 28.0,
-          fontWeight: FontWeight.w700,
-        ),
-        headlineMedium: base.headlineMedium?.copyWith(
-          fontSize: 22.0,
-          fontWeight: FontWeight.w700,
-        ),
-        headlineSmall: base.headlineSmall?.copyWith(
-          fontSize: 20.0,
-          fontWeight: FontWeight.w700,
-        ),
-        titleLarge: base.titleLarge?.copyWith(
-          fontSize: 20.0,
-          fontWeight: FontWeight.w600,
-        ),
-        titleMedium: base.titleMedium?.copyWith(
-          fontSize: 17.0,
-          fontWeight: FontWeight.w600,
-        ),
-        titleSmall: base.titleSmall?.copyWith(
           fontSize: 15.0,
           fontWeight: FontWeight.w600,
-          color: secondaryColor,
+        ),
+        headlineMedium: base.headlineMedium?.copyWith(
+          fontSize: 13.0,
+          fontWeight: FontWeight.w700,
         ),
         bodyLarge: base.bodyLarge?.copyWith(
-          fontSize: 17.0,
+          fontSize: 13.0,
           fontWeight: FontWeight.w400,
         ),
         bodyMedium: base.bodyMedium?.copyWith(
-          fontSize: 17.0,
+          fontSize: 13.0,
           fontWeight: FontWeight.w400,
         ),
         bodySmall: base.bodySmall?.copyWith(
-          fontSize: 15.0,
+          fontSize: 12.0,
           fontWeight: FontWeight.w400,
           color: secondaryColor,
         ),
         labelLarge: base.labelLarge?.copyWith(
-          fontSize: 17.0,
+          fontSize: 12.0,
           fontWeight: FontWeight.w500,
           color: secondaryColor,
         ),
         labelMedium: base.labelMedium?.copyWith(
-          fontSize: 13.0,
+          fontSize: 11.0,
           fontWeight: FontWeight.w500,
           color: secondaryColor,
         ),
         labelSmall: base.labelSmall?.copyWith(
-          fontSize: 11.0,
+          fontSize: 10.0,
           fontWeight: FontWeight.w500,
           color: secondaryColor,
         ),

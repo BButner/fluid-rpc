@@ -55,71 +55,73 @@ class ProjectNavigationShell extends ConsumerWidget {
                       children: [
                         Row(
                           children: [
-                            PopupMenuButton(
-                              child: Row(
-                                children: [
-                                  SizedBox(
-                                    width: 40.0,
-                                    height: 40.0,
-                                    child: Card(
-                                      color: FluidColors.zinc[1000],
-                                      surfaceTintColor:
-                                          FluidColors.violet.shade600,
-                                      shape: RoundedRectangleBorder(
-                                        side: BorderSide(
-                                          color: FluidColors.violet.shade600,
-                                          width: 2.0,
+                            Expanded(
+                              child: PopupMenuButton(
+                                onSelected: (project) {
+                                  final index = projects.indexOf(project);
+
+                                  _goBranch(index);
+                                },
+                                position: PopupMenuPosition.under,
+                                itemBuilder: (context) => projects
+                                    .map(
+                                      (p) => PopupMenuItem(
+                                        value: p,
+                                        child: Text(
+                                          p.project.displayName,
                                         ),
-                                        borderRadius:
-                                            BorderRadius.circular(6.0),
                                       ),
-                                      child: Padding(
-                                        padding: const EdgeInsets.all(8.0),
-                                        child: Center(
-                                          child: Text(
-                                            Project.getDefaultAvatar(
-                                              displayName: currentProject
-                                                  .project.displayName,
+                                    )
+                                    .toList(),
+                                child: Row(
+                                  children: [
+                                    SizedBox(
+                                      width: 40.0,
+                                      height: 40.0,
+                                      child: Card(
+                                        color: FluidColors.zinc[1000],
+                                        surfaceTintColor:
+                                            FluidColors.violet.shade600,
+                                        shape: RoundedRectangleBorder(
+                                          side: BorderSide(
+                                            color: FluidColors.violet.shade600,
+                                            width: 2.0,
+                                          ),
+                                          borderRadius:
+                                              BorderRadius.circular(6.0),
+                                        ),
+                                        child: Padding(
+                                          padding: const EdgeInsets.all(8.0),
+                                          child: Center(
+                                            child: Text(
+                                              Project.getDefaultAvatar(
+                                                displayName: currentProject
+                                                    .project.displayName,
+                                              ),
+                                              style: Theme.of(context)
+                                                  .textTheme
+                                                  .labelMedium!
+                                                  .copyWith(
+                                                    fontWeight: FontWeight.bold,
+                                                    color: FluidColors
+                                                        .violet.shade300,
+                                                  ),
                                             ),
-                                            style: Theme.of(context)
-                                                .textTheme
-                                                .labelMedium!
-                                                .copyWith(
-                                                  fontWeight: FontWeight.bold,
-                                                  color: FluidColors
-                                                      .violet.shade300,
-                                                ),
                                           ),
                                         ),
                                       ),
                                     ),
-                                  ),
-                                  const SizedBox(width: 8.0),
-                                  Text(
-                                    currentProject.project.displayName,
-                                  ),
-                                  const Icon(
-                                    Icons.arrow_drop_down_rounded,
-                                  ),
-                                ],
-                              ),
-                              onSelected: (project) {
-                                final index = projects.indexOf(project);
-
-                                _goBranch(index);
-                              },
-                              itemBuilder: (context) => projects
-                                  .map(
-                                    (p) => PopupMenuItem(
-                                      value: p,
-                                      child: Text(
-                                        p.project.displayName,
-                                      ),
+                                    const SizedBox(width: 8.0),
+                                    Text(
+                                      currentProject.project.displayName,
                                     ),
-                                  )
-                                  .toList(),
+                                    const Icon(
+                                      Icons.arrow_drop_down_rounded,
+                                    ),
+                                  ],
+                                ),
+                              ),
                             ),
-                            const Spacer(),
                             IconButton(
                               onPressed: () async {
                                 await ref

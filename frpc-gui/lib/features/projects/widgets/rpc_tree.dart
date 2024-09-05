@@ -46,7 +46,7 @@ class _RpcTreeState extends ConsumerState<RpcTree> {
                 Expanded(
                   child: Text(
                     'Services',
-                    style: Theme.of(context).textTheme.labelSmall!.copyWith(
+                    style: Theme.of(context).textTheme.labelMedium!.copyWith(
                           color: FluidColors.zinc.shade400,
                         ),
                   ),

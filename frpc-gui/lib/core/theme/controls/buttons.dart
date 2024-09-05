@@ -15,6 +15,10 @@ class ButtonThemes {
       foregroundColor: FluidColors.violet.shade100,
       backgroundColor: FluidColors.violet.shade600,
       padding: const EdgeInsets.all(8.0),
+      textStyle: const TextStyle(
+        fontWeight: FontWeight.w600,
+        height: 1.15,
+      ),
     ),
   );
 
@@ -30,6 +34,10 @@ class ButtonThemes {
       foregroundColor: FluidColors.zinc.shade50,
       backgroundColor: FluidColors.zinc.shade800,
       padding: const EdgeInsets.all(8.0),
+      textStyle: const TextStyle(
+        fontWeight: FontWeight.w600,
+        height: 1.15,
+      ),
     ),
   );
 
@@ -50,6 +58,10 @@ class ButtonThemes {
   static final popupMenuButton = PopupMenuThemeData(
     shape: RoundedRectangleBorder(
       borderRadius: BorderRadius.circular(4.0),
+    ),
+    textStyle: const TextStyle(
+      fontWeight: FontWeight.w600,
+      height: 1.15,
     ),
   );
 }

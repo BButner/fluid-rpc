@@ -19,6 +19,7 @@ class SelectedEnvironmentDropdown extends ConsumerWidget {
 
     return projectStateAsync.when(
       data: (projectState) => PopupMenuButton(
+        position: PopupMenuPosition.under,
         onSelected: (env) {
           ref
               .read(projectStateProvider.call(projectId).notifier)

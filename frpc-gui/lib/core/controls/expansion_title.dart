@@ -43,7 +43,7 @@ class _ExpansionTitleState extends State<ExpansionTitle> {
               children: [
                 Text(
                   widget.title,
-                  style: Theme.of(context).textTheme.labelMedium!.copyWith(
+                  style: Theme.of(context).textTheme.labelLarge!.copyWith(
                         color: FluidColors.zinc.shade400,
                       ),
                 ),
