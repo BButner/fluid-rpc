@@ -89,6 +89,10 @@ flutter:
   # https://flutter.dev/assets-and-images/#from-packages
 
   fonts:
+    - family: NotoSans
+      fonts:
+        - asset: fonts/NotoSans/NotoSans-VariableFont_wdth,wght.ttf
+        - asset: fonts/NotoSans/NotoSans-Italic-VariableFont_wdth,wght.ttf
     - family: JetBrainsMono
       fonts:
         - asset: fonts/JetBrainsMono/JetBrainsMono-Regular.ttf

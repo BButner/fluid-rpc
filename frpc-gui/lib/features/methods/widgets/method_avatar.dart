@@ -20,7 +20,8 @@ class MethodAvatar extends StatelessWidget {
     final color = isStreaming ? _streamingColor : _unaryColor;
 
     return SizedBox(
-      width: 30.0,
+      width: 28.0,
+      height: 28.0,
       child: Card(
         color: FluidColors.zinc[1000],
         surfaceTintColor: color.shade600,
@@ -31,16 +32,13 @@ class MethodAvatar extends StatelessWidget {
           ),
           borderRadius: BorderRadius.circular(6.0),
         ),
-        child: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Center(
-            child: Text(
-              isStreaming ? 'S' : 'U',
-              style: Theme.of(context).textTheme.labelMedium!.copyWith(
-                    fontWeight: FontWeight.bold,
-                    color: color.shade300,
-                  ),
-            ),
+        child: Center(
+          child: Text(
+            isStreaming ? 'S' : 'U',
+            style: Theme.of(context).textTheme.labelSmall!.copyWith(
+                  fontWeight: FontWeight.bold,
+                  color: color.shade300,
+                ),
           ),
         ),
       ),

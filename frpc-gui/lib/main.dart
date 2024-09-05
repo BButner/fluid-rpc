@@ -29,7 +29,7 @@ class FrpcApp extends ConsumerWidget {
         routerConfig: router,
         title: 'Fluid RPC',
         debugShowCheckedModeBanner: false,
-        theme: FluidTheme.fluidTheme,
+        theme: FluidTheme.build(),
       ),
       error: (error, stackTrace) => Directionality(
         textDirection: TextDirection.ltr,
