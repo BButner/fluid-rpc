@@ -62,7 +62,9 @@ class ProjectNavigationShell extends ConsumerWidget {
 
                                   _goBranch(index);
                                 },
-                                position: PopupMenuPosition.under,
+                                popUpAnimationStyle: AnimationStyle(
+                                  duration: const Duration(milliseconds: 150),
+                                ),
                                 itemBuilder: (context) => projects
                                     .map(
                                       (p) => PopupMenuItem(
