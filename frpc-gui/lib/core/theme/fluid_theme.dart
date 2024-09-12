@@ -26,6 +26,7 @@ class FluidTheme {
     iconButtonTheme: ButtonThemes.iconButtonTheme,
     iconTheme: IconThemeData(
       color: FluidColors.zinc.shade200,
+      size: 20.0,
     ),
     expansionTileTheme: FluidExpansionTileTheme.expansionTileTheme,
     dropdownMenuTheme: FluidDropdownMenuTheme.dropdownMenuTheme,

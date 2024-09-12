@@ -94,8 +94,10 @@ class TabMethodBody extends ConsumerWidget {
                           },
                     icon: const Icon(
                       Icons.play_arrow_rounded,
+                      size: 20.0,
                     ),
                     label: const Text('Execute'),
+                    // iconAlignment: IconAlignment.end,
                   ),
                   const SizedBox(width: 8.0),
                   FilledButton.icon(
@@ -110,8 +112,11 @@ class TabMethodBody extends ConsumerWidget {
                                 )
                                 .cancel();
                           },
-                    icon: const Icon(
-                      Icons.close_rounded,
+                    icon: const Align(
+                      alignment: Alignment.centerLeft,
+                      child: Icon(
+                        Icons.close_rounded,
+                      ),
                     ),
                     label: const Text('Cancel'),
                   ),

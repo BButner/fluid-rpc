@@ -55,6 +55,7 @@ dependencies:
 dev_dependencies:
   build_runner: ^2.4.11
   custom_lint: ^0.6.4
+  flutter_launcher_icons: ^0.13.1
   flutter_lints: ^4.0.0
   flutter_test:
     sdk: flutter
@@ -97,3 +98,10 @@ flutter:
       fonts:
         - asset: fonts/JetBrainsMono/JetBrainsMono-Regular.ttf
           weight: 400
+
+flutter_launcher_icons:
+  image_path: "assets/frpc_app_icon.png"
+  ios: true
+  macos:
+    generate: true
+    image_path: "assets/frpc_app_icon_macos.png"

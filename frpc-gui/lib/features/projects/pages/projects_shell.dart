@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:frpc_gui/core/theme/fluid_colors.dart';
 import 'package:frpc_gui/features/projects/project_state_provider.dart';
 import 'package:frpc_gui/features/projects/projects_provider.dart';
+import 'package:frpc_gui/features/projects/widgets/onboarding_widget.dart';
 import 'package:frpc_gui/features/projects/widgets/rpc_tree.dart';
 import 'package:frpc_gui/features/projects/widgets/selected_environment_dropdown.dart';
 import 'package:frpc_gui/src/rust/api/models/project/project.dart';
@@ -33,6 +34,10 @@ class ProjectNavigationShell extends ConsumerWidget {
     return Scaffold(
       body: projectsAsync.when(
         data: (projects) {
+          if (projects.isEmpty) {
+            return OnboardingWidget();
+          }
+
           final currentProject = projects[navigationShell.currentIndex];
 
           final projectStateAsync =
