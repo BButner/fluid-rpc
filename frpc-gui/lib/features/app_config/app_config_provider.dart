@@ -1,4 +1,5 @@
 import 'package:frpc_gui/src/rust/api/models/config/app_config.dart';
+import 'package:frpc_gui/src/rust/api/models/project/project.dart';
 import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
@@ -25,6 +26,17 @@ class ApplicationConfig extends _$ApplicationConfig {
     state = AsyncValue.data(val);
 
     await val.save(appSettingsDirectory: await _getAppDirPath());
+  }
+
+  /// Adds a new project by its path to the cache.
+  Future<void> addToCacheFromFile(String filePath) async {
+    final val = state.value!;
+
+    final project = await Project.loadProject(configFilePath: filePath);
+
+    if (project != null) {
+      await addToCache(project.project.id, filePath);
+    }
   }
 
   Future<String> _getAppDirPath() async =>
