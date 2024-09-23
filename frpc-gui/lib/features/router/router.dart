@@ -1,7 +1,9 @@
+import 'package:frpc_gui/features/projects/pages/create_project_page.dart';
 import 'package:frpc_gui/features/projects/pages/no_project_page.dart';
 import 'package:frpc_gui/features/projects/pages/project_page.dart';
 import 'package:frpc_gui/features/projects/pages/projects_shell.dart';
 import 'package:frpc_gui/features/projects/projects_provider.dart';
+import 'package:frpc_gui/features/projects/widgets/onboarding_widget.dart';
 import 'package:go_router/go_router.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
@@ -44,7 +46,11 @@ Future<GoRouter> fluidRpcRouter(FluidRpcRouterRef ref) async {
             routes: [
               GoRoute(
                 path: '/',
-                builder: (context, state) => const NoProjectPage(),
+                builder: (context, state) => OnboardingWidget(),
+              ),
+              GoRoute(
+                path: '/project/new',
+                builder: (context, state) => const CreateProjectPage(),
               ),
             ],
           ),

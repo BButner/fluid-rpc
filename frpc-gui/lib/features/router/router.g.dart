@@ -6,7 +6,7 @@ part of 'router.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$fluidRpcRouterHash() => r'89d5da6e7a054115ab0c0d5405c0d08c6a7ed58f';
+String _$fluidRpcRouterHash() => r'f342d31692ed08d3620812dbc56f8d1013d7eec0';
 
 /// The [FluidRpcRouter] for the application.
 ///

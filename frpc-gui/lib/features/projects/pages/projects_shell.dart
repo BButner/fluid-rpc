@@ -35,7 +35,7 @@ class ProjectNavigationShell extends ConsumerWidget {
       body: projectsAsync.when(
         data: (projects) {
           if (projects.isEmpty) {
-            return OnboardingWidget();
+            return navigationShell;
           }
 
           final currentProject = projects[navigationShell.currentIndex];

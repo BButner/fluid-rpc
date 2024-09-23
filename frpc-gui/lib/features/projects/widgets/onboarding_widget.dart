@@ -1,11 +1,15 @@
+import 'dart:async';
+
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:frpc_gui/features/app_config/app_config_provider.dart';
+import 'package:go_router/go_router.dart';
 
 class OnboardingWidget extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) => Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Expanded(
@@ -36,7 +40,13 @@ class OnboardingWidget extends ConsumerWidget {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     FilledButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        final router = GoRouter.of(context);
+
+                        print('pls');
+
+                        router.push('/project/new');
+                      },
                       style: FilledButton.styleFrom(
                         padding: const EdgeInsets.all(32.0),
                       ),

@@ -15,7 +15,7 @@ class FluidTheme {
     colorScheme: ColorScheme.fromSeed(
       seedColor: FluidColors.zinc.shade900,
       primary: FluidColors.zinc.shade50,
-      secondary: FluidColors.zinc.shade200,
+      secondary: FluidColors.zinc.shade300,
       tertiary: FluidColors.zinc.shade400,
       brightness: Brightness.dark,
     ),
