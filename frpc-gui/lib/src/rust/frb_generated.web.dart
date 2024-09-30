@@ -21,6 +21,7 @@ import 'api/models/descriptors/server_descriptor.dart';
 import 'api/models/descriptors/service_descriptor.dart';
 import 'api/models/environment/environment.dart';
 import 'api/models/project/project.dart';
+import 'api/models/project/project_utilities.dart';
 import 'api/models/stream_event.dart';
 import 'api/simple.dart';
 import 'dart:async';
@@ -203,6 +204,9 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
 
   @protected
   ProjectLoader dco_decode_project_loader(dynamic raw);
+
+  @protected
+  ProjectUtilities dco_decode_project_utilities(dynamic raw);
 
   @protected
   (String, String) dco_decode_record_string_string(dynamic raw);
@@ -426,6 +430,9 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
 
   @protected
   ProjectLoader sse_decode_project_loader(SseDeserializer deserializer);
+
+  @protected
+  ProjectUtilities sse_decode_project_utilities(SseDeserializer deserializer);
 
   @protected
   (String, String) sse_decode_record_string_string(
@@ -661,6 +668,10 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
 
   @protected
   void sse_encode_project_loader(ProjectLoader self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_project_utilities(
+      ProjectUtilities self, SseSerializer serializer);
 
   @protected
   void sse_encode_record_string_string(

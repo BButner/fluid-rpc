@@ -38,7 +38,7 @@ flutter_rust_bridge::frb_generated_boilerplate!(
     default_rust_auto_opaque = RustAutoOpaqueMoi,
 );
 pub(crate) const FLUTTER_RUST_BRIDGE_CODEGEN_VERSION: &str = "2.1.0";
-pub(crate) const FLUTTER_RUST_BRIDGE_CODEGEN_CONTENT_HASH: i32 = 2045548302;
+pub(crate) const FLUTTER_RUST_BRIDGE_CODEGEN_CONTENT_HASH: i32 = 484958865;
 
 // Section: executor
 
@@ -313,6 +313,19 @@ fn wire__crate__api__models__project__project__project_save_impl(
             }
         },
     )
+}
+fn wire__crate__api__models__project__project_utilities__project_utilities_validate_project_dir_impl(
+    ptr_: flutter_rust_bridge::for_generated::PlatformGeneralizedUint8ListPtr,
+    rust_vec_len_: i32,
+    data_len_: i32,
+) -> flutter_rust_bridge::for_generated::WireSyncRust2DartSse {
+    FLUTTER_RUST_BRIDGE_HANDLER.wrap_sync::<flutter_rust_bridge::for_generated::SseCodec,_>(flutter_rust_bridge::for_generated::TaskInfo{ debug_name: "project_utilities_validate_project_dir", port: None, mode: flutter_rust_bridge::for_generated::FfiCallMode::Sync }, move || { 
+            let message = unsafe { flutter_rust_bridge::for_generated::Dart2RustMessageSse::from_wire(ptr_, rust_vec_len_, data_len_) };
+            let mut deserializer = flutter_rust_bridge::for_generated::SseDeserializer::new(message);
+            let api_dir_path = <String>::sse_decode(&mut deserializer);deserializer.end();
+                transform_result_sse::<_, flutter_rust_bridge::for_generated::anyhow::Error>((move || {
+                     let output_ok = crate::api::models::project::project_utilities::ProjectUtilities::validate_project_dir(&api_dir_path)?;   Ok(output_ok)
+                })()) })
 }
 fn wire__crate__api__simple__CancelableExecution_cancel_impl(
     ptr_: flutter_rust_bridge::for_generated::PlatformGeneralizedUint8ListPtr,
@@ -1284,6 +1297,13 @@ impl SseDecode for crate::api::models::project::project::ProjectLoader {
     }
 }
 
+impl SseDecode for crate::api::models::project::project_utilities::ProjectUtilities {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
+        return crate::api::models::project::project_utilities::ProjectUtilities {};
+    }
+}
+
 impl SseDecode for (String, String) {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
@@ -1457,27 +1477,27 @@ fn pde_ffi_dispatcher_primary_impl(
             rust_vec_len,
             data_len,
         ),
-        9 => wire__crate__api__simple__CancelableExecution_default_impl(
+        10 => wire__crate__api__simple__CancelableExecution_default_impl(
             port,
             ptr,
             rust_vec_len,
             data_len,
         ),
-        10 => wire__crate__api__simple__CancelableExecution_new_impl(
+        11 => wire__crate__api__simple__CancelableExecution_new_impl(
             port,
             ptr,
             rust_vec_len,
             data_len,
         ),
-        12 => wire__crate__api__simple__init_app_impl(port, ptr, rust_vec_len, data_len),
-        13 => wire__crate__api__simple__test_get_server_descriptor_impl(
+        13 => wire__crate__api__simple__init_app_impl(port, ptr, rust_vec_len, data_len),
+        14 => wire__crate__api__simple__test_get_server_descriptor_impl(
             port,
             ptr,
             rust_vec_len,
             data_len,
         ),
-        14 => wire__crate__api__simple__test_invoke_impl(port, ptr, rust_vec_len, data_len),
-        15 => {
+        15 => wire__crate__api__simple__test_invoke_impl(port, ptr, rust_vec_len, data_len),
+        16 => {
             wire__crate__api__simple__test_invoke_with_pool_impl(port, ptr, rust_vec_len, data_len)
         }
         _ => unreachable!(),
@@ -1492,22 +1512,13 @@ fn pde_ffi_dispatcher_sync_impl(
 ) -> flutter_rust_bridge::for_generated::WireSyncRust2DartSse {
     // Codec=Pde (Serialization + dispatch), see doc to use other codecs
     match func_id {
-        4 => {
-            wire__crate__api__models__descriptors__method_descriptor__method_descriptor_target_impl(
-                ptr,
-                rust_vec_len,
-                data_len,
-            )
-        }
-        5 => wire__crate__api__models__project__project__project_get_default_avatar_impl(
-            ptr,
-            rust_vec_len,
-            data_len,
-        ),
-        8 => wire__crate__api__simple__CancelableExecution_cancel_impl(ptr, rust_vec_len, data_len),
-        11 => wire__crate__api__simple__greet_impl(ptr, rust_vec_len, data_len),
-        _ => unreachable!(),
-    }
+                        4 => wire__crate__api__models__descriptors__method_descriptor__method_descriptor_target_impl(ptr, rust_vec_len, data_len),
+5 => wire__crate__api__models__project__project__project_get_default_avatar_impl(ptr, rust_vec_len, data_len),
+8 => wire__crate__api__models__project__project_utilities__project_utilities_validate_project_dir_impl(ptr, rust_vec_len, data_len),
+9 => wire__crate__api__simple__CancelableExecution_cancel_impl(ptr, rust_vec_len, data_len),
+12 => wire__crate__api__simple__greet_impl(ptr, rust_vec_len, data_len),
+                        _ => unreachable!(),
+                    }
 }
 
 // Section: rust2dart
@@ -1952,6 +1963,27 @@ impl flutter_rust_bridge::IntoIntoDart<crate::api::models::project::project::Pro
     for crate::api::models::project::project::ProjectLoader
 {
     fn into_into_dart(self) -> crate::api::models::project::project::ProjectLoader {
+        self
+    }
+}
+// Codec=Dco (DartCObject based), see doc to use other codecs
+impl flutter_rust_bridge::IntoDart
+    for crate::api::models::project::project_utilities::ProjectUtilities
+{
+    fn into_dart(self) -> flutter_rust_bridge::for_generated::DartAbi {
+        Vec::<u8>::new().into_dart()
+    }
+}
+impl flutter_rust_bridge::for_generated::IntoDartExceptPrimitive
+    for crate::api::models::project::project_utilities::ProjectUtilities
+{
+}
+impl
+    flutter_rust_bridge::IntoIntoDart<
+        crate::api::models::project::project_utilities::ProjectUtilities,
+    > for crate::api::models::project::project_utilities::ProjectUtilities
+{
+    fn into_into_dart(self) -> crate::api::models::project::project_utilities::ProjectUtilities {
         self
     }
 }
@@ -2535,6 +2567,11 @@ impl SseEncode for crate::api::models::project::project::ProjectLoader {
             }
         }
     }
+}
+
+impl SseEncode for crate::api::models::project::project_utilities::ProjectUtilities {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {}
 }
 
 impl SseEncode for (String, String) {

@@ -8,7 +8,7 @@ use tokio::{
 use crate::api::models::environment::environment::Environment;
 use serde::{Deserialize, Serialize};
 
-const PROJECT_FILE_EXTENSION: &str = ".frpc";
+pub const PROJECT_FILE_EXTENSION: &str = ".frpc";
 
 #[derive(Debug, Serialize, Deserialize)]
 pub struct Project {
@@ -95,7 +95,7 @@ impl Project {
         let mut file = File::create(&project_file_path).await?;
 
         write(&project_file_path, contents).await?;
-        
+
         Ok(())
     }
 

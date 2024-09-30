@@ -43,8 +43,6 @@ class OnboardingWidget extends ConsumerWidget {
                       onPressed: () {
                         final router = GoRouter.of(context);
 
-                        print('pls');
-
                         router.push('/project/new');
                       },
                       style: FilledButton.styleFrom(
