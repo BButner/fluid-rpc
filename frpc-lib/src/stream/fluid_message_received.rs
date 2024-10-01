@@ -1,15 +1,16 @@
+use chrono::{DateTime, Local};
 use prost_reflect::DynamicMessage;
-use tokio::time::Instant;
 
+#[derive(Debug)]
 pub struct FluidMessageReceived {
-    pub instant: Instant,
+    pub date_time: DateTime<Local>,
     pub message: DynamicMessage,
 }
 
 impl FluidMessageReceived {
     pub fn new(message: DynamicMessage) -> FluidMessageReceived {
         FluidMessageReceived {
-            instant: Instant::now(),
+            date_time: Local::now(),
             message,
         }
     }

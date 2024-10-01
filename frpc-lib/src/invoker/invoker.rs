@@ -1,11 +1,13 @@
 use std::str::FromStr;
 
 use anyhow::{bail, Result};
+use chrono::Local;
 use futures::channel::mpsc::UnboundedSender;
-use prost_reflect::{DynamicMessage, ReflectMessage};
+use prost_reflect::{DescriptorPool, DynamicMessage, ReflectMessage};
 use regex::Regex;
 use serde_json::Deserializer;
 use tokio_stream::StreamExt;
+use tokio_util::sync::CancellationToken;
 use tonic::codegen::http::uri::PathAndQuery;
 use tonic::{client::Grpc, transport::Channel, Request};
 use tonic::{Response, Status};
@@ -15,7 +17,7 @@ use crate::stream::fluid_message_received::FluidMessageReceived;
 use crate::stream::fluid_stream_event::FluidStreamEvent;
 use crate::{
     invoker::invoker_error::InvokerError,
-    loader::{file_loader::load_from_files, reflection_loader::load_from_server_reflection},
+    loader::{file_loader::load_from_files, reflection_loader_v1::load_from_server_reflection},
 };
 
 use super::dynamic_message_codec::DynamicMessageCodec;
@@ -27,6 +29,41 @@ pub async fn invoke(
     data: Option<String>,
     file_paths: Option<Vec<String>>,
     include_paths: Option<Vec<String>>,
+    token: CancellationToken,
+) -> Result<()> {
+    if (file_paths.is_some() && include_paths.is_none())
+        || (file_paths.is_none() && include_paths.is_some())
+    {
+        bail!(send_invoker_error(
+            &mut tx,
+            InvokerError::InvalidArguments(String::from(
+                "Must supply Proto File Paths and Include File Paths to load protos from files.",
+            ))
+        ));
+    }
+
+    let pool = match if file_paths.is_some() && include_paths.is_some() {
+        load_from_files(file_paths.unwrap(), include_paths.unwrap())
+    } else {
+        load_from_server_reflection(server_url.clone()).await
+    } {
+        Ok(p) => p,
+        Err(e) => bail!(send_invoker_error(
+            &mut tx,
+            InvokerError::DescriptorPoolLoadFailed(e.to_string())
+        )),
+    };
+
+    invoke_with_pool(tx, pool, server_url, target_method, data, token).await
+}
+
+pub async fn invoke_with_pool(
+    mut tx: UnboundedSender<FluidStreamEvent>,
+    pool: DescriptorPool,
+    server_url: String,
+    target_method: String,
+    data: Option<String>,
+    token: CancellationToken,
 ) -> Result<()> {
     let re = Regex::new(r"^(\/)?(?<servicePath>\w+(\.\w+)+)\/(?<methodName>\w+)$").unwrap();
     let caps = re.captures(&target_method);
@@ -57,29 +94,6 @@ pub async fn invoke(
         )),
     }
 
-    if (file_paths.is_some() && include_paths.is_none())
-        || (file_paths.is_none() && include_paths.is_some())
-    {
-        bail!(send_invoker_error(
-            &mut tx,
-            InvokerError::InvalidArguments(String::from(
-                "Must supply Proto File Paths and Include File Paths to load protos from files.",
-            ))
-        ));
-    }
-
-    let pool = match if file_paths.is_some() && include_paths.is_some() {
-        load_from_files(file_paths.unwrap(), include_paths.unwrap())
-    } else {
-        load_from_server_reflection(server_url.clone()).await
-    } {
-        Ok(p) => p,
-        Err(e) => bail!(send_invoker_error(
-            &mut tx,
-            InvokerError::DescriptorPoolLoadFailed(e.to_string())
-        )),
-    };
-
     let service = match pool.get_service_by_name(&service_path) {
         Some(s) => s,
         None => bail!(send_invoker_error(
@@ -95,6 +109,8 @@ pub async fn invoke(
             InvokerError::MethodNotFound(method_name)
         )),
     };
+
+    tx.unbounded_send(FluidStreamEvent::InitiatingConnection(Local::now()))?;
 
     let endpoint = match Channel::from_shared(server_url.clone()) {
         Ok(c) => c,
@@ -116,6 +132,8 @@ pub async fn invoke(
 
     client.ready().await?;
 
+    tx.unbounded_send(FluidStreamEvent::Connected(Local::now()))?;
+
     let data = &data.unwrap_or(String::from("{}"));
 
     let mut deserializer = Deserializer::from_str(data);
@@ -131,7 +149,7 @@ pub async fn invoke(
     let request = Request::new(message.clone());
     let path = PathAndQuery::from_str(&format!("/{}/{}", &service_path, &method_name)).unwrap();
 
-    let mut deserializer = Deserializer::from_str(data);
+    let mut deserializer = Deserializer::from_str("{}");
     let output_message =
         DynamicMessage::deserialize(method.clone().output(), &mut deserializer).unwrap();
     deserializer.end().unwrap();
@@ -148,28 +166,26 @@ pub async fn invoke(
 
             let mut streaming = stream.unwrap().into_inner();
 
-            while let Some(result) = streaming.next().await {
-                match result {
-                    Ok(message) => {
-                        // if has_output {
-                        //     let line_count = pretty.clone().split('\n').count();
-
-                        //     for _ in 0..line_count {
-                        //         print!("\r\x1B[K\r\x1B[A");
-                        //     }
-                        //     print!("\r\x1B[K");
-                        // }
-                        // has_output = true;
-                        // println!("{}", pretty);
-                        let _ = tx.unbounded_send(FluidStreamEvent::StreamingMessageReceived(
-                            FluidMessageReceived::new(message),
-                        ));
-                    }
-                    Err(e) => bail!(send_invoker_error(
-                        &mut tx,
-                        InvokerError::StreamingError(e.to_string())
-                    )),
-                };
+            loop {
+                tokio::select! {
+                    result = streaming.next() => {
+                         match result {
+                            Some(Ok(message)) => {
+                                let _ = tx.unbounded_send(FluidStreamEvent::StreamingMessageReceived(
+                                    FluidMessageReceived::new(message),
+                                ));
+                            }
+                            Some(Err(e)) => bail!(send_invoker_error(
+                                &mut tx,
+                                InvokerError::StreamingError(e.to_string())
+                            )),
+                            None => break,
+                        };
+                    },
+                    _ = token.cancelled() => {
+                        break;
+                    },
+                }
             }
         }
         false => {

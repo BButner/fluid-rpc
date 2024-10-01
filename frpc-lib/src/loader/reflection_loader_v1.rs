@@ -4,19 +4,16 @@ use anyhow::{bail, Result};
 use prost::Message;
 use prost_reflect::DescriptorPool;
 use prost_types::FileDescriptorProto;
-use reflection::server_reflection_client::ServerReflectionClient;
-use reflection::server_reflection_request::MessageRequest;
-use reflection::server_reflection_response::MessageResponse;
-use reflection::{FileDescriptorResponse, ServerReflectionRequest};
 use tokio_stream::StreamExt;
 use tonic::{
     transport::{Channel, Endpoint},
     Request,
 };
 
-pub mod reflection {
-    tonic::include_proto!("grpc.reflection.v1alpha");
-}
+use tonic_reflection::pb::v1::{
+    server_reflection_client::ServerReflectionClient, server_reflection_request::MessageRequest,
+    server_reflection_response::MessageResponse, FileDescriptorResponse, ServerReflectionRequest,
+};
 
 pub(crate) async fn load_from_server_reflection(server_url: String) -> Result<DescriptorPool> {
     let mut pool = DescriptorPool::new();
@@ -32,6 +29,47 @@ pub(crate) async fn load_from_server_reflection(server_url: String) -> Result<De
     }
 }
 
+pub(crate) async fn check_implemented(server_url: String) -> Result<bool> {
+    let connection = get_client(server_url).await;
+
+    match connection {
+        Ok(mut client) => {
+            let list_services_request = ServerReflectionRequest {
+                host: String::new(),
+                message_request: Some(MessageRequest::ListServices(String::new())),
+            };
+
+            let services_response = match client
+                .server_reflection_info(Request::new(tokio_stream::once(list_services_request)))
+                .await
+            {
+                Ok(resp) => resp,
+                Err(e) => {
+                    if e.code() == tonic::Code::Unimplemented {
+                        return Ok(false);
+                    } else {
+                        bail!(e);
+                    }
+                }
+            };
+
+            if let Some(MessageResponse::ListServicesResponse(services)) = services_response
+                .into_inner()
+                .next()
+                .await
+                .expect("Response did not exist")
+                .expect("Message did not exist")
+                .message_response
+            {
+                Ok(true)
+            } else {
+                Ok(false)
+            }
+        }
+        Err(e) => bail!(e),
+    }
+}
+
 async fn get_client(server_url: String) -> Result<ServerReflectionClient<Channel>> {
     let connection = Endpoint::new(server_url);
 
@@ -41,10 +79,16 @@ async fn get_client(server_url: String) -> Result<ServerReflectionClient<Channel
 
             match conn {
                 Ok(channel) => Ok(ServerReflectionClient::new(channel)),
-                Err(e) => bail!(e),
+                Err(e) => {
+                    dbg!(&e);
+                    bail!(e)
+                }
             }
         }
-        Err(e) => bail!(e),
+        Err(e) => {
+            dbg!(&e);
+            bail!(e)
+        }
     }
 }
 

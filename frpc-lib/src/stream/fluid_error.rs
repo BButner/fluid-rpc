@@ -1,17 +1,17 @@
 use std::error::Error;
 
-use tokio::time::Instant;
+use chrono::{DateTime, Local};
 
 #[derive(Debug)]
 pub struct FluidError {
-    pub instant: Instant,
+    pub date_time: DateTime<Local>,
     pub error: Box<dyn Error + Send + Sync>,
 }
 
 impl FluidError {
     pub fn new(error: Box<dyn Error + Send + Sync>) -> FluidError {
         FluidError {
-            instant: Instant::now(),
+            date_time: Local::now(),
             error,
         }
     }
