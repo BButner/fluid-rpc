@@ -64,10 +64,6 @@ impl Decoder for DynamicMessageDecoder {
     type Error = Status;
 
     fn decode(&mut self, src: &mut DecodeBuf<'_>) -> Result<Option<Self::Item>, Self::Error> {
-        if src.remaining() == 0 {
-            return Ok(None);
-        }
-
         let descriptor = self.descriptor.clone();
 
         let message =

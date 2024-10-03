@@ -144,15 +144,14 @@ pub async fn invoke_with_pool(
             InvokerError::DynamicMessageDecodingFailed(e.to_string())
         )),
     };
-    deserializer.end().unwrap();
+    deserializer.end()?;
 
     let request = Request::new(message.clone());
     let path = PathAndQuery::from_str(&format!("/{}/{}", &service_path, &method_name)).unwrap();
 
     let mut deserializer = Deserializer::from_str("{}");
-    let output_message =
-        DynamicMessage::deserialize(method.clone().output(), &mut deserializer).unwrap();
-    deserializer.end().unwrap();
+    let output_message = DynamicMessage::deserialize(method.clone().output(), &mut deserializer)?;
+    deserializer.end()?;
 
     match method.clone().is_server_streaming() {
         true => {
@@ -164,7 +163,7 @@ pub async fn invoke_with_pool(
                 )
                 .await;
 
-            let mut streaming = stream.unwrap().into_inner();
+            let mut streaming = stream?.into_inner();
 
             loop {
                 tokio::select! {
