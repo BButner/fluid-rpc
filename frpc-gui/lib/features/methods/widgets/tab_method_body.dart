@@ -31,6 +31,7 @@ class TabMethodBody extends ConsumerWidget {
       margin: const EdgeInsets.only(top: 8.8),
       clipBehavior: Clip.hardEdge,
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           DecoratedBox(
             decoration: BoxDecoration(
@@ -42,84 +43,92 @@ class TabMethodBody extends ConsumerWidget {
             ),
             child: Padding(
               padding: const EdgeInsets.all(12.0),
-              child: Row(
+              child: Column(
                 children: [
-                  MethodAvatar(isStreaming: method.isServerStreaming),
-                  const SizedBox(width: 12.0),
-                  Text(
-                    method.parentServiceName,
-                    style: Theme.of(context).textTheme.bodyMedium!.copyWith(
-                          color: FluidColors.zinc.shade400,
-                        ),
-                  ),
-                  Text(
-                    '/',
-                    style: Theme.of(context).textTheme.bodyMedium!.copyWith(
-                          color: FluidColors.zinc.shade400,
-                        ),
-                  ),
-                  Expanded(
-                    child: Text(
-                      method.name,
-                      style: Theme.of(context).textTheme.bodyMedium!.copyWith(
-                            fontWeight: FontWeight.w600,
-                          ),
-                    ),
-                  ),
-                  if (methodState.startTime != null &&
-                      methodState.lastUpdateTime != null)
-                    Padding(
-                      padding: const EdgeInsets.only(right: 16.0),
-                      child: Text(
-                        'Duration: ${methodState.lastUpdateTime!.difference(methodState.startTime!).toString()}ms',
-                        style: Theme.of(context).textTheme.bodySmall!.copyWith(
+                  Row(
+                    children: [
+                      MethodAvatar(isStreaming: method.isServerStreaming),
+                      const SizedBox(width: 12.0),
+                      Text(
+                        method.parentServiceName,
+                        style: Theme.of(context).textTheme.bodyMedium!.copyWith(
                               color: FluidColors.zinc.shade400,
                             ),
                       ),
-                    ),
-                  ElevatedButton.icon(
-                    onPressed: methodState.cancellation != null
-                        ? null
-                        : () async {
-                            final state = ref.read(
-                                methodStateProvider.call(method.target()));
-
-                            final responseStream = await ref
-                                .read(
-                                  methodStateProvider
-                                      .call(method.target())
-                                      .notifier,
-                                )
-                                .invoke(projectId);
-                          },
-                    icon: const Icon(
-                      Icons.play_arrow_rounded,
-                      size: 20.0,
-                    ),
-                    label: const Text('Execute'),
-                    // iconAlignment: IconAlignment.end,
-                  ),
-                  const SizedBox(width: 8.0),
-                  FilledButton.icon(
-                    onPressed: methodState.cancellation == null
-                        ? null
-                        : () {
-                            ref
-                                .read(
-                                  methodStateProvider
-                                      .call(method.target())
-                                      .notifier,
-                                )
-                                .cancel();
-                          },
-                    icon: const Align(
-                      alignment: Alignment.centerLeft,
-                      child: Icon(
-                        Icons.close_rounded,
+                      Text(
+                        '/',
+                        style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+                              color: FluidColors.zinc.shade400,
+                            ),
                       ),
-                    ),
-                    label: const Text('Cancel'),
+                      Text(
+                        method.name,
+                        style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+                              fontWeight: FontWeight.w600,
+                            ),
+                      ),
+                    ],
                   ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      if (methodState.startTime != null &&
+                          methodState.lastUpdateTime != null)
+                        Padding(
+                          padding: const EdgeInsets.only(right: 16.0),
+                          child: Text(
+                            'Duration: ${methodState.lastUpdateTime!.difference(methodState.startTime!).toString()}ms',
+                            style:
+                                Theme.of(context).textTheme.bodySmall!.copyWith(
+                                      color: FluidColors.zinc.shade400,
+                                    ),
+                          ),
+                        ),
+                      ElevatedButton.icon(
+                        onPressed: methodState.cancellation != null
+                            ? null
+                            : () async {
+                                final state = ref.read(
+                                    methodStateProvider.call(method.target()));
+
+                                final responseStream = await ref
+                                    .read(
+                                      methodStateProvider
+                                          .call(method.target())
+                                          .notifier,
+                                    )
+                                    .invoke(projectId);
+                              },
+                        icon: const Icon(
+                          Icons.play_arrow_rounded,
+                          size: 20.0,
+                        ),
+                        label: const Text('Execute'),
+                        // iconAlignment: IconAlignment.end,
+                      ),
+                      const SizedBox(width: 8.0),
+                      FilledButton.icon(
+                        onPressed: methodState.cancellation == null
+                            ? null
+                            : () {
+                                ref
+                                    .read(
+                                      methodStateProvider
+                                          .call(method.target())
+                                          .notifier,
+                                    )
+                                    .cancel();
+                              },
+                        icon: const Align(
+                          alignment: Alignment.centerLeft,
+                          child: Icon(
+                            Icons.close_rounded,
+                          ),
+                        ),
+                        label: const Text('Cancel'),
+                      ),
+                    ],
+                  )
                 ],
               ),
             ),
